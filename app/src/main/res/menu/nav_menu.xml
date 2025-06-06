@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_home"
+        android:title="My Account"
+        />
+    <item android:id="@+id/nav_orders"
+        android:title="My orders"
+       />
+    <item android:id="@+id/nav_shopping"
+        android:title="My Shopping lists"
+        />
+    <item android:id="@+id/nav_address"
+        android:title="My addresses"
+        />
+    <item android:id="@+id/nav_shopbycategory"
+        android:title="Shop by category"
+        />
+    <item android:id="@+id/nav_customercare"
+        android:title="Customer care"
+        />
+    <item android:id="@+id/nav_terms"
+        android:title="Terms of use"
+        />
+    <item android:id="@+id/nav_privacy"
+        android:title="Privacy Policy"
+        />
+    <item android:id="@+id/nav_refundpolicy"
+        android:title="Refund Policy"
+        />
+    <item android:id="@+id/nav_logout"
+        android:title="Logout"
+       />
+</menu>

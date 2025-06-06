@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_image">
+
+    <!-- Top Header Links -->
+    <LinearLayout
+        android:id="@+id/top_links"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Home link -->
+        <TextView
+            android:id="@+id/tv_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:drawableLeft="@drawable/ic_backarrow"
+            android:drawablePadding="@dimen/padding_8dp"
+            android:text="Home"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+        <!-- Lock Icon and Secure Text -->
+        <ImageView
+            android:id="@+id/iv_lock"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/ic_lock" />
+
+        <TextView
+            android:id="@+id/tv_secure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="glanisonline.com is secure"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Login CardView (centered) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toTopOf="@id/footer_links"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_links">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Title Text -->
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:text="@string/signinacc"
+                android:textColor="#000000"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/tx_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="20dp"
+                android:text="@string/emailmobile"
+                android:textColor="#424242"
+                android:textSize="14sp" />
+
+            <!-- Email/Mobile EditText -->
+            <EditText
+                android:id="@+id/et_email_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edt_height"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/edittext_background"
+                android:hint="E-mail or Mobile no."
+                android:inputType="textEmailAddress"
+                android:padding="8dp"
+                android:textSize="@dimen/padding_default" />
+
+
+            <TextView
+                android:id="@+id/tx_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="10dp"
+                android:text="@string/password"
+                android:textColor="#424242"
+                android:textSize="14sp" />
+
+            <!-- Password EditText -->
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edt_height"
+                android:layout_marginBottom="@dimen/padding_8dp"
+                android:background="@drawable/edittext_background"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="12dp"
+                android:textSize="@dimen/padding_default" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OR"
+                android:textSize="16sp"
+                android:padding="@dimen/padding_2dp"
+                android:layout_gravity="center">
+
+            </TextView>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_send_otp"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/rounded_btn_all"
+                android:text="Login with OTP"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:gravity="center" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switch_remember"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+                <TextView
+                    android:id="@+id/tv_remember_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_8dp"
+                    android:text="Keep me signed in on this device"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_60dp"
+                android:text="@string/werecommend">
+
+            </TextView>
+            <!-- Sign In Button -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="@dimen/padding_6dp"
+                android:layout_marginEnd="100dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/rounded_btn_all"
+                android:gravity="center"
+                android:text="@string/signin"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white" />
+
+            <!-- Forgot Password Text -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:cardBackgroundColor="@color/light_blue">
+
+                <TextView
+                    android:id="@+id/tv_forgot_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="@dimen/padding_8dp"
+                    android:text="@string/forgotten"
+                    android:textColor="@color/bg_button"
+                    android:textSize="14sp" />
+            </androidx.cardview.widget.CardView>
+
+
+            <!-- Register Now Text -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_8dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="@dimen/padding_8dp"
+                    android:text="Don't have an account?"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_register_now"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/rounded_button_bg"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_6dp"
+                    android:text="@string/register"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textsize"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Footer Links -->
+    <!--    <LinearLayout
+            android:id="@+id/footer_links"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/tv_privacy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/privacy_policy"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:layout_marginEnd="12dp"/>
+
+            <TextView
+                android:id="@+id/tv_terms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/terms_conditions"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:layout_marginEnd="12dp"/>
+
+            <TextView
+                android:id="@+id/tv_about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"/>
+        </LinearLayout>-->
+    <LinearLayout
+        android:id="@+id/footer_links"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_70dp"
+        android:background="#F4F4F4"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Top Links Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_4dp"
+            android:layout_marginBottom="@dimen/padding_2dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_privacy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:text="Privacy Policy"
+                android:textColor="#666666"
+                android:textSize="@dimen/textsize_12sp" />
+
+            <TextView
+                android:id="@+id/tv_terms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:text="@string/terms_conditions"
+                android:textColor="#666666"
+                android:textSize="@dimen/textsize_12sp" />
+
+            <TextView
+                android:id="@+id/tv_purchase_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Purchase Order Terms"
+                android:textColor="#666666"
+                android:textSize="@dimen/textsize_12sp" />
+        </LinearLayout>
+
+        <!-- Store Directory Link -->
+        <TextView
+            android:id="@+id/tv_store_directory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Store Directory"
+            android:textColor="#666666"
+            android:textSize="@dimen/textsize_12sp" />
+
+        <!-- Copyright Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/tv_copyright"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_default"
+                android:layout_weight="0.9"
+                android:text="@string/copyright"
+                android:textColor="#666666"
+                android:textSize="12sp" />
+
+            <!-- Some icons / logos -->
+            <ImageView
+                android:id="@+id/iv_icon3"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_facebook" />
+
+            <ImageView
+                android:id="@+id/iv_icon4"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_twitter" />
+
+            <ImageView
+                android:id="@+id/iv_icon5"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_linkedin" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,40 @@
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/padding_8dp"
+            android:layout_marginStart="@dimen/padding_default"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+
+            >
+
+            <TextView
+                android:id="@+id/categoryTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/groceries"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btnLeft"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="@dimen/padding_8dp"
+                android:background="@drawable/circle_background"
+                android:padding="@dimen/padding_8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/prevbutton" />
+
+            <ImageButton
+                android:id="@+id/btnRight"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/circle_background"
+                android:padding="@dimen/padding_8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/nextbutton" />
+
+        </LinearLayout>
