@@ -2,7 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp.android)
-    alias(libs.plugins.hilt.android)}
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.map.secret)}
+
 
 android {
     namespace = "com.app.gdl"
@@ -87,4 +89,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.google.maps)
+    implementation(libs.play.services.location)
+    implementation(libs.google.places)
 }
