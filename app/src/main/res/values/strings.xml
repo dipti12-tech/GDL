@@ -35,5 +35,6 @@
     <string name="fruit">Fresh fruit</string>
     <string name="fruit_descrp">Wambugu apples direct from farm to table</string>
     <string name="shopnow">Shop now</string>
-<string name="bycreating">By creating a Gilian\'s account, you are agreeing to our terms and conditions (opens in new window). Read our privacy policy (opens in new window) to know how we collect and use your personal data.</string>
+    <string name="google_maps_key">AIzaSyBMb7-GJFu47x0IL3bMuRl_vtcX9tMlpBo</string>
+    <string name="bycreating">By creating a Gilian\'s account, you are agreeing to our terms and conditions (opens in new window). Read our privacy policy (opens in new window) to know how we collect and use your personal data.</string>
 </resources>
