@@ -1,0 +1,98 @@
+
+data class ProductDetailsResponse(
+    val status: Int,
+    val details: List<Detail>,
+    val s3_img_path: String
+)
+
+data class Detail(
+    val id: String,
+    val rowNumber: Int,
+    val note: ValueWrapper<String>? = null,
+    val ABCCode: ValueWrapper<String>? = null,
+    val AutoIncrementalValue: ValueWrapper<String>? = null,
+    val Availability: ValueWrapper<String>? = null,
+    val AverageCost: ValueWrapper<Double>? = null,
+    val BaseUOM: ValueWrapper<String>? = null,
+    val COGSAccount: ValueWrapper<String>? = null,
+    val Content: EmptyObject? = null,
+    val CountryOfOrigin: ValueWrapper<String>? = null,
+    val CurrentStdCost: ValueWrapper<Double>? = null,
+    val CurySpecificMSRP: ValueWrapper<Double>? = null,
+    val CurySpecificPrice: ValueWrapper<Double>? = null,
+    val CustomURL: EmptyObject? = null,
+    val DefaultIssueLocationID: EmptyObject? = null,
+    val DefaultPrice: ValueWrapper<Double>? = null,
+    val DefaultReceiptLocationID: EmptyObject? = null,
+    val DefaultWarehouseID: EmptyObject? = null,
+    val Description: ValueWrapper<String>? = null,
+    val DimensionVolume: ValueWrapper<Double>? = null,
+    val DimensionWeight: ValueWrapper<Double>? = null,
+    val DiscountAccount: EmptyObject? = null,
+    val DiscountSubaccount: EmptyObject? = null,
+    val ExportToExternal: ValueWrapper<Boolean>? = null,
+    val ImageUrl: ValueWrapper<String>? = null,
+    val InventoryAccount: ValueWrapper<String>? = null,
+    val InventoryID: ValueWrapper<String>? = null,
+    val IsAKit: ValueWrapper<Boolean>? = null,
+    val ItemClass: ValueWrapper<String>? = null,
+    val ItemStatus: ValueWrapper<String>? = null,
+    val ItemType: ValueWrapper<String>? = null,
+    val LandedCostVarianceAccount: ValueWrapper<String>? = null,
+    val LastCost: ValueWrapper<Double>? = null,
+    val LastModified: ValueWrapper<String>? = null,
+    val LastStdCost: ValueWrapper<Double>? = null,
+    val LotSerialClass: ValueWrapper<String>? = null,
+    val Markup: ValueWrapper<Double>? = null,
+    val MaxCost: ValueWrapper<Double>? = null,
+    val MetaDescription: EmptyObject? = null,
+    val MetaKeywords: EmptyObject? = null,
+    val MinCost: ValueWrapper<Double>? = null,
+    val MinMarkup: ValueWrapper<Double>? = null,
+    val MSRP: ValueWrapper<Double>? = null,
+    val NotAvailable: ValueWrapper<String>? = null,
+    val NoteID: ValueWrapper<String>? = null,
+    val PageTitle: EmptyObject? = null,
+    val PendingStdCost: ValueWrapper<Double>? = null,
+    val POAccrualAccount: ValueWrapper<String>? = null,
+    val PostingClass: ValueWrapper<String>? = null,
+    val PriceClass: EmptyObject? = null,
+    val PriceManager: EmptyObject? = null,
+    val PriceWorkgroup: EmptyObject? = null,
+    val ProductManager: EmptyObject? = null,
+    val ProductWorkgroup: EmptyObject? = null,
+    val PurchasePriceVarianceAccount: ValueWrapper<String>? = null,
+    val PurchaseUOM: ValueWrapper<String>? = null,
+    val SalesAccount: ValueWrapper<String>? = null,
+    val SalesUOM: ValueWrapper<String>? = null,
+    val SearchKeywords: EmptyObject? = null,
+    val StandardCostRevaluationAccount: ValueWrapper<String>? = null,
+    val StandardCostVarianceAccount: ValueWrapper<String>? = null,
+    val SubjectToCommission: ValueWrapper<Boolean>? = null,
+    val TaxCategory: ValueWrapper<String>? = null,
+    val TemplateItemID: EmptyObject? = null,
+    val ValuationMethod: ValueWrapper<String>? = null,
+    val Visibility: ValueWrapper<String>? = null,
+    val VolumeUOM: ValueWrapper<String>? = null,
+    val WeightUOM: ValueWrapper<String>? = null,
+    val custom: EmptyObject? = null,
+    val _links: Links? = null,
+    val CustomCategory: ValueWrapper<String>? = null,
+    val CustomDescription: ValueWrapper<String>? = null,
+    val CustomName: ValueWrapper<String>? = null,
+    val CustomSubCategory: ValueWrapper<String>? = null,
+    val DisplayItem: ValueWrapper<Int>? = null,
+    val Images: ValueWrapper<List<String>>? = null,
+    val CMSModifiedAt: ValueWrapper<String>? = null
+)
+
+data class ValueWrapper<T>(
+    val value: T
+)
+
+data class Links(
+    val self: String,
+    //val files:put : String
+)
+
+class EmptyObject

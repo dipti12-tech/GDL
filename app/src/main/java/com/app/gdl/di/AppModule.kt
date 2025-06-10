@@ -6,11 +6,13 @@ import com.app.gdl.data.repository.AllCategoryRepositoryImp
 import com.app.gdl.data.repository.CategoryRepositoryImp
 import com.app.gdl.data.repository.GetPastPopularCategoryImp
 import com.app.gdl.data.repository.LoginRepositoryImpl
+import com.app.gdl.data.repository.ProductRepositoryImp
 import com.app.gdl.data.repository.SignupRepositoryImpl
 import com.app.gdl.domain.repository.AllCategoryRepository
 import com.app.gdl.domain.repository.CategoryRepository
 import com.app.gdl.domain.repository.GetPopularCategoryRepository
 import com.app.gdl.domain.repository.LoginRepository
+import com.app.gdl.domain.repository.ProductRepository
 import com.app.gdl.domain.repository.SignUpRepository
 import dagger.Module
 import dagger.Provides
@@ -70,5 +72,12 @@ object AppModule {
         apiService: ApiService
     ): GetPopularCategoryRepository {
         return GetPastPopularCategoryImp(apiService)
+    }
+    @Provides
+    @Singleton
+    fun provideGetProductRepository(
+        apiService: ApiService
+    ): ProductRepository{
+        return  ProductRepositoryImp(apiService)
     }
 }

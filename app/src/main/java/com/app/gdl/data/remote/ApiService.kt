@@ -4,9 +4,9 @@ import com.app.gdl.data.model.CategoryResponse
 import com.app.gdl.data.model.GetPopularCategoryResponse
 import com.app.gdl.data.model.LoginRequest
 import com.app.gdl.data.model.LoginResponse
+import com.app.gdl.data.model.ProductResponse
 import com.app.gdl.data.model.SignupRequest
 import com.app.gdl.data.model.SignupResponse
-import com.app.gdl.presentation.ui.activity.SignUpActivity
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -27,5 +27,11 @@ interface ApiService {
 
     @GET("get_categories/popular")
     suspend fun getPopularCategories(): GetPopularCategoryResponse
+
+    @GET("get_products_by_categories/23")
+    suspend fun getProducts(): ProductResponse
+
+    @GET("get_product_details/0001KIT")
+    suspend fun getProductsDetails(): ProductResponse
 }
 

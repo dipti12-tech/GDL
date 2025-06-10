@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gdl.data.model.Category
 import com.app.gdl.databinding.RowShopbycategorylistBinding
-import com.app.gdl.presentation.ui.activity.MainActivity
 import com.app.gdl.presentation.ui.activity.ProductByCategoryActivity
 import com.bumptech.glide.Glide
 
