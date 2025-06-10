@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/locationBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etSearchLocation"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/search_field_bg"
+        android:drawableStart="@drawable/ic_search"
+        android:hint="  Search for location"
+        android:inputType="text"
+        android:paddingHorizontal="5dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSearchResults"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/search_field_bg"
+            android:hint="Name"
+            android:inputType="text"
+            android:paddingHorizontal="5dp" />
+
+        <EditText
+            android:id="@+id/mobileNumber"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/search_field_bg"
+            android:hint="Mobile"
+            android:inputType="number"
+            android:paddingHorizontal="5dp" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/etFlats"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/search_field_bg"
+        android:hint="Fill Flat No. / Building Name"
+        android:paddingHorizontal="5dp" />
+
+    <EditText
+        android:id="@+id/etStreetAddress"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/search_field_bg"
+        android:hint="Street Address"
+        android:paddingHorizontal="5dp" />
+
+    <Button
+        android:id="@+id/btnUseCurrentLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="📍 Use Current Location" />
+
+    <Button
+        android:id="@+id/btnOpenMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="🗺️ Open Map" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Save Address" />
+
+</LinearLayout>

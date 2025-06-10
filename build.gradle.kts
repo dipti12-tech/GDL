@@ -4,4 +4,5 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.ksp.android) apply false
     alias(libs.plugins.hilt.android) version "2.50" apply false
+    alias(libs.plugins.map.secret) apply false
 }
