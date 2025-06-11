@@ -15,7 +15,7 @@
     <dimen name="padding_60dp">60dp</dimen>
     <dimen name="textsize">16dp</dimen>
     <dimen name="edt_height">42dp</dimen>
-    <dimen name="card_width">180dp</dimen>
+    <dimen name="card_width">170dp</dimen>
     <dimen name="card_height">264dp</dimen>
     <dimen name="padding_100dp">100dp</dimen>
     <dimen name="textsize_14sp">14sp</dimen>

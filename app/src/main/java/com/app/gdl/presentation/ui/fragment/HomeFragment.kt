@@ -25,15 +25,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.gdl.R
 import com.app.gdl.databinding.FragmentHomeBinding
 import com.app.gdl.presentation.ui.activity.MapPickerActivity
-import com.app.gdl.presentation.ui.adapters.FeatureAdapter
-import com.app.gdl.presentation.ui.adapters.PopularCategoryAdapter
-import com.app.gdl.presentation.ui.adapters.ProductAdapter
-import com.app.gdl.presentation.ui.adapters.SearchSuggestionsAdapter
-import com.app.gdl.presentation.ui.adapters.ShopByCategoryAdapter
-import com.app.gdl.presentation.viewmodel.CategoryViewModel
-import com.app.gdl.presentation.viewmodel.PopularViewModel
-import com.app.gdl.presentation.viewmodel.ProductViewModel
-import com.app.gdl.presentation.viewmodel.ShopCategoryViewModel
+import com.app.gdl.presentation.ui.adapters.*
+import com.app.gdl.presentation.viewmodel.*
 import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
@@ -42,19 +35,20 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
+import java.util.*
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private lateinit var binding: FragmentHomeBinding
-    private val viewModel: CategoryViewModel by viewModels()
-    private val shopviewModel: ShopCategoryViewModel by viewModels()
-    private val popularviewModel: PopularViewModel by viewModels()
-    private val productviewModel: ProductViewModel by viewModels()
 
-    private lateinit var adapter: FeatureAdapter
+    private lateinit var binding: FragmentHomeBinding
+
+    private val categoryViewModel: CategoryViewModel by viewModels()
+    private val shopCategoryViewModel: ShopCategoryViewModel by viewModels()
+    private val popularViewModel: PopularViewModel by viewModels()
+    private val productViewModel: ProductViewModel by viewModels()
+
+    private lateinit var featureAdapter: FeatureAdapter
     private lateinit var shopByCategoryAdapter: ShopByCategoryAdapter
-    //private lateinit var PopularAdapter: PopularCategoryAdapter
     private lateinit var productAdapter: ProductAdapter
 
     private var etStreetInBottomSheet: EditText? = null
@@ -70,77 +64,71 @@ class HomeFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUi()
-        viewModel.categories.observe(viewLifecycleOwner) { response ->
-            adapter.submitList(response.category_list)
-        }
-
-        shopviewModel.allcategories.observe(viewLifecycleOwner) { response ->
-            Log.d("shopviewModelsize", "onViewCreated: response" + response.category_list.size)
-            shopByCategoryAdapter.submitList(response.category_list)
-        }
-       /* popularviewModel.getpopularcategories.observe(viewLifecycleOwner) { response ->
-            Log.d("response**", response.status.toString())
-            PopularAdapter.submitList(response.category_list)
-        }*/
-
-        productviewModel.products.observe(viewLifecycleOwner) { response ->
-            Log.d("response**PRODUCTs", response.list.size.toString()+response.s3_img_path+"status"+response.status)
-            productAdapter.submitData(response.list,response.s3_img_path ?: "")
-        }
-        viewModel.fetchCategories()
-        shopviewModel.fetchAllCategories()
-        popularviewModel.fetchGetpopularCategories()
-
+        setupUi()
         setupObservers()
         setupPickLocation()
-        productviewModel.fetchProducts()
     }
 
+    private fun setupUi() {
+        featureAdapter = FeatureAdapter()
+        binding.featureRecycleview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.featureRecycleview.adapter = featureAdapter
 
+        shopByCategoryAdapter = ShopByCategoryAdapter()
+        binding.categoryRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
+        binding.categoryRecyclerView.adapter = shopByCategoryAdapter
+
+        productAdapter = ProductAdapter()
+        binding.productsRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.productsRecyclerView.adapter = productAdapter
+    }
 
     private fun setupObservers() {
-        viewModel.categories.observe(viewLifecycleOwner) { adapter.submitList(it.category_list) }
-        shopviewModel.allcategories.observe(viewLifecycleOwner) { shopByCategoryAdapter.submitList(it.category_list) }
-        popularviewModel.getpopularcategories.observe(viewLifecycleOwner) {
-            Log.d("response**", it.status.toString())
-            pastPopularAdapter.submitList(it.category_list)
+        categoryViewModel.categories.observe(viewLifecycleOwner) {
+            featureAdapter.submitList(it.category_list)
         }
 
-        viewModel.fetchCategories()
-        shopviewModel.fetchAllCategories()
-        popularviewModel.fetchGetpopularCategories()
+        shopCategoryViewModel.allcategories.observe(viewLifecycleOwner) {
+            shopByCategoryAdapter.submitList(it.category_list)
+        }
+
+        productViewModel.products.observe(viewLifecycleOwner) { response ->
+            Log.d("ProductsResponse", "Size: ${response.list.size}, ImgPath: ${response.s3_img_path}, Status: ${response.status}")
+            productAdapter.submitData(response.list, response.s3_img_path ?: "")
+        }
+
+        categoryViewModel.fetchCategories()
+        shopCategoryViewModel.fetchAllCategories()
+        popularViewModel.fetchGetpopularCategories()
+        productViewModel.fetchProducts()
     }
 
     private fun setupPickLocation() {
-        val bottomSheetView =
-            layoutInflater.inflate(R.layout.layout_location_bottom_sheet, null)
+        val bottomSheetView = layoutInflater.inflate(R.layout.layout_location_bottom_sheet, null)
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         bottomSheetDialog.setContentView(bottomSheetView)
+
         binding.deliveryLocation.setOnClickListener {
             if (!Places.isInitialized()) {
                 Places.initialize(requireContext(), getString(R.string.google_maps_key))
             }
             val placesClient = Places.createClient(requireContext())
 
-            val rvSearchResults =
-                bottomSheetView.findViewById<RecyclerView>(R.id.rvSearchResults)
+            val rvSearchResults = bottomSheetView.findViewById<RecyclerView>(R.id.rvSearchResults)
             val searchAdapter = SearchSuggestionsAdapter { prediction ->
                 val placeId = prediction.placeId
                 val request = FetchPlaceRequest.builder(
                     placeId,
                     listOf(Place.Field.LAT_LNG, Place.Field.ADDRESS)
                 ).build()
+
                 placesClient.fetchPlace(request).addOnSuccessListener { response ->
                     val place = response.place
                     finalAddress = place.address
@@ -148,8 +136,7 @@ class HomeFragment : Fragment() {
                     val latLng = place.latLng
                     if (latLng != null) {
                         val geocoder = Geocoder(requireContext(), Locale.getDefault())
-                        val addressList =
-                            geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+                        val addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
                         if (!addressList.isNullOrEmpty()) {
                             val addr = addressList[0]
                             finalAddress = addr.getAddressLine(0)
@@ -161,8 +148,10 @@ class HomeFragment : Fragment() {
                             headingAddress = place.name ?: place.address
                         }
                     }
+
                     etStreetInBottomSheet?.setText(finalAddress)
                     rvSearchResults.visibility = View.GONE
+
                 }.addOnFailureListener {
                     Log.e("PlacesError", "Failed to fetch place details", it)
                     Toast.makeText(requireContext(), "Failed to fetch place details", Toast.LENGTH_SHORT).show()
@@ -184,21 +173,18 @@ class HomeFragment : Fragment() {
 
                     placesClient.findAutocompletePredictions(request)
                         .addOnSuccessListener { response ->
-                            val predictions = response.autocompletePredictions
-                            searchAdapter.submitList(predictions)
+                            searchAdapter.submitList(response.autocompletePredictions)
                             rvSearchResults.visibility = View.VISIBLE
-                        }.addOnFailureListener { e ->
+                        }
+                        .addOnFailureListener { e ->
                             Log.e("PlacesError", "Prediction failed", e)
-                            Toast.makeText(
-                                requireContext(),
-                                "Prediction failed: ${e.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(requireContext(), "Prediction failed: ${e.message}", Toast.LENGTH_SHORT).show()
                         }
                 } else {
                     rvSearchResults.visibility = View.GONE
                 }
             }
+
             etStreetInBottomSheet = bottomSheetView.findViewById(R.id.etStreetAddress)
 
             bottomSheetView.findViewById<Button>(R.id.btnUseCurrentLocation).setOnClickListener {
@@ -210,8 +196,7 @@ class HomeFragment : Fragment() {
                 mapResultLauncher.launch(intent)
             }
 
-            val btnSave = bottomSheetView.findViewById<Button>(R.id.btnSave)
-            btnSave.setOnClickListener {
+            bottomSheetView.findViewById<Button>(R.id.btnSave).setOnClickListener {
                 binding.deliveryLocation.text = "Deliver to: ${SpannableStringBuilder(headingAddress)}"
                 bottomSheetDialog.dismiss()
             }
@@ -221,19 +206,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun getCurrentLocation() {
-        val fusedLocationClient =
-            LocationServices.getFusedLocationProviderClient(requireContext())
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                101
-            )
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 101)
             return
         }
 
@@ -262,29 +242,5 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-    }
-
-    fun setUi() {
-
-        adapter = FeatureAdapter()
-        binding.featureRecycleview.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        binding.featureRecycleview.adapter = adapter
-
-        shopByCategoryAdapter = ShopByCategoryAdapter()
-        binding.categoryRecyclerView.layoutManager = GridLayoutManager(activity, 3)
-        binding.categoryRecyclerView.adapter = shopByCategoryAdapter
-
-     /*   PopularAdapter = PopularCategoryAdapter()
-        binding.productsRecyclerView.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        binding.productsRecyclerView.adapter = PopularAdapter
-*/
-
-        //here add popular category product list depends on popular category
-        productAdapter = ProductAdapter()
-        binding.productsRecyclerView.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        binding.productsRecyclerView.adapter = productAdapter
     }
 }

@@ -8,12 +8,14 @@ import com.app.gdl.data.repository.GetPastPopularCategoryImp
 import com.app.gdl.data.repository.LoginRepositoryImpl
 import com.app.gdl.data.repository.ProductRepositoryImp
 import com.app.gdl.data.repository.SignupRepositoryImpl
+import com.app.gdl.data.repository.SubCategoryRepositoryImp
 import com.app.gdl.domain.repository.AllCategoryRepository
 import com.app.gdl.domain.repository.CategoryRepository
 import com.app.gdl.domain.repository.GetPopularCategoryRepository
 import com.app.gdl.domain.repository.LoginRepository
 import com.app.gdl.domain.repository.ProductRepository
 import com.app.gdl.domain.repository.SignUpRepository
+import com.app.gdl.domain.repository.SubCategoryRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -79,5 +81,12 @@ object AppModule {
         apiService: ApiService
     ): ProductRepository{
         return  ProductRepositoryImp(apiService)
+    }
+    @Provides
+    @Singleton
+    fun provideGetSubCategoryRepository(
+        apiService: ApiService
+    ): SubCategoryRepository{
+        return  SubCategoryRepositoryImp(apiService)
     }
 }

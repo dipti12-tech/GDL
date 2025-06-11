@@ -33,5 +33,8 @@ interface ApiService {
 
     @GET("get_product_details/0001KIT")
     suspend fun getProductsDetails(): ProductResponse
+
+    @GET("get_sub_categories/2")
+    suspend fun getSubCategory(): CategoryResponse
 }
 
