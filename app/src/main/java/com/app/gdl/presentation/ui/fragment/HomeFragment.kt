@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var featureAdapter: FeatureAdapter
     private lateinit var shopByCategoryAdapter: ShopByCategoryAdapter
-    private lateinit var productAdapter: ProductAdapter
+    private lateinit var popularAdapter: PopularCategoryAdapter
 
     private var etStreetInBottomSheet: EditText? = null
     private var finalAddress: String? = null
@@ -85,9 +85,12 @@ class HomeFragment : Fragment() {
         binding.categoryRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         binding.categoryRecyclerView.adapter = shopByCategoryAdapter
 
-        productAdapter = ProductAdapter()
-        binding.productsRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.productsRecyclerView.adapter = productAdapter
+        popularAdapter = PopularCategoryAdapter(
+            lifecycleOwner = this,
+            productViewModel = productViewModel
+        )
+        binding.productsRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.productsRecyclerView.adapter = popularAdapter
     }
 
     private fun setupObservers() {
@@ -99,9 +102,8 @@ class HomeFragment : Fragment() {
             shopByCategoryAdapter.submitList(it.category_list)
         }
 
-        productViewModel.products.observe(viewLifecycleOwner) { response ->
-            Log.d("ProductsResponse", "Size: ${response.list.size}, ImgPath: ${response.s3_img_path}, Status: ${response.status}")
-            productAdapter.submitData(response.list, response.s3_img_path ?: "")
+        popularViewModel.getpopularcategories.observe(viewLifecycleOwner) { response ->
+            popularAdapter.submitList(response.category_list,requireContext())
         }
 
         categoryViewModel.fetchCategories()
