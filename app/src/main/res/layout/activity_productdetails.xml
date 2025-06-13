@@ -21,57 +21,21 @@
             android:textStyle="bold"
             android:textColor="#000000" />
 
-        <!-- Product Image -->
-        <ImageView
-            android:id="@+id/imgProduct"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerImages"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="16dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/pastpopularitem" />
+            android:layout_height="220dp"
+            android:layout_marginTop="16dp" />
 
-        <!-- Thumbnails -->
-        <HorizontalScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerThumbnails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/pastpopularitem" />
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/pastpopularitem" />
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/pastpopularitem" />
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/pastpopularitem" />
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/pastpopularitem" />
-
-            </LinearLayout>
-        </HorizontalScrollView>
+            android:layout_marginTop="8dp"
+            android:paddingEnd="8dp"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            android:scrollbars="none" />
 
         <!-- Rating & Reviews -->
         <LinearLayout
@@ -114,102 +78,133 @@
             android:orientation="vertical"
             android:layout_marginTop="12dp">
 
-            <!-- 1-24 pieces -->
             <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="8dp">
+                android:weightSum="2"
+                android:layout_marginBottom="16dp">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                <!-- 1–24 pieces -->
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_weight="1"
-                    android:text="1–24 pieces"
-                    android:textSize="14sp" />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edittext_background"
-                    android:padding="8dp"
-                    android:text="KES 200"
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp"
-                    android:layout_marginEnd="8dp"/>
+                    <TextView
+                        android:text="1–24 pieces"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="KES 250"
-                    android:textSize="12sp"
-                     />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="KES 200"
+                            android:background="@drawable/bg_yellow_rounded"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="8dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="KES 250"
+                            android:textColor="#D32F2F"
+                            android:textSize="14sp"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 1 Carton -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="1 Carton"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="KES 190"
+                            android:background="@drawable/bg_yellow_rounded"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="8dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="KES 250"
+                            android:textColor="#D32F2F"
+                            android:textSize="14sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
-            <!-- 1 Carton -->
+            <!-- Row 2: 1 Bale -->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="8dp">
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="1 Carton"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edittext_background"
-                    android:padding="8dp"
-                    android:text="KES 190"
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp"
-                    android:layout_marginEnd="8dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="KES 250"
-                    android:textSize="12sp"
-                     />
-            </LinearLayout>
-
-            <!-- 1 Bale -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="1 Bale"
-                    android:textSize="14sp" />
-
-                <TextView
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edittext_background"
-                    android:padding="8dp"
-                    android:text="KES 180"
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp"
-                    android:layout_marginEnd="8dp"/>
+                    android:layout_height="wrap_content" />
 
-                <TextView
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="KES 250"
-                    android:textSize="12sp"
-                    />
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="KES 180"
+                        android:background="@drawable/bg_yellow_rounded"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:textColor="#000000"
+                        android:textStyle="bold"
+                        android:layout_marginEnd="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:text="KES 250"
+                        android:textColor="#D32F2F"
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
