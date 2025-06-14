@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gdl.data.model.Category
 import com.app.gdl.databinding.RowPastpopularlistBinding
-import com.app.gdl.presentation.ui.activity.ProductByCategDetailsActivity
+import com.app.gdl.presentation.ui.activity.ProductByCategoryDetailsActivity
 import com.app.gdl.presentation.ui.activity.ShoppingCartActivity
 import com.bumptech.glide.Glide
 
@@ -45,7 +45,7 @@ class PastPopularAdapter :
                 root.context.startActivity(intent)
             }
             constraintDetails.setOnClickListener {
-                val intent = Intent(root.context, ProductByCategDetailsActivity::class.java)
+                val intent = Intent(root.context, ProductByCategoryDetailsActivity::class.java)
                root.context.startActivity(intent)
             }
         }

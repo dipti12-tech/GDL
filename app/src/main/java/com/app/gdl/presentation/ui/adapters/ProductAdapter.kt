@@ -7,12 +7,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gdl.data.model.ProductItem
-import com.app.gdl.data.model.ProductResponse
 import com.app.gdl.databinding.RowProductlistBinding
-import com.app.gdl.presentation.ui.activity.ProductByCategDetailsActivity
+import com.app.gdl.presentation.ui.activity.ProductByCategoryDetailsActivity
 import com.app.gdl.presentation.ui.activity.ShoppingCartActivity
 import com.bumptech.glide.Glide
-import kotlin.math.log
 
 class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
@@ -56,7 +54,7 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
                     root.context.startActivity(intent)
                 }
                 constraintDetails.setOnClickListener {
-                    val intent = Intent(root.context, ProductByCategDetailsActivity::class.java)
+                    val intent = Intent(root.context, ProductByCategoryDetailsActivity::class.java)
                     root.context.startActivity(intent)
                 }
             }

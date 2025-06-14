@@ -11,7 +11,7 @@ import com.app.gdl.presentation.viewmodel.ProductDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProductByCategDetailsActivity : AppCompatActivity() {
+class ProductByCategoryDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityProductdetailsBinding
     private val viewModel: ProductDetailViewModel by viewModels()

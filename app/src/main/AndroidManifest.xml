@@ -36,7 +36,7 @@
         <activity android:name=".presentation.ui.activity.SignInActivity" />
         <activity android:name=".presentation.ui.activity.SignUpActivity" />
         <activity android:name=".presentation.ui.activity.ProductByCategoryActivity" />
-        <activity android:name=".presentation.ui.activity.ProductByCategDetailsActivity" />
+        <activity android:name=".presentation.ui.activity.ProductByCategoryDetailsActivity" />
         <activity android:name=".presentation.ui.activity.ShoppingCartActivity" />
 
         <meta-data
