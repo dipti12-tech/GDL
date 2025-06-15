@@ -21,6 +21,7 @@
     <dimen name="textsize_14sp">14sp</dimen>
     <dimen name="textsize_12sp">12sp</dimen>
     <dimen name="card_width170dp">170dp</dimen>
+    <dimen name="textsize_13sp">13sp</dimen>
 
 
 </resources>

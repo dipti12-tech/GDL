@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- styles.xml -->
+    <style name="asterisk">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#E11D48</item>
+    </style>
+
+    <style name="textview">
+
+        <item name="android:textSize">@dimen/textsize_14sp</item>
+        <item name="android:fontFamily">@font/sourcesanregular</item>
+        <item name="android:textColor">@color/textview</item>
+        <item name="android:lineSpacingExtra">1sp</item>
+        <item name="android:translationY">-0.53sp</item>
+        <item name="android:gravity">top</item>
+        <item name="android:layout_marginTop">@dimen/padding_6dp</item>
+
+    </style>
+
+    <style name="edittext">
+        <item name="android:textSize">@dimen/textsize</item>
+        <item name="android:fontFamily">@font/sourcesanregular</item>
+        <item name="android:textColor">@color/textview</item>
+        <item name="android:lineSpacingExtra">1sp</item>
+        <item name="android:translationY">-0.74sp</item>
+        <item name="android:gravity">top</item>
+        <item name="android:background">@drawable/edittext_background</item>
+        <item name="android:textColorHint">@color/hint_text</item>
+        <item name="android:layout_marginTop">@dimen/padding_6dp</item>
+    </style>
+
+</resources>

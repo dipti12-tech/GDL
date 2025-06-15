@@ -3,6 +3,7 @@ package com.app.gdl.presentation.ui.fragment
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
@@ -27,6 +28,7 @@ import com.app.gdl.databinding.FragmentHomeBinding
 import com.app.gdl.presentation.ui.activity.MapPickerActivity
 import com.app.gdl.presentation.ui.adapters.*
 import com.app.gdl.presentation.viewmodel.*
+import com.app.gdl.utils.SharedPref
 import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
@@ -39,22 +41,37 @@ import java.util.*
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
+    companion object {
+        private const val ADDRESS = "addressUser"
 
+        fun newInstance(address: String): HomeFragment {
+            val fragment = HomeFragment()
+            val bundle = Bundle().apply {
+                putString(ADDRESS, address)
+            }
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
     private lateinit var binding: FragmentHomeBinding
 
     private val categoryViewModel: CategoryViewModel by viewModels()
     private val shopCategoryViewModel: ShopCategoryViewModel by viewModels()
     private val popularViewModel: PopularViewModel by viewModels()
     private val productViewModel: ProductViewModel by viewModels()
+    private val popularItemViewModel: PopularItemViewModel by viewModels()
+
 
     private lateinit var featureAdapter: FeatureAdapter
     private lateinit var shopByCategoryAdapter: ShopByCategoryAdapter
     private lateinit var popularAdapter: PopularCategoryAdapter
+    private lateinit var popularItemsAdapter: PopularItemsAdapter
 
     private var etStreetInBottomSheet: EditText? = null
     private var finalAddress: String? = null
     private var headingAddress: String? = null
-
+    var addressUser:String =""
+    lateinit var  prefs :SharedPref
     private val mapResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == Activity.RESULT_OK) {
             val address = it.data?.getStringExtra("address")
@@ -63,7 +80,12 @@ class HomeFragment : Fragment() {
             etStreetInBottomSheet?.setText(finalAddress)
         }
     }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        prefs = SharedPref(requireContext())
+        addressUser = arguments?.getString("addressUser").toString()
 
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -91,6 +113,11 @@ class HomeFragment : Fragment() {
         )
         binding.productsRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.productsRecyclerView.adapter = popularAdapter
+
+        popularItemsAdapter = PopularItemsAdapter()
+        binding.PastandPopularRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.PastandPopularRecyclerView.adapter = popularItemsAdapter
+
     }
 
     private fun setupObservers() {
@@ -106,17 +133,26 @@ class HomeFragment : Fragment() {
             popularAdapter.submitList(response.category_list,requireContext())
         }
 
+        popularItemViewModel.products.observe(viewLifecycleOwner) { response ->
+            popularItemsAdapter.submitData(response.list,response.s3_img_path)
+        }
+
         categoryViewModel.fetchCategories()
         shopCategoryViewModel.fetchAllCategories()
         popularViewModel.fetchGetpopularCategories()
-        productViewModel.fetchProducts()
+        popularItemViewModel.fetchPopularItems()
     }
 
     private fun setupPickLocation() {
         val bottomSheetView = layoutInflater.inflate(R.layout.layout_location_bottom_sheet, null)
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         bottomSheetDialog.setContentView(bottomSheetView)
+        if(addressUser!=null) {
+            binding.deliveryLocation.text = "Delivery To : " + prefs.userAdrress
+        }else{
+            binding.deliveryLocation.text = "Delivery To : " + "Select Address"
 
+        }
         binding.deliveryLocation.setOnClickListener {
             if (!Places.isInitialized()) {
                 Places.initialize(requireContext(), getString(R.string.google_maps_key))
@@ -236,6 +272,7 @@ class HomeFragment : Fragment() {
                 }
 
                 etStreetInBottomSheet?.setText(finalAddress)
+
             } else {
                 Toast.makeText(requireContext(), "Couldn't fetch location", Toast.LENGTH_SHORT).show()
             }

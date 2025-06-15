@@ -27,6 +27,7 @@
         android:id="@+id/btnLeft"
         android:layout_width="35dp"
         android:layout_height="35dp"
+        android:visibility="gone"
         android:layout_marginEnd="@dimen/padding_8dp"
         android:background="@drawable/circle_background"
         android:padding="@dimen/padding_8dp"
@@ -39,6 +40,7 @@
         android:layout_height="35dp"
         android:background="@drawable/circle_background"
         android:padding="@dimen/padding_8dp"
+        android:visibility="gone"
         android:scaleType="centerInside"
         android:src="@drawable/nextbutton" />
 
@@ -51,5 +53,20 @@
         android:layout_marginTop="@dimen/padding_default"
         android:nestedScrollingEnabled="false"
         android:scrollbars="vertical" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_shopall"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/padding_8dp"
+        android:layout_marginBottom="@dimen/padding_default"
+        android:background="@drawable/rounded_black_bg"
+        android:text="Shop all  >"
+        android:textAllCaps="false"
+        android:textColor="@color/white">
+
+
+    </androidx.appcompat.widget.AppCompatButton>
 
 </LinearLayout>

@@ -6,6 +6,7 @@ import com.app.gdl.data.repository.AllCategoryRepositoryImp
 import com.app.gdl.data.repository.CategoryRepositoryImp
 import com.app.gdl.data.repository.GetPastPopularCategoryImp
 import com.app.gdl.data.repository.LoginRepositoryImpl
+import com.app.gdl.data.repository.PopularItemRepositoryImp
 import com.app.gdl.data.repository.ProductRepositoryImp
 import com.app.gdl.data.repository.SignupRepositoryImpl
 import com.app.gdl.data.repository.SubCategoryRepositoryImp
@@ -13,6 +14,7 @@ import com.app.gdl.domain.repository.AllCategoryRepository
 import com.app.gdl.domain.repository.CategoryRepository
 import com.app.gdl.domain.repository.GetPopularCategoryRepository
 import com.app.gdl.domain.repository.LoginRepository
+import com.app.gdl.domain.repository.PopularItemRepository
 import com.app.gdl.domain.repository.ProductRepository
 import com.app.gdl.domain.repository.SignUpRepository
 import com.app.gdl.domain.repository.SubCategoryRepository
@@ -89,4 +91,14 @@ object AppModule {
     ): SubCategoryRepository{
         return  SubCategoryRepositoryImp(apiService)
     }
+
+    @Provides
+    @Singleton
+    fun providePopularItemRepository(
+        apiService: ApiService
+    ): PopularItemRepository{
+        return  PopularItemRepositoryImp(apiService)
+    }
+
+
 }

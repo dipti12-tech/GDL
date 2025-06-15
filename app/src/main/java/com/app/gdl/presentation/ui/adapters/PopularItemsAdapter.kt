@@ -5,19 +5,15 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.activity.viewModels
-import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import com.app.gdl.data.model.Category
 import com.app.gdl.data.model.ProductItem
 import com.app.gdl.databinding.RowProductlistBinding
 import com.app.gdl.presentation.ui.activity.ProductByCategDetailsActivity
 import com.app.gdl.presentation.ui.activity.ShoppingCartActivity
 import com.bumptech.glide.Glide
 
-
-class ProductAdapter (
-): RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
+class PopularItemsAdapter (
+): RecyclerView.Adapter<PopularItemsAdapter.ViewHolder>() {
 
     private var productList = listOf<ProductItem>()
     private var imageBasePath: String = ""
@@ -35,7 +31,7 @@ class ProductAdapter (
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ProductAdapter.ViewHolder {
+    ): PopularItemsAdapter.ViewHolder {
         val binding =
             RowProductlistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
@@ -55,7 +51,7 @@ class ProductAdapter (
             Log.d("TAG", "onBindViewHolder: "+imageUrl)
             Glide.with(productImage.context)
                 .load(imageUrl)
-               // .placeholder(com.app.gdl.R.drawable.featureimage) // Add placeholder
+                // .placeholder(com.app.gdl.R.drawable.featureimage) // Add placeholder
                 .into(productImage)
             addToCartButton.setOnClickListener {
                 val intent = Intent(root.context, ShoppingCartActivity::class.java)
@@ -71,4 +67,3 @@ class ProductAdapter (
 
     override fun getItemCount() = productList.size
 }
-

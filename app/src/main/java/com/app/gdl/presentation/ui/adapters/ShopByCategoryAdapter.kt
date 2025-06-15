@@ -37,7 +37,7 @@ class ShopByCategoryAdapter :
                 .into(categoryImageView)
             categoryImageView.setOnClickListener {
                 val intent = Intent(root.context, ProductByCategoryActivity::class.java)
-                intent.putExtra("categoryId", category.cat_id)
+                intent.putExtra("categoryId", category.cat_id.toString())
                 intent.putExtra("categoryName", category.category_name)
                 root.context.startActivity(intent)
             }

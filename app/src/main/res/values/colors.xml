@@ -13,6 +13,8 @@
     <color name="bg_button">#3B82F6</color>
     <color name="light_blue">#DBEAFE</color>
     <color name="textview">#424242</color>
+    <color name="bg_chips">#807CB342</color>
+    <color name="hint_text">#71717A</color>
 
 
 

@@ -236,6 +236,7 @@
             android:text="Checkout"
             android:textAllCaps="false"
             android:textColor="#FFFFFF" />
+
     </LinearLayout>
 
 </ScrollView>

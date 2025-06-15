@@ -2,17 +2,19 @@ package com.app.gdl.data.repository
 
 import com.app.gdl.data.model.ProductResponse
 import com.app.gdl.data.remote.ApiService
+import com.app.gdl.domain.repository.PopularItemRepository
 import com.app.gdl.domain.repository.ProductRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-    class ProductRepositoryImp @Inject constructor(
+    @Singleton
+    class PopularItemRepositoryImp @Inject constructor(
         private val apiService: ApiService
-    ) : ProductRepository {
-        override suspend fun getproductsdata(id :String): ProductResponse {
-            return apiService.getProducts(id);
+    ) : PopularItemRepository {
+        override suspend fun getPopularItem(): ProductResponse {
+            return apiService.getPopularProducts();
+
         }
 
 
-}
+    }
