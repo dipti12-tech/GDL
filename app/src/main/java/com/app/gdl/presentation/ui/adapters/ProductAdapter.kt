@@ -62,7 +62,8 @@ class ProductAdapter (
                 root.context.startActivity(intent)
             }
             constraintDetails.setOnClickListener {
-                val intent = Intent(root.context, ProductByCategDetailsActivity::class.java)
+                val intent = Intent(root.context, ProductByCategoryDetailsActivity::class.java)
+                intent.putExtra("inventory_id", product.InventoryID.value)
                 root.context.startActivity(intent)
             }
 

@@ -34,10 +34,10 @@ interface ApiService {
     suspend fun getProducts(@Path("id") id: String): ProductResponse
 
     @GET("get_product_details/{id}")
-    suspend fun getProductsDetails(@Path("id") id: String): ProductResponse
+    suspend fun getProductsDetails(@Path("id") id: String): ProductDetailsResponse
 
-    @GET("get_product_details/0001KIT")
-    suspend fun getProductsDetails(): ProductDetailsResponse
+//    @GET("get_product_details/{id}")
+//    suspend fun getProductsDetails(@Path("id") id: String): ProductDetailsResponse
 
     @GET("get_sub_categories/{id}")
     suspend fun getSubCategory(@Path("id") id:String): CategoryResponse

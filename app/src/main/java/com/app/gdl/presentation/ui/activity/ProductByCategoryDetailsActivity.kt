@@ -21,7 +21,11 @@ class ProductByCategoryDetailsActivity : AppCompatActivity() {
         binding = ActivityProductdetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.fetchProductDetail()
+        val inventoryId = intent.getStringExtra("inventory_id")
+
+        if (inventoryId != null) {
+            viewModel.fetchProductDetail(inventoryId)
+        }
 
         viewModel.products.observe(this) { response ->
             val item = response.details.firstOrNull() ?: return@observe
