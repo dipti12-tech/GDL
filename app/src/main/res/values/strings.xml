@@ -20,16 +20,16 @@
     <string name="werecommend">We recommend this option only on devices that you own</string>
     <string name="keepsignedin">Keep me signed in on this device</string>
     <string name="signinacc">Sign in to your Account</string>
-    <string name="emailmobile">E-mail address / Mobile number *</string>
-    <string name="password">Password *</string>
+    <string name="emailmobile">E-mail address / Mobile number </string>
+    <string name="password">Password</string>
     <string name="forgotten">I\'ve forgotten my password</string>
     <string name="register">Register now</string>
-    <string name="wearepleased">We are pleased to help you get started shopping online at Gilani’s.\n\nWe need a few basic details to set up your account.</string>
+    <string name="wearepleased">We are pleased to help you get started shopping online at Gilani’s.\nWe need a few basic details to set up your account.</string>
     <string name="starttyping">Start typing and select your address</string>
-    <string name="first_name">First name *</string>
-    <string name="last_name">Last name *</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
     <string name="passwordcontains">Your password must contain all of these: • 8 to 60 characters, 1 letter, 1 number, 1 special symbol</string>
-    <string name="confirm_password">Confirm Password *</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="please_reenter">Please re-enter the password you just created. For your security, do not copy/paste the password</string>
     <string name="createaccount">Create account</string>
     <string name="fruit">Fresh fruit</string>
@@ -37,4 +37,5 @@
     <string name="shopnow">Shop now</string>
     <string name="google_maps_key">AIzaSyBMb7-GJFu47x0IL3bMuRl_vtcX9tMlpBo</string>
     <string name="bycreating">By creating a Gilian\'s account, you are agreeing to our terms and conditions (opens in new window). Read our privacy policy (opens in new window) to know how we collect and use your personal data.</string>
+    <string name="asterisk">*</string>
 </resources>

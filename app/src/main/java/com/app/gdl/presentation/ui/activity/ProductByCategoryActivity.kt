@@ -21,7 +21,7 @@ class ProductByCategoryActivity : AppCompatActivity() {
     private val productViewModel: ProductViewModel by viewModels()
     private lateinit var productAdapter: ProductAdapter
     private val subcategoryViewModel: SubCategoryViewModel by viewModels()
-
+    lateinit var  categoryId :String
     private val sort = mutableListOf("Price--Low to High", "Price--High to Low","Newest First")
    //private val filters  = mutableListOf("Brand", "Offers")
 
@@ -31,7 +31,8 @@ class ProductByCategoryActivity : AppCompatActivity() {
         binding = ActivityGetproductbycategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val categoryId = intent.getStringExtra("categoryId")
+         categoryId = intent.getStringExtra("categoryId").toString()
+        Log.d("categoryId***", "onCreate: "+categoryId+"")
         val categoryName = intent.getStringExtra("categoryName")
         binding.tvTitle.text = categoryName
 
@@ -51,7 +52,9 @@ class ProductByCategoryActivity : AppCompatActivity() {
             )
             productAdapter.submitData(response.list, response.s3_img_path ?: "")
         }
-        productViewModel.fetchProducts()
+        if (categoryId != null) {
+            productViewModel.fetchProducts(categoryId)
+        }
 
         productAdapter = ProductAdapter()
         binding.selectedItems.layoutManager = GridLayoutManager(this, 2)
@@ -90,9 +93,7 @@ class ProductByCategoryActivity : AppCompatActivity() {
             setupCategoryChips(it.category_list)
 
         }
-        subcategoryViewModel.fetchSubCategories()
-
+        subcategoryViewModel.fetchSubCategories(categoryId)
     }
-
 }
 

@@ -28,7 +28,12 @@
            android:textColor="@color/white"
            android:textStyle="bold"
            android:layout_marginTop="@dimen/padding_50dp"
-           android:textSize="@dimen/padding_24dp">
+           android:textSize="@dimen/padding_24dp"
+           android:shadowColor="#80000000"
+           android:shadowDx="0"
+           android:shadowDy="1"
+           android:shadowRadius="4"
+           >
 
        </TextView>
        <TextView
@@ -40,7 +45,13 @@
            android:textColor="@color/white"
            android:layout_marginTop="100dp"
            android:textSize="@dimen/padding_default"
-           android:maxLines="2">
+           android:maxLines="2"
+           android:shadowColor="#80000000"
+           android:shadowDx="0"
+           android:shadowDy="1"
+           android:shadowRadius="4"
+           android:background="#66000000"
+           >
 
        </TextView>
        <androidx.appcompat.widget.AppCompatButton

@@ -1,5 +1,6 @@
 package com.app.gdl.presentation.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -7,6 +8,7 @@ import com.app.gdl.R
 import com.app.gdl.databinding.ActivityMainBinding
 import com.app.gdl.databinding.ToolbarHeaderBinding
 import com.app.gdl.presentation.ui.fragment.HomeFragment
+import com.app.gdl.utils.SharedPref
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -14,11 +16,14 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var toolbarBinding: ToolbarHeaderBinding
+    var address: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val prefs = SharedPref(this)
 
+         address =intent.getStringExtra("addressUser").toString()
         // Set Toolbar
         toolbarBinding = binding.toolbarHeader
         setSupportActionBar(toolbarBinding.customToolbar)
@@ -54,22 +59,20 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
-               /* R.id.nav_profile -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_content, ProfileFragment())
-                        .commit()
-                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                R.id.nav_logout -> {
+                    prefs.isLoggedIn = false
+                    intent = Intent(this,SignInActivity::class.java)
+                    startActivity(intent)
                     true
-                }*/
+                }
 
                 else -> false
             }
         }
-
-        // Load default fragment when activity starts
         if (savedInstanceState == null) {
+            val fragment = HomeFragment.newInstance(address)
             supportFragmentManager.beginTransaction()
-                .replace(R.id.main_content, HomeFragment())
+                .replace(R.id.main_content, fragment)
                 .commit()
         }
     }

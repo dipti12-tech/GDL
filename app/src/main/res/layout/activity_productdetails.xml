@@ -208,7 +208,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Options Section -->
+      <!--  &lt;!&ndash; Options Section &ndash;&gt;
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -218,7 +218,7 @@
             android:layout_marginTop="16dp"
             android:textColor="#000000" />
 
-        <!-- Options Buttons -->
+        &lt;!&ndash; Options Buttons &ndash;&gt;
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -250,7 +250,7 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Size Options -->
+        &lt;!&ndash; Size Options &ndash;&gt;
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -258,8 +258,9 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
-            android:textColor="#000000" />
+            android:textColor="#000000" />-->
 
+<!--
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -285,6 +286,7 @@
 
 
         </LinearLayout>
+-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

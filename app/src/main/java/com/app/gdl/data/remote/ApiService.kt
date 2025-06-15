@@ -12,6 +12,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
     @GET("get_categories/featured")
@@ -29,13 +30,20 @@ interface ApiService {
     @GET("get_categories/popular")
     suspend fun getPopularCategories(): GetPopularCategoryResponse
 
-    @GET("get_products_by_categories/23")
-    suspend fun getProducts(): ProductResponse
+    @GET("get_products_by_categories/{id}")
+    suspend fun getProducts(@Path("id") id: String): ProductResponse
+
+    @GET("get_product_details/{id}")
+    suspend fun getProductsDetails(@Path("id") id: String): ProductResponse
 
     @GET("get_product_details/0001KIT")
     suspend fun getProductsDetails(): ProductDetailsResponse
 
-    @GET("get_sub_categories/2")
-    suspend fun getSubCategory(): CategoryResponse
+    @GET("get_sub_categories/{id}")
+    suspend fun getSubCategory(@Path("id") id:String): CategoryResponse
+
+    @GET("get_popular_products/")
+    suspend fun getPopularProducts(): ProductResponse
+
 }
 

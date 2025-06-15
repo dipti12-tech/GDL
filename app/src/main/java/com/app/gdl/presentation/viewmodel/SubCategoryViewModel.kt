@@ -19,10 +19,10 @@ class SubCategoryViewModel @Inject constructor(
     private val _categories = MutableLiveData<CategoryResponse>()
     val categories: LiveData<CategoryResponse> get() = _categories
 
-    fun fetchSubCategories() {
+    fun fetchSubCategories(id:String) {
         viewModelScope.launch {
             try {
-                val response = repository.getSubCategory()
+                val response = repository.getSubCategory(id)
                 _categories.postValue(response)
             } catch (e: Exception) {
                 e.printStackTrace()

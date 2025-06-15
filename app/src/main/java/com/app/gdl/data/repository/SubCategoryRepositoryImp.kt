@@ -9,8 +9,8 @@ class SubCategoryRepositoryImp  @Inject constructor(
     private val apiService: ApiService
 ) : SubCategoryRepository {
 
-    override suspend fun getSubCategory(): CategoryResponse {
-        return apiService.getSubCategory();
+    override suspend fun getSubCategory(id:String): CategoryResponse {
+        return apiService.getSubCategory(id);
     }
 }
 
