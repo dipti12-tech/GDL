@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.gdl.data.model.Category
 import com.app.gdl.data.model.ProductItem
 import com.app.gdl.databinding.RowProductlistBinding
-import com.app.gdl.presentation.ui.activity.ProductByCategDetailsActivity
+import com.app.gdl.presentation.ui.activity.ProductByCategoryDetailsActivity
 import com.app.gdl.presentation.ui.activity.ShoppingCartActivity
 import com.bumptech.glide.Glide
 
@@ -62,7 +62,8 @@ class ProductAdapter (
                 root.context.startActivity(intent)
             }
             constraintDetails.setOnClickListener {
-                val intent = Intent(root.context, ProductByCategDetailsActivity::class.java)
+                val intent = Intent(root.context, ProductByCategoryDetailsActivity::class.java)
+                intent.putExtra("inventory_id", product.InventoryID.value)
                 root.context.startActivity(intent)
             }
 

@@ -1,5 +1,6 @@
 package com.app.gdl.data.remote
 
+import ProductDetailsResponse
 import com.app.gdl.data.model.CategoryResponse
 import com.app.gdl.data.model.GetPopularCategoryResponse
 import com.app.gdl.data.model.LoginRequest
@@ -33,7 +34,10 @@ interface ApiService {
     suspend fun getProducts(@Path("id") id: String): ProductResponse
 
     @GET("get_product_details/{id}")
-    suspend fun getProductsDetails(@Path("id") id: String): ProductResponse
+    suspend fun getProductsDetails(@Path("id") id: String): ProductDetailsResponse
+
+//    @GET("get_product_details/{id}")
+//    suspend fun getProductsDetails(@Path("id") id: String): ProductDetailsResponse
 
     @GET("get_sub_categories/{id}")
     suspend fun getSubCategory(@Path("id") id:String): CategoryResponse
