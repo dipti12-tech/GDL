@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.gdl.R
 import com.bumptech.glide.Glide
 
-class ImageThumbnailAdapter(
+class ImageFullThumbnailAdapter (
     private val imageUrls: List<String>,
     private val onImageClick: (String) -> Unit
-) : RecyclerView.Adapter<ImageThumbnailAdapter.ThumbViewHolder>() {
+) : RecyclerView.Adapter<ImageFullThumbnailAdapter.ThumbViewHolder>() {
 
     inner class ThumbViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val imageView: ImageView = view.findViewById(R.id.imageThumbnail)
+        private val imageView: ImageView = view.findViewById(R.id.imageLargeThumbnail)
 
         fun bind(url: String) {
             Glide.with(imageView.context)
@@ -31,7 +31,7 @@ class ImageThumbnailAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThumbViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_thumbnail, parent, false)
+            .inflate(R.layout.item_large_thumbnail, parent, false)
         return ThumbViewHolder(view)
     }
 

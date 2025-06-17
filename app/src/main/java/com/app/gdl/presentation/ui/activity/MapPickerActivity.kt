@@ -123,13 +123,22 @@ class MapPickerActivity : AppCompatActivity(), OnMapReadyCallback {
                 val address = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
                 if (!address.isNullOrEmpty()) {
                     val address = address[0]
-                    finalAddress = address.getAddressLine(0)
+                    val featureName = address.featureName ?: ""
+                    val fullAddress = address.getAddressLine(0) ?: ""
+
+                    val cleanedAddress = if (fullAddress.startsWith(featureName)) {
+                        fullAddress.removePrefix(featureName).trimStart(',', ' ')
+                    } else {
+                        fullAddress
+                    }
+
                     val area = address.subLocality
                     val city = address.locality
                     val state = address.adminArea
                     val postalCode = address.postalCode
                     val country = address.countryName
-                    headingAddress = area + ", " + city + ", " + state
+                    headingAddress = "$area, $city, $state"
+                    finalAddress = cleanedAddress
                 }
                 val resultIntent = Intent().apply {
                     putExtra("lat", latLng.latitude)

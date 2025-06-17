@@ -68,16 +68,18 @@ class HomeFragment : Fragment() {
     private lateinit var popularItemsAdapter: PopularItemsAdapter
 
     private var etStreetInBottomSheet: EditText? = null
+    private var etSearch: EditText? = null
     private var finalAddress: String? = null
     private var headingAddress: String? = null
     var addressUser:String =""
     lateinit var  prefs :SharedPref
     private val mapResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == Activity.RESULT_OK) {
-            val address = it.data?.getStringExtra("address")
+            val address = it.data?.getStringExtra("address") ?: ""
             headingAddress = it.data?.getStringExtra("headingAddress")
-            finalAddress = address
             etStreetInBottomSheet?.setText(finalAddress)
+            etSearch?.setText(finalAddress)
+
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -145,6 +147,7 @@ class HomeFragment : Fragment() {
 
     private fun setupPickLocation() {
         val bottomSheetView = layoutInflater.inflate(R.layout.layout_location_bottom_sheet, null)
+        etSearch = bottomSheetView.findViewById(R.id.etSearchLocation)
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         bottomSheetDialog.setContentView(bottomSheetView)
         if(addressUser!=null) {
@@ -177,17 +180,28 @@ class HomeFragment : Fragment() {
                         val addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
                         if (!addressList.isNullOrEmpty()) {
                             val addr = addressList[0]
-                            finalAddress = addr.getAddressLine(0)
+//                            finalAddress = addr.getAddressLine(0)
+
+                            val featureName = addr.featureName ?: ""
+                            val fullAddress = addr.getAddressLine(0) ?: ""
+
+                            val cleanedAddress = if (fullAddress.startsWith(featureName)) {
+                                fullAddress.removePrefix(featureName).trimStart(',', ' ')
+                            } else {
+                                fullAddress
+                            }
                             val area = addr.subLocality
                             val city = addr.locality
                             val state = addr.adminArea
                             headingAddress = listOfNotNull(area, city, state).joinToString(", ")
+                            finalAddress = cleanedAddress
                         } else {
                             headingAddress = place.name ?: place.address
                         }
                     }
 
                     etStreetInBottomSheet?.setText(finalAddress)
+                    etSearch?.setText(finalAddress)
                     rvSearchResults.visibility = View.GONE
 
                 }.addOnFailureListener {
@@ -264,14 +278,25 @@ class HomeFragment : Fragment() {
                 val address = geocoder.getFromLocation(lat, lng, 1)
                 if (!address.isNullOrEmpty()) {
                     val addr = address[0]
-                    finalAddress = addr.getAddressLine(0)
+//                    finalAddress = addr.getAddressLine(0)
+                    val featureName = addr.featureName ?: ""
+                    val fullAddress = addr.getAddressLine(0) ?: ""
+
+                    val cleanedAddress = if (fullAddress.startsWith(featureName)) {
+                        fullAddress.removePrefix(featureName).trimStart(',', ' ')
+                    } else {
+                        fullAddress
+                    }
+
                     val area = addr.subLocality
                     val city = addr.locality
                     val state = addr.adminArea
                     headingAddress = "$area, $city, $state"
+                    finalAddress = cleanedAddress
                 }
 
                 etStreetInBottomSheet?.setText(finalAddress)
+                etSearch?.setText(finalAddress)
 
             } else {
                 Toast.makeText(requireContext(), "Couldn't fetch location", Toast.LENGTH_SHORT).show()
