@@ -28,6 +28,24 @@
         <item name="android:background">@drawable/edittext_background</item>
         <item name="android:textColorHint">@color/hint_text</item>
         <item name="android:layout_marginTop">@dimen/padding_6dp</item>
-    </style>
 
+    </style>
+    <style name="header_title">
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">@font/oswaldsemibold</item>
+        <item name="android:textColor">@color/textheadline</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:lineSpacingExtra">-6sp</item>
+        <item name="android:gravity">top</item>
+        <item name="android:layout_marginTop">@dimen/padding_6dp</item>
+    </style>
+    <style name="price_title">
+        <item name="android:textSize">@dimen/textsize_13sp</item>
+        <item name="android:fontFamily">@font/sourceanssemibold</item>
+        <item name="android:textColor">@color/textheadline</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:lineSpacingExtra">-6sp</item>
+        <item name="android:gravity">top</item>
+        <item name="android:layout_marginTop">@dimen/padding_6dp</item>
+    </style>
 </resources>

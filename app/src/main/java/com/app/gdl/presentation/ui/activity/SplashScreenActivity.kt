@@ -1,5 +1,6 @@
 package com.app.gdl.presentation.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.app.gdl.R
 import com.app.gdl.utils.SharedPref
 
+@SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +21,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             Log.d("TAG", "onCreate: "+prefs.isLoggedIn)
-            if (prefs.isLoggedIn==true) {
+            if (prefs.isLoggedIn) {
                 startActivity(Intent(this, MainActivity::class.java))
             } else {
                 startActivity(Intent(this, SignUpActivity::class.java))

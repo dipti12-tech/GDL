@@ -242,7 +242,9 @@
                         android:drawableLeft="@drawable/ic_circle"
                         android:drawablePadding="@dimen/padding_4dp"
                         android:layout_marginTop="@dimen/padding_4dp"
-                        android:text="@string/starttyping"
+                        android:gravity="center_vertical"
+
+                    android:text="@string/starttyping"
                         android:textAppearance="@style/textview">
 
                     </TextView>
@@ -348,7 +350,8 @@
                     <!-- Password input with eye icon -->
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        >
 
                         <EditText
                             android:id="@+id/et_password"
@@ -358,17 +361,15 @@
                             android:layout_centerVertical="true"
                             android:hint="Create password"
                             android:inputType="textPassword"
-                            android:padding="@dimen/padding_8dp"
-                            android:paddingEnd="48dp"
                             android:layout_marginTop="@dimen/padding_6dp"
                             android:background="@drawable/edittext_background"
                             android:textAppearance="@style/edittext" />
 
                         <View
                             android:layout_width="2dp"
-                            android:layout_height="38dp"
-                            android:layout_marginEnd="@dimen/padding_20dp"
-                            android:layout_toLeftOf="@+id/iv_toggle_password"
+                            android:layout_height="41dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="5dp"                            android:layout_toLeftOf="@+id/iv_toggle_password"
                             android:background="@color/light_gray">
 
                         </View>
@@ -377,9 +378,9 @@
                             android:id="@+id/iv_toggle_password"
                             android:layout_width="34dp"
                             android:layout_height="34dp"
+                            android:layout_marginEnd="@dimen/padding_2dp"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/padding_24dp"
                             android:src="@drawable/ic_eye" />
 
                     </RelativeLayout>
@@ -445,8 +446,9 @@
 
                         <View
                             android:layout_width="2dp"
-                            android:layout_height="38dp"
-                            android:layout_marginEnd="@dimen/padding_20dp"
+                            android:layout_height="41dp"
+                            android:layout_marginTop="@dimen/padding_2dp"
+                            android:layout_marginEnd="5dp"
                             android:layout_toLeftOf="@+id/iv_toggle_confirmpassword"
                             android:background="@color/light_gray">
 
@@ -458,7 +460,7 @@
                             android:layout_height="34dp"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/padding_24dp"
+                            android:layout_marginEnd="@dimen/padding_2dp"
                             android:src="@drawable/ic_eye" />
 
                     </RelativeLayout>
@@ -483,6 +485,7 @@
                         android:layout_marginBottom="@dimen/padding_8dp"
                         android:background="@drawable/rounded_btn_all"
                         android:gravity="center"
+                        android:textAppearance="@style/textview"
                         android:padding="12dp"
                         android:layout_marginTop="@dimen/padding_24dp"
                         android:text="@string/createaccount"
@@ -504,7 +507,7 @@
                             android:padding="@dimen/padding_6dp"
                             android:text="@string/bycreating"
                             android:textAppearance="@style/textview"
-                            android:textColor="#888888"
+                            android:textColor="@color/textview"
                             android:textSize="12sp" />
                     </androidx.cardview.widget.CardView>
 
@@ -552,7 +555,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/padding_70dp"
         android:layout_marginTop="@dimen/padding_24dp"
-        android:background="#F4F4F4"
+        android:background="#F2F2F2"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/padding_6dp"
@@ -576,7 +579,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
                 android:text="Privacy Policy"
-                android:textColor="#666666"
+                android:textColor="@color/bottom_text"
+                android:textAppearance="@style/textview"
                 android:textSize="@dimen/textsize_12sp" />
 
             <TextView
@@ -585,7 +589,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
                 android:text="@string/terms_conditions"
-                android:textColor="#666666"
+                android:textColor="@color/bottom_text"
+                android:textAppearance="@style/textview"
                 android:textSize="@dimen/textsize_12sp" />
 
             <TextView
@@ -593,8 +598,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Purchase Order Terms"
-                android:textColor="#666666"
-                android:textSize="@dimen/textsize_12sp" />
+                android:textAppearance="@style/textview"
+                android:textSize="@dimen/textsize_12sp"
+                android:textColor="@color/bottom_text"
+                />
         </LinearLayout>
 
         <!-- Store Directory Link -->
@@ -604,8 +611,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Store Directory"
-            android:textColor="#666666"
-            android:textSize="@dimen/textsize_12sp" />
+            android:textAppearance="@style/textview"
+            android:textSize="@dimen/textsize_12sp"
+            android:textColor="@color/bottom_text"
+            />
 
         <!-- Copyright Row -->
         <LinearLayout
@@ -622,7 +631,8 @@
                 android:layout_marginStart="@dimen/padding_default"
                 android:layout_weight="0.9"
                 android:text="@string/copyright"
-                android:textColor="#666666"
+                android:textAppearance="@style/textview"
+                android:textColor="@color/bottom_text"
                 android:textSize="12sp" />
 
             <!-- Some icons / logos -->

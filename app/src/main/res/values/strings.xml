@@ -38,4 +38,6 @@
     <string name="google_maps_key">AIzaSyBMb7-GJFu47x0IL3bMuRl_vtcX9tMlpBo</string>
     <string name="bycreating">By creating a Gilian\'s account, you are agreeing to our terms and conditions (opens in new window). Read our privacy policy (opens in new window) to know how we collect and use your personal data.</string>
     <string name="asterisk">*</string>
+    <string name="reviews">Reviews</string>
+
 </resources>

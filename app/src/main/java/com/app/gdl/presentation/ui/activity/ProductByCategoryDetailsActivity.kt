@@ -1,5 +1,6 @@
 package com.app.gdl.presentation.ui.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,9 +14,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ProductByCategoryDetailsActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityProductdetailsBinding
+    private lateinit var binding: ActivityProductdetailsBinding
     private val viewModel: ProductDetailViewModel by viewModels()
-
+    var quantity = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductdetailsBinding.inflate(layoutInflater)
@@ -26,7 +27,12 @@ class ProductByCategoryDetailsActivity : AppCompatActivity() {
         if (inventoryId != null) {
             viewModel.fetchProductDetail(inventoryId)
         }
-
+        binding.btnPlus.setOnClickListener {
+            incrementQuantity()
+        }
+        binding.btnMinus.setOnClickListener {
+            decrementQuantity()
+        }
         viewModel.products.observe(this) { response ->
             val item = response.details.firstOrNull() ?: return@observe
             binding.tvTitle.text = item.CustomName?.value ?: "No Name"
@@ -46,14 +52,32 @@ class ProductByCategoryDetailsActivity : AppCompatActivity() {
             val pagerAdapter = ImageSliderAdapter(imageUrls)
             binding.viewPagerImages.adapter = pagerAdapter
 
-            binding.recyclerThumbnails.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            binding.recyclerThumbnails.adapter = ImageThumbnailAdapter(imageUrls) { selectedImageUrl ->
-                val index = imageUrls.indexOf(selectedImageUrl)
-                if (index != -1) {
-                    binding.viewPagerImages.setCurrentItem(index, true)
+            binding.recyclerThumbnails.layoutManager =
+                LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            binding.recyclerThumbnails.adapter =
+                ImageThumbnailAdapter(imageUrls) { selectedImageUrl ->
+                    val index = imageUrls.indexOf(selectedImageUrl)
+                    if (index != -1) {
+                        binding.viewPagerImages.setCurrentItem(index, true)
+                    }
                 }
-            }
 
         }
+    }
+
+    fun incrementQuantity() {
+        if (quantity < 10000) {
+            quantity++
+        }
+        binding.tvQuantity.text ="Qty : " +quantity
+
+    }
+
+    fun decrementQuantity() {
+        if (quantity > 1) {
+            quantity--
+        }
+        binding.tvQuantity.text ="Qty : " +quantity
+
     }
 }
