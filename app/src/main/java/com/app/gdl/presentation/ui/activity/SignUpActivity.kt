@@ -213,11 +213,21 @@ class SignUpActivity : AppCompatActivity() {
                             geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
                         if (!addressList.isNullOrEmpty()) {
                             val addr = addressList[0]
-                            finalAddress = addr.getAddressLine(0)
+//                            finalAddress = addr.getAddressLine(0)
+
+                            val featureName = addr.featureName ?: ""
+                            val fullAddress = addr.getAddressLine(0) ?: ""
+
+                            val cleanedAddress = if (fullAddress.startsWith(featureName)) {
+                                fullAddress.removePrefix(featureName).trimStart(',', ' ')
+                            } else {
+                                fullAddress
+                            }
                             val area = addr.subLocality
                             val city = addr.locality
                             val state = addr.adminArea
                             headingAddress = listOfNotNull(area, city, state).joinToString(", ")
+                            finalAddress = cleanedAddress
                         } else {
                             headingAddress = place.name ?: place.address
                         }
@@ -309,11 +319,20 @@ class SignUpActivity : AppCompatActivity() {
                 val address = geocoder.getFromLocation(lat, lng, 1)
                 if (!address.isNullOrEmpty()) {
                     val addr = address[0]
-                    finalAddress = addr.getAddressLine(0)
+//                    finalAddress = addr.getAddressLine(0)
+                    val featureName = addr.featureName ?: ""
+                    val fullAddress = addr.getAddressLine(0) ?: ""
+
+                    val cleanedAddress = if (fullAddress.startsWith(featureName)) {
+                        fullAddress.removePrefix(featureName).trimStart(',', ' ')
+                    } else {
+                        fullAddress
+                    }
                     val area = addr.subLocality
                     val city = addr.locality
                     val state = addr.adminArea
                     headingAddress = "$area, $city, $state"
+                    finalAddress = cleanedAddress
                 }
 
                 etStreetInBottomSheet?.setText(headingAddress + "\n" + finalAddress)
