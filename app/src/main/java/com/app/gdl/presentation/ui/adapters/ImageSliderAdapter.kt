@@ -9,7 +9,9 @@ import com.app.gdl.presentation.ui.activity.ImageViewerActivity
 import com.bumptech.glide.Glide
 
 class ImageSliderAdapter(
-    private val imageUrls: List<String>
+    private val imageUrls: List<String>,
+    private val openFullScreenOnClick: Boolean = true,
+    private val onImageClick: (() -> Unit)? = null
 ) : RecyclerView.Adapter<ImageSliderAdapter.SliderViewHolder>() {
 
     inner class SliderViewHolder(val imageView: ImageView) : RecyclerView.ViewHolder(imageView) {
@@ -21,12 +23,17 @@ class ImageSliderAdapter(
                 .into(imageView)
 
             imageView.setOnClickListener {
-                val context = imageView.context
-                val intent = Intent(context, ImageViewerActivity::class.java).apply {
-                    putStringArrayListExtra(ImageViewerActivity.EXTRA_IMAGES, ArrayList(imageUrls))
-                    putExtra(ImageViewerActivity.EXTRA_POSITION, bindingAdapterPosition)
+                if (openFullScreenOnClick){
+                    val context = imageView.context
+                    val intent = Intent(context, ImageViewerActivity::class.java).apply {
+                        putStringArrayListExtra(ImageViewerActivity.EXTRA_IMAGES, ArrayList(imageUrls))
+                        putExtra(ImageViewerActivity.EXTRA_POSITION, bindingAdapterPosition)
+                    }
+                    context.startActivity(intent)
+                }else {
+                    onImageClick?.invoke()
                 }
-                context.startActivity(intent)
+
             }
         }
     }
