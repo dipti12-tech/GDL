@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -21,75 +20,93 @@
             android:layout_height="120dp"
             android:scaleType="centerCrop"
             android:src="@drawable/pastpopularitem"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Points Text -->
         <TextView
             android:id="@+id/pointsText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:layout_marginStart="@dimen/padding_8dp"
+            android:layout_marginTop="4dp"
             android:padding="@dimen/padding_2dp"
             android:text="Earn 5 points"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="12sp"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/productImage"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/productImage" />
 
         <!-- Product Title -->
         <TextView
             android:id="@+id/productTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:layout_marginStart="@dimen/padding_8dp"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:lines="2"
+            android:maxLines="2"
             android:padding="@dimen/padding_2dp"
             android:text="Smoked Paprika Dulce Sweet"
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:maxLines="2"
-            android:lines="2"
-            android:ellipsize="end"
-            app:layout_constraintTop_toBottomOf="@id/pointsText"
+            android:textAppearance="@style/header_title"
+            android:textSize="@dimen/padding_default"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/pointsText" />
 
         <!-- Product Weight -->
         <TextView
             android:id="@+id/productWeight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:layout_marginStart="@dimen/padding_8dp"
+            android:layout_marginTop="2dp"
             android:padding="@dimen/padding_2dp"
             android:text="70g"
-            android:textColor="@android:color/darker_gray"
+            android:textAppearance="@style/textview"
             android:textSize="12sp"
-            app:layout_constraintTop_toBottomOf="@id/productTitle"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/productTitle" />
 
         <!-- Rating Stars -->
         <LinearLayout
             android:id="@+id/ratingLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:layout_marginStart="@dimen/padding_8dp"
-            android:padding="@dimen/padding_2dp"
+            android:layout_marginTop="4dp"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/productWeight"
-            app:layout_constraintStart_toStartOf="parent">
+            android:padding="@dimen/padding_2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/productWeight">
 
-            <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_star_filled"/>
-            <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_star_filled"/>
-            <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_star_filled"/>
-            <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_star_filled"/>
-            <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_star_filled"/>
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_star_filled" />
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_star_filled" />
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_star_filled" />
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_star_filled" />
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_star_filled" />
         </LinearLayout>
 
         <!-- Price Section -->
@@ -97,21 +114,22 @@
             android:id="@+id/priceLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
             android:layout_marginStart="@dimen/padding_8dp"
-            android:padding="@dimen/padding_2dp"
+            android:layout_marginTop="6dp"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/ratingLayout"
-            app:layout_constraintStart_toStartOf="parent">
+            android:padding="@dimen/padding_2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ratingLayout">
 
             <TextView
                 android:id="@+id/currentPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_yellow_rounded"
                 android:text="KES 200"
-                android:textColor="@android:color/holo_orange_dark"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/price_title"
+                android:textSize="16sp"
+                android:padding="@dimen/padding_6dp"/>
 
             <TextView
                 android:id="@+id/originalPrice"
@@ -119,8 +137,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="KES 250"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="12sp" />
+                android:textColor="#E11D48"
+                android:textSize="13sp" />
         </LinearLayout>
 
         <!-- Special Deal -->
@@ -128,33 +146,33 @@
             android:id="@+id/specialDeal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:layout_marginStart="@dimen/padding_default"
+            android:layout_marginTop="4dp"
             android:padding="@dimen/padding_2dp"
             android:text="3 for KES 500"
-            android:textColor="@android:color/black"
-            android:textSize="12sp"
-            app:layout_constraintTop_toBottomOf="@id/priceLayout"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textAppearance="@style/textview"
+            android:textColor="#52525B"
+            android:textSize="@dimen/textsize_12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/priceLayout" />
 
         <!-- Add to Cart Button -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/addToCartButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_8dp"
             android:layout_marginBottom="@dimen/padding_30dp"
             android:background="@drawable/rounded_btn_all"
             android:gravity="center"
-            android:text="Add to cart"
-            android:paddingEnd="@dimen/padding_30dp"
             android:paddingStart="@dimen/padding_30dp"
-            android:layout_margin="@dimen/padding_8dp"
+            android:paddingEnd="@dimen/padding_30dp"
+            android:text="Add to cart"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/textsize_14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/specialDeal"
- />
+            app:layout_constraintTop_toBottomOf="@id/specialDeal" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
