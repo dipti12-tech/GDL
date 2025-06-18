@@ -1,4 +1,33 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <solid android:color="@android:color/holo_blue_light"/>
-</shape>
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="@dimen/padding_24dp"
+    android:height="15dp"
+    android:viewportWidth="21"
+    android:viewportHeight="15">
+
+    <path
+        android:fillColor="#DBEAFE"
+        android:pathData="M0,6
+                          A6,6 0 0 1 6,0
+                          H15
+                          A6,6 0 0 1 21,6
+                          V9
+                          A6,6 0 0 1 15,15
+                          H6
+                          A6,6 0 0 1 0,9
+                          Z" />
+
+    <path
+        android:strokeColor="#BFDBFE"
+        android:strokeWidth="2"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M0,6
+                          A6,6 0 0 1 6,0
+                          H15
+                          A6,6 0 0 1 21,6
+                          V9
+                          A6,6 0 0 1 15,15
+                          H6
+                          A6,6 0 0 1 0,9
+                          Z" />
+</vector>

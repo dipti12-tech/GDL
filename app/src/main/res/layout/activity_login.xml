@@ -8,12 +8,11 @@
     <!-- Top Header Links -->
     <LinearLayout
         android:id="@+id/top_links"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding_30dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp"
-        android:layout_marginTop="@dimen/padding_default"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,35 +20,35 @@
         <!-- Home link -->
         <TextView
             android:id="@+id/tv_home"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
             android:drawableLeft="@drawable/ic_backarrow"
             android:drawablePadding="@dimen/padding_8dp"
+            android:fontFamily="@font/sourcesanregular"
             android:text="Home"
             android:textColor="#FFFFFF"
-            android:textSize="14sp"
+            android:textSize="@dimen/textsize_13sp"
             android:textStyle="bold" />
 
-
-        <!-- Lock Icon and Secure Text -->
+        <!-- Lock Icon -->
         <ImageView
             android:id="@+id/iv_lock"
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:layout_marginStart="100dp"
             android:layout_marginEnd="4dp"
             android:src="@drawable/ic_lock" />
 
+        <!-- Secure Text -->
         <TextView
             android:id="@+id/tv_secure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/sourcesanregular"
             android:text="glanisonline.com is secure"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_13sp" />
     </LinearLayout>
-
     <!-- Login CardView (centered) -->
     <androidx.cardview.widget.CardView
         android:id="@+id/card_login"
@@ -67,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="16dp">
 
             <!-- Title Text -->
             <TextView
@@ -75,11 +74,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp"
                 android:text="@string/signinacc"
-                android:textColor="#000000"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/header_title" />
 
 
             <TextView
@@ -87,22 +83,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="@dimen/padding_24dp"
                 android:text="@string/emailmobile"
-                android:textColor="#424242"
-                android:textSize="14sp" />
+                android:textAppearance="@style/textview" />
 
             <!-- Email/Mobile EditText -->
             <EditText
                 android:id="@+id/et_email_mobile"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edt_height"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/edittext_background"
                 android:hint="E-mail or Mobile no."
                 android:inputType="textEmailAddress"
-                android:padding="8dp"
-                android:textSize="@dimen/padding_default" />
+                android:textAppearance="@style/edittext" />
 
 
             <TextView
@@ -110,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="12dp"
                 android:text="@string/password"
                 android:textColor="#424242"
                 android:textSize="14sp" />
@@ -120,12 +115,12 @@
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edt_height"
-                android:layout_marginBottom="@dimen/padding_8dp"
-                android:background="@drawable/edittext_background"
+                android:layout_marginTop="@dimen/padding_8dp"
+                android:layout_marginBottom="12dp"
                 android:hint="Password"
-                android:inputType="textPassword"
-                android:padding="12dp"
-                android:textSize="@dimen/padding_default" />
+                android:background="@drawable/edittext_background"
+
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -139,7 +134,6 @@
                 android:id="@+id/btn_send_otp"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginBottom="16dp"
                 android:background="@drawable/rounded_btn_all"
                 android:text="Login with OTP"
                 android:textAllCaps="false"
@@ -150,12 +144,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                >
 
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/switch_remember"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/padding_60dp"
+                    android:layout_height="0dp"
                     android:text="" />
 
                 <TextView
@@ -164,14 +160,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/padding_8dp"
                     android:text="Keep me signed in on this device"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textAppearance="@style/price_title"
+                    android:textColor="#18181B"
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/padding_60dp"
+                android:textAppearance="@style/textview"
                 android:text="@string/werecommend">
 
             </TextView>
@@ -223,8 +221,7 @@
                     android:layout_gravity="center_horizontal"
                     android:padding="@dimen/padding_8dp"
                     android:text="Don't have an account?"
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:textAppearance="@style/textview" />
 
                 <TextView
                     android:id="@+id/tv_register_now"
@@ -236,9 +233,7 @@
                     android:gravity="center"
                     android:padding="@dimen/padding_6dp"
                     android:text="@string/register"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/textsize"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/price_title" />
             </LinearLayout>
 
         </LinearLayout>
@@ -308,7 +303,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
                 android:text="Privacy Policy"
-                android:textColor="#666666"
+                android:textColor="@color/bottom_text"
+                android:textAppearance="@style/textview"
                 android:textSize="@dimen/textsize_12sp" />
 
             <TextView
@@ -317,7 +313,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
                 android:text="@string/terms_conditions"
-                android:textColor="#666666"
+                android:textColor="@color/bottom_text"
+                android:textAppearance="@style/textview"
                 android:textSize="@dimen/textsize_12sp" />
 
             <TextView
@@ -325,8 +322,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Purchase Order Terms"
-                android:textColor="#666666"
-                android:textSize="@dimen/textsize_12sp" />
+                android:textAppearance="@style/textview"
+                android:textSize="@dimen/textsize_12sp"
+                android:textColor="@color/bottom_text"
+                />
         </LinearLayout>
 
         <!-- Store Directory Link -->
@@ -336,8 +335,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Store Directory"
-            android:textColor="#666666"
-            android:textSize="@dimen/textsize_12sp" />
+            android:textAppearance="@style/textview"
+            android:textSize="@dimen/textsize_12sp"
+            android:textColor="@color/bottom_text"
+            />
 
         <!-- Copyright Row -->
         <LinearLayout
@@ -354,7 +355,8 @@
                 android:layout_marginStart="@dimen/padding_default"
                 android:layout_weight="0.9"
                 android:text="@string/copyright"
-                android:textColor="#666666"
+                android:textAppearance="@style/textview"
+                android:textColor="@color/bottom_text"
                 android:textSize="12sp" />
 
             <!-- Some icons / logos -->

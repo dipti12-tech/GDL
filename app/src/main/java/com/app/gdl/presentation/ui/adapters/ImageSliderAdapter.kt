@@ -1,6 +1,7 @@
 package com.app.gdl.presentation.ui.adapters
 
 import android.content.Intent
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +27,7 @@ class ImageSliderAdapter(
                 if (openFullScreenOnClick){
                     val context = imageView.context
                     val intent = Intent(context, ImageViewerActivity::class.java).apply {
+                        Log.d("@@@@", "bind: "+imageUrls.toString())
                         putStringArrayListExtra(ImageViewerActivity.EXTRA_IMAGES, ArrayList(imageUrls))
                         putExtra(ImageViewerActivity.EXTRA_POSITION, bindingAdapterPosition)
                     }

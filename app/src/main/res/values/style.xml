@@ -48,4 +48,9 @@
         <item name="android:gravity">top</item>
         <item name="android:layout_marginTop">@dimen/padding_6dp</item>
     </style>
+    <!-- styles.xml -->
+    <style name="badge">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#1E40AF</item>
+    </style>
 </resources>

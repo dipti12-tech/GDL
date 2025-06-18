@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/customToolbar"
     android:layout_width="match_parent"
@@ -9,77 +9,64 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
-        <!-- Hamburger Menu Icon -->
-        <ImageButton
+        <!-- Hamburger Icon -->
+        <ImageView
             android:id="@+id/menuIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/baseline_dehaze_24"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="@dimen/padding_30dp"
+            android:layout_height="@dimen/padding_30dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@android:color/black" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-        <!-- App Title Image -->
+        <!-- App Title Logo (centered!) -->
         <ImageView
             android:id="@+id/appTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/padding_100dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="10dp"
             android:src="@drawable/appname_header"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/userIcon"
-            app:layout_constraintStart_toEndOf="@id/menuIcon"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <!-- User Icon -->
-        <ImageButton
+        <ImageView
             android:id="@+id/userIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/user"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/cartIcon"
+            android:layout_width="@dimen/padding_30dp"
+            android:layout_height="@dimen/padding_30dp"
+            app:layout_constraintStart_toEndOf="@id/appTitle"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/textheadline" />
+            app:layout_constraintBottom_toBottomOf="parent"
+       />
 
         <!-- Cart Icon -->
-        <ImageButton
+        <ImageView
             android:id="@+id/cartIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/shoppingcart"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="@dimen/padding_30dp"
+            android:layout_height="@dimen/padding_30dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/userIcon"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/textheadline" />
+            app:layout_constraintStart_toEndOf="@id/userIcon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="@dimen/padding_6dp" />
 
         <!-- Cart Badge -->
         <TextView
             android:id="@+id/cartBadge"
-            android:layout_width="@dimen/padding_24dp"
+            android:layout_width="@dimen/padding_30dp"
             android:layout_height="@dimen/padding_24dp"
-            android:layout_marginEnd="@dimen/padding_8dp"
-            android:background="@drawable/badge_background"
-            android:gravity="center"
             android:text="0"
-            android:textColor="@android:color/white"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="@dimen/padding_2dp"
+            android:background="@drawable/badge_background"
+            android:textAppearance="@style/badge"
+            app:layout_constraintTop_toTopOf="@id/cartIcon"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/cartIcon"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="@dimen/padding_2dp"
+            android:gravity="center" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.appcompat.widget.Toolbar>

@@ -3,6 +3,8 @@ activityKtx = "1.10.1"
 agp = "8.7.3"
 androidxFragmentKtx = "1.6.2"
 coil = "2.6.0"
+coilKtCoil = "2.4.0"
+coilVersion = "1.2.0"
 converterGson = "2.9.0"
 flexboxVersion = "3.0.0"
 fragmentKtx = "1.8.6"
@@ -47,8 +49,9 @@ androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomKtx" }
+coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coilKtCoil" }
+coil-v240 = { module = "io.coil-kt:coil", version.ref = "coilKtCoil" }
 github-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
-google-flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexboxVersion" }
 google-places = { module = "com.google.android.libraries.places:places", version.ref = "placesVersion" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidCompiler" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }

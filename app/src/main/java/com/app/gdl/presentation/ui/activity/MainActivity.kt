@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import coil.decode.SvgDecoder
+import coil.load
 import com.app.gdl.R
 import com.app.gdl.databinding.ActivityMainBinding
 import com.app.gdl.databinding.ToolbarHeaderBinding
@@ -29,6 +31,15 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbarBinding.customToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)  // since you use ImageView title
 
+        toolbarBinding.menuIcon.load("file:///android_asset/hamberger.svg") {
+            decoderFactory(SvgDecoder.Factory())
+        }
+        toolbarBinding.userIcon.load("file:///android_asset/user.svg") {
+            decoderFactory(SvgDecoder.Factory())
+        }
+        toolbarBinding.cartIcon.load("file:///android_asset/shoppingcart.svg") {
+            decoderFactory(SvgDecoder.Factory())
+        }
         // Menu icon opens/closes drawer
         toolbarBinding.menuIcon.setOnClickListener {
             if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -84,4 +95,6 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+
+
 }

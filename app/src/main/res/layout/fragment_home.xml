@@ -36,7 +36,7 @@
             android:background="@color/white"
             android:padding="12dp"
             android:text="Deliver to: Select Address"
-            android:textColor="@color/black"
+            android:textAppearance="@style/textview"
             android:textSize="14sp" />
 
         <LinearLayout
@@ -63,9 +63,7 @@
                 android:layout_marginStart="@dimen/padding_default"
                 android:layout_marginTop="24dp"
                 android:text="Quick Shop"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/header_title" />
 
             <LinearLayout
                 android:id="@+id/tabButtons"
@@ -84,7 +82,7 @@
                     android:background="@drawable/rounded_button_bg"
                     android:text="@string/popular_items"
                     android:textAllCaps="false"
-                    android:textColor="@color/black" />
+                    android:textAppearance="@style/textview" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/popularItemsBtn"
@@ -96,7 +94,7 @@
                     android:background="@drawable/rounded_button_bg"
                     android:text="@string/past_purchase"
                     android:textAllCaps="false"
-                    android:textColor="@color/black" />
+                    android:textAppearance="@style/textview"/>
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -117,7 +115,8 @@
                 android:background="@drawable/rounded_black_bg"
                 android:text="Shop all  >"
                 android:textAllCaps="false"
-                android:textColor="@color/white">
+                android:textAppearance="@style/textview"
+                android:textColor="#E0FFFFFF">
 
             </androidx.appcompat.widget.AppCompatButton>
 
@@ -128,11 +127,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_8dp"
-            android:fontFamily="@font/basic"
             android:text="@string/cateory"
-            android:textColor="@color/textheadline"
-            android:textSize="@dimen/textheadline"
-            android:textStyle="bold">
+            android:textAppearance="@style/header_title" >
 
         </TextView>
 
@@ -225,17 +221,19 @@
                     android:drawableLeft="@drawable/ic_createacc"
                     android:drawablePadding="@dimen/padding_8dp"
                     android:text="@string/ic_create"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    android:textAppearance="@style/textview"
+                    android:textColor="#FCFCFC"
+                    android:textSize="13sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/padding_8dp"
                     android:text="@string/signup"
+                    android:textAppearance="@style/textview"
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="13sp"
+                     />
             </LinearLayout>
 
             <LinearLayout
@@ -258,17 +256,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/gilanis"
-                        android:textColor="#000000"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textAppearance="@style/header_title" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/padding_8dp"
                         android:text="@string/download"
-                        android:textColor="#555555"
-                        android:textSize="14sp" />
+                        android:textAppearance="@style/textview" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -304,27 +299,29 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Help"
-                        android:textColor="#000000"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textAppearance="@style/header_title" />
+                    />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/padding_8dp"
-                        android:text="Customer service" />
+                        android:text="Customer service"
+                        android:textAppearance="@style/textview"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/padding_2dp"
-                        android:text="Delivery" />
+                        android:text="Delivery"
+                        android:textAppearance="@style/textview"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/padding_2dp"
-                        android:text="Answers" />
+                        android:text="Answers"
+                        android:textAppearance="@style/textview"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -337,33 +334,36 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Shop online"
-                        android:textColor="#000000"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textAppearance="@style/header_title" />
+                    />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/padding_4dp"
-                        android:text="My account" />
+                        android:text="My account"
+                        android:textAppearance="@style/textview"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/padding_2dp"
-                        android:text="My orders" />
+                        android:text="My orders"
+                        android:textAppearance="@style/textview"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/padding_2dp"
-                        android:text="Re-order" />
+                        android:text="Re-order"
+                        android:textAppearance="@style/textview"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/padding_2dp"
-                        android:text="Deals" />
+                        android:text="Deals"
+                        android:textAppearance="@style/textview"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -376,33 +376,36 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Connect"
-                        android:textColor="#000000"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textAppearance="@style/header_title" />
+                    />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/padding_4dp"
-                        android:text="Partner with us" />
+                        android:text="Partner with us"
+                        android:textAppearance="@style/textview"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/padding_2dp"
-                        android:text="Restaurants" />
+                        android:text="Restaurants"
+                        android:textAppearance="@style/textview"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/padding_2dp"
-                        android:text="Careers" />
+                        android:text="Careers"
+                        android:textAppearance="@style/textview"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/padding_2dp"
-                        android:text="Contact us" />
+                        android:text="Contact us"
+                        android:textAppearance="@style/textview"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -431,7 +434,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/padding_8dp"
-                        android:text="Phone">
+                        android:text="Phone"
+                        android:textAppearance="@style/textview">
 
                     </TextView>
 
@@ -444,7 +448,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Email">
+                        android:text="Email"
+                        android:textAppearance="@style/textview">
 
                     </TextView>
                 </LinearLayout>
@@ -479,7 +484,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/bg_grey"
+                android:background="#F2F2F2"
                 android:orientation="vertical"
                 android:weightSum="1">
 
@@ -496,7 +501,8 @@
                         android:layout_marginEnd="@dimen/padding_default"
                         android:text="@string/privacy_policy"
                         android:textColor="@color/bg_text"
-                        android:textSize="14sp" />
+                        android:textAppearance="@style/textview"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -504,14 +510,14 @@
                         android:layout_marginEnd="@dimen/padding_default"
                         android:text="@string/terms_conditions"
                         android:textColor="@color/bg_text"
-                        android:textSize="14sp" />
+                        android:textAppearance="@style/textview" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/purchase_order_terms"
                         android:textColor="@color/bg_text"
-                        android:textSize="14sp" />
+                        android:textAppearance="@style/textview" />
 
                 </LinearLayout>
 
@@ -528,7 +534,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/store_directory"
                         android:textColor="@color/bg_text"
-                        android:textSize="14sp" />
+                        android:textAppearance="@style/textview" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -547,8 +553,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/padding_8dp"
                     android:text="@string/copyright"
-                    android:textColor="#333"
-                    android:textSize="13sp" />
+                    android:textAppearance="@style/textview" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

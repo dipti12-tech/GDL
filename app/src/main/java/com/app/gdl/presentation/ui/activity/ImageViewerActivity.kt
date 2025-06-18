@@ -1,6 +1,7 @@
 package com.app.gdl.presentation.ui.activity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.gdl.databinding.ActivityImageViewerBinding
@@ -30,16 +31,13 @@ class ImageViewerActivity : AppCompatActivity() {
 
         binding.viewPager.adapter = adapter
         binding.viewPager.setCurrentItem(startPosition, false)
-
         binding.recyclerThumbnails.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerThumbnails.adapter = ImageFullThumbnailAdapter(images) { selectedImageUrl ->
-            val index = images.indexOf(selectedImageUrl)
+        binding.recyclerThumbnails.adapter = ImageFullThumbnailAdapter(images.filter { it.contains("_thumbnail") }) { selectedImageUrl ->
+            val index = images.filter { it.contains("_medium") }.indexOf(selectedImageUrl)
             if (index != -1) {
                 binding.viewPager.setCurrentItem(index, true)
             }
         }
-
-
     }
 }

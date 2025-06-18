@@ -93,4 +93,7 @@ dependencies {
     implementation(libs.google.maps)
     implementation(libs.play.services.location)
     implementation(libs.google.places)
+    implementation(libs.coil.v240)
+    implementation(libs.coil.svg)
+
 }
