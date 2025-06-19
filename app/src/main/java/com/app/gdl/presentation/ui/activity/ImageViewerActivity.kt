@@ -1,13 +1,13 @@
 package com.app.gdl.presentation.ui.activity
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.app.gdl.databinding.ActivityImageViewerBinding
 import com.app.gdl.presentation.ui.adapters.ImageFullThumbnailAdapter
 import com.app.gdl.presentation.ui.adapters.ImageSliderAdapter
-import com.app.gdl.presentation.ui.adapters.ImageThumbnailAdapter
 
 class ImageViewerActivity : AppCompatActivity() {
 
@@ -39,5 +39,17 @@ class ImageViewerActivity : AppCompatActivity() {
                 binding.viewPager.setCurrentItem(index, true)
             }
         }
+
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+
+                val recyclerView = binding.viewPager.getChildAt(0) as? RecyclerView
+                val viewHolder = recyclerView?.findViewHolderForAdapterPosition(position)
+                        as? ImageSliderAdapter.SliderViewHolder
+                viewHolder?.resetZoom()
+            }
+        })
+
     }
 }
