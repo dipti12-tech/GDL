@@ -146,6 +146,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupPickLocation() {
+        var isTextFromUser = true
         val bottomSheetView = layoutInflater.inflate(R.layout.layout_location_bottom_sheet, null)
         etSearch = bottomSheetView.findViewById(R.id.etSearchLocation)
         val bottomSheetDialog = BottomSheetDialog(requireContext())
@@ -200,9 +201,13 @@ class HomeFragment : Fragment() {
                         }
                     }
 
+                    isTextFromUser = false
                     etStreetInBottomSheet?.setText(finalAddress)
                     etSearch?.setText(finalAddress)
+                    etSearch?.clearFocus()
+                    isTextFromUser = true
                     rvSearchResults.visibility = View.GONE
+
 
                 }.addOnFailureListener {
                     Log.e("PlacesError", "Failed to fetch place details", it)
@@ -215,6 +220,7 @@ class HomeFragment : Fragment() {
 
             val etSearch = bottomSheetView.findViewById<EditText>(R.id.etSearchLocation)
             etSearch.addTextChangedListener {
+                if (!isTextFromUser) return@addTextChangedListener
                 val query = it.toString()
                 if (query.length > 2) {
                     val token = AutocompleteSessionToken.newInstance()
