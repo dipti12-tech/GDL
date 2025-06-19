@@ -184,6 +184,7 @@ class SignUpActivity : AppCompatActivity() {
         val bottomSheetDialog = BottomSheetDialog(this)
         bottomSheetDialog.setContentView(bottomSheetView)
         val etSearch = bottomSheetView.findViewById<EditText>(R.id.etSearchLocation)
+        var isTextFromUser = true
 
         binding.etAddress.setOnClickListener {
             if (!Places.isInitialized()) {
@@ -232,8 +233,11 @@ class SignUpActivity : AppCompatActivity() {
                             headingAddress = place.name ?: place.address
                         }
                     }
-
+                    isTextFromUser = false
                     etStreetInBottomSheet?.setText(headingAddress + "\n" + finalAddress)
+                    etSearch?.setText(finalAddress)
+                    etSearch?.clearFocus()
+                    isTextFromUser = true
                     rvSearchResults.visibility = View.GONE
 
                 }.addOnFailureListener {
@@ -246,6 +250,7 @@ class SignUpActivity : AppCompatActivity() {
             rvSearchResults.adapter = searchAdapter
 
             etSearch.addTextChangedListener {
+                if (!isTextFromUser) return@addTextChangedListener
                 val query = it.toString()
                 if (query.length > 2) {
                     val token = AutocompleteSessionToken.newInstance()
