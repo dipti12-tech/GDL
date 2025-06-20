@@ -2,10 +2,12 @@ package com.app.gdl.presentation.ui.adapters
 
 import android.content.Intent
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gdl.R
+import com.app.gdl.data.photosview.PhotoView
 import com.app.gdl.presentation.ui.activity.ImageViewerActivity
 import com.bumptech.glide.Glide
 
@@ -15,8 +17,10 @@ class ImageSliderAdapter(
     private val onImageClick: (() -> Unit)? = null
 ) : RecyclerView.Adapter<ImageSliderAdapter.SliderViewHolder>() {
 
-    inner class SliderViewHolder(val imageView: ImageView) : RecyclerView.ViewHolder(imageView) {
+    inner class SliderViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val imageView: PhotoView = itemView.findViewById(R.id.image_src)
         fun bind(url: String) {
+
             Glide.with(imageView.context)
                 .load(url)
                 .centerCrop()
@@ -38,17 +42,15 @@ class ImageSliderAdapter(
 
             }
         }
+        fun resetZoom() {
+            imageView.scale = 1.0f
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SliderViewHolder {
-        val imageView = ImageView(parent.context).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            scaleType = ImageView.ScaleType.CENTER_CROP
-        }
-        return SliderViewHolder(imageView)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.full_screen_layout, parent, false)
+        return SliderViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: SliderViewHolder, position: Int) {
