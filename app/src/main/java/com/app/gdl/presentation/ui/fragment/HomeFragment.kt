@@ -152,9 +152,9 @@ class HomeFragment : Fragment() {
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         bottomSheetDialog.setContentView(bottomSheetView)
         if(addressUser!=null) {
-            binding.deliveryLocation.text = "Delivery To : " + prefs.userAdrress
+            binding.deliveryLocation.text =  prefs.userAdrress
         }else{
-            binding.deliveryLocation.text = "Delivery To : " + "Select Address"
+            binding.deliveryLocation.text = "Select Address"
 
         }
         binding.deliveryLocation.setOnClickListener {

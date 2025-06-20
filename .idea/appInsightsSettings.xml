@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.app.gdl" />
+                  <option name="mobileSdkAppId" value="1:1034634809619:android:8168eb4d9eeed4e2714ae6" />
+                  <option name="projectId" value="gdl-cfa-android" />
+                  <option name="projectNumber" value="1034634809619" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

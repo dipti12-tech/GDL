@@ -9,25 +9,33 @@
         android:layout_width="@dimen/card_width170dp"
         android:layout_height="@dimen/card_height"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardElevation="8dp"
+        app:cardPreventCornerOverlap="false"
+        >
 
         <ImageView
             android:id="@+id/featureItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            android:src="@drawable/featureimage"></ImageView>
+            android:src="@drawable/featureimage"
+            >
 
+        </ImageView>
+        <!-- Overlay to darken the image -->
+        <View
+            android:id="@+id/overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#66000000" /> <!-- semi-transparent black -->
         <TextView
             android:id="@+id/featureName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_50dp"
             android:gravity="center"
-            android:shadowColor="#80000000"
-            android:shadowDx="0"
-            android:shadowDy="1"
-            android:shadowRadius="4"
+            android:maxLines="2"
             android:text="@string/fruit"
             android:textAppearance="@style/header_title"
             android:textColor="@color/white"
@@ -41,13 +49,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
-            android:background="#66000000"
             android:gravity="center"
             android:maxLines="2"
-            android:shadowColor="#80000000"
-            android:shadowDx="0"
-            android:shadowDy="1"
-            android:shadowRadius="4"
             android:text="@string/fruit_descrp"
             android:textAppearance="@style/textview"
             android:textColor="@color/white">

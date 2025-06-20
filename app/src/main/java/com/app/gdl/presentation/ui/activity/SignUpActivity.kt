@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.location.Geocoder
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.SpannableStringBuilder
@@ -40,6 +41,7 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -73,15 +75,28 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 101)
+        }
+
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            Log.d("FCM_TOKEN", "FCM Token: $token")
+        }
         askPermission()
         setupAddressChips(saveasAddress)
         setupPickLocation()
+
+        binding.btnSignIn.setOnClickListener {
+            intent = Intent(this, SignInActivity::class.java)
+            startActivity(intent)
+        }
         binding.etEmail.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 if (s?.length == 10) {
                     binding.etAddress.requestFocus()
                 }
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -92,6 +107,7 @@ class SignUpActivity : AppCompatActivity() {
                     binding.etFirstName.requestFocus()
                 }
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -121,9 +137,9 @@ class SignUpActivity : AppCompatActivity() {
                 val prefs = SharedPref(this)
                 intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("addressUser", binding.etAddress.text.toString())
-                prefs.userAdrress =  binding.etAddress.text.toString()
+                prefs.userAdrress = binding.etAddress.text.toString()
                 prefs.isLoggedIn = true
-                Log.d("TAG", "onCreate: "+prefs.isLoggedIn)
+                Log.d("TAG", "onCreate: " + prefs.isLoggedIn)
                 startActivity(intent)
                 finish()
             }.onFailure {
@@ -142,10 +158,12 @@ class SignUpActivity : AppCompatActivity() {
                 isCheckable = true
                 isClickable = true
                 isCheckedIconVisible = false
-                chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
+                chipBackgroundColor =
+                    ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
                 setTextColor(ContextCompat.getColor(context, R.color.black))
                 chipStrokeWidth = 2f
-                chipStrokeColor = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
+                chipStrokeColor =
+                    ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
                 layoutParams = ViewGroup.MarginLayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -154,15 +172,23 @@ class SignUpActivity : AppCompatActivity() {
 
             chip.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
-                    chip.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.bg_chips))
+                    chip.chipBackgroundColor =
+                        ColorStateList.valueOf(ContextCompat.getColor(this, R.color.bg_chips))
                     chip.setTextColor(ContextCompat.getColor(this, R.color.white))
                     chip.chipStrokeWidth = 2f
-                    chip.chipStrokeColor = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.bg_createaccount))
+                    chip.chipStrokeColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.bg_createaccount
+                        )
+                    )
                 } else {
-                    chip.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
+                    chip.chipBackgroundColor =
+                        ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
                     chip.setTextColor(ContextCompat.getColor(this, R.color.black))
                     chip.chipStrokeWidth = 2f
-                    chip.chipStrokeColor = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+                    chip.chipStrokeColor =
+                        ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
                 }
             }
 

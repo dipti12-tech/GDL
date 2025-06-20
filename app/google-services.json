@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1034634809619",
+    "project_id": "gdl-cfa-android",
+    "storage_bucket": "gdl-cfa-android.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034634809619:android:8168eb4d9eeed4e2714ae6",
+        "android_client_info": {
+          "package_name": "com.app.gdl"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoLNZvuKwPMQgA3UpNX00StYH7kJIoEdg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

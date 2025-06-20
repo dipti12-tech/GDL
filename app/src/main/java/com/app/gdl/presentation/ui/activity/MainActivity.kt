@@ -25,11 +25,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val prefs = SharedPref(this)
 
-         address =intent.getStringExtra("addressUser").toString()
+        address = intent.getStringExtra("addressUser").toString()
         // Set Toolbar
         toolbarBinding = binding.toolbarHeader
         setSupportActionBar(toolbarBinding.customToolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)  // since you use ImageView title
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         toolbarBinding.menuIcon.load("file:///android_asset/hamberger.svg") {
             decoderFactory(SvgDecoder.Factory())
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.nav_logout -> {
                     prefs.isLoggedIn = false
-                    intent = Intent(this,SignInActivity::class.java)
+                    intent = Intent(this, SignInActivity::class.java)
                     startActivity(intent)
                     true
                 }
@@ -95,6 +95,4 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
-
-
 }

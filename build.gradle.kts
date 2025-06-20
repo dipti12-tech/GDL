@@ -5,4 +5,5 @@ plugins {
     alias(libs.plugins.ksp.android) apply false
     alias(libs.plugins.hilt.android) version "2.50" apply false
     alias(libs.plugins.map.secret) apply false
+    alias(libs.plugins.google.services) version "4.4.2" apply false
 }

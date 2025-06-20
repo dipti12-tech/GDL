@@ -27,6 +27,7 @@
             android:drawablePadding="@dimen/padding_8dp"
             android:fontFamily="@font/sourcesanregular"
             android:text="Home"
+            android:layout_weight="1"
             android:textColor="#FFFFFF"
             android:textSize="@dimen/textsize_13sp"
             android:textStyle="bold" />
@@ -44,6 +45,7 @@
             android:id="@+id/tv_secure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:fontFamily="@font/sourcesanregular"
             android:text="glanisonline.com is secure"
             android:textColor="@color/white"
@@ -118,6 +120,7 @@
                 android:layout_marginTop="@dimen/padding_8dp"
                 android:layout_marginBottom="12dp"
                 android:hint="Password"
+                android:textAppearance="@style/edittext"
                 android:background="@drawable/edittext_background"
 
                 />

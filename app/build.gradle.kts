@@ -3,7 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp.android)
     alias(libs.plugins.hilt.android)
-    alias(libs.plugins.map.secret)}
+    alias(libs.plugins.map.secret)
+    alias(libs.plugins.google.services)
+}
 
 
 android {
@@ -65,9 +67,9 @@ dependencies {
     implementation (libs.kotlinx.coroutines.core)
     implementation (libs.kotlinx.coroutines.android)
     implementation (platform(libs.firebase.bom))
+    implementation (libs.firebase.messaging.ktx)
     implementation (libs.firebase.analytics.ktx)
     implementation (libs.firebase.auth.ktx)
-    implementation (libs.firebase.firestore.ktx)
     implementation (libs.androidx.fragment.ktx)
     implementation (libs.navigation.fragment.ktx)
     implementation (libs.androidx.navigation.ui.ktx)
@@ -95,5 +97,6 @@ dependencies {
     implementation(libs.google.places)
     implementation(libs.coil.v240)
     implementation(libs.coil.svg)
+
 
 }

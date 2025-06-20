@@ -537,7 +537,6 @@
                             android:paddingRight="16dp"
                             android:layout_margin="@dimen/padding_6dp"
                             android:text="Sign in"
-
                             android:fontFamily="@font/sourceanssemibold"
                             android:textAllCaps="false"
                             android:textColor="#000000"

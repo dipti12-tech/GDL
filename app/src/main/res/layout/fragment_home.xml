@@ -27,17 +27,53 @@
             android:paddingRight="@dimen/padding_8dp"
             android:textSize="14sp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#C4C4C4"
+            android:layout_marginTop="@dimen/padding_8dp">
+
+        </View>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_30dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_gravity="center"
+        >
+
         <TextView
-            android:id="@+id/deliveryLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/padding_8dp"
             android:layout_marginTop="12dp"
-            android:background="@color/white"
-            android:padding="12dp"
-            android:text="Deliver to: Select Address"
+            android:text="Deliver to:"
             android:textAppearance="@style/textview"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:layout_weight="0.80"
+            />
+        <TextView
+            android:id="@+id/deliveryLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Select Address"
+            android:textAppearance="@style/textview"
+            android:textSize="14sp"
+            android:textColor="#3B82F6"
+            android:layout_weight="0.20"
+            />
+
+    </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#C4C4C4"
+            android:layout_marginTop="@dimen/padding_8dp">
+            >
+
+        </View>
 
         <LinearLayout
             android:layout_width="match_parent"
