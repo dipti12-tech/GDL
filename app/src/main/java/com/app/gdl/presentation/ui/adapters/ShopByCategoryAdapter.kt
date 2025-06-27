@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gdl.data.model.Category
 import com.app.gdl.databinding.RowShopbycategorylistBinding
-import com.app.gdl.presentation.ui.activity.ProductByCategoryActivity
+import com.app.gdl.presentation.ui.adapters.FeatureAdapter.OnProductClickListener
 import com.bumptech.glide.Glide
 
-class ShopByCategoryAdapter :
+class ShopByCategoryAdapter (private val listener: OnProductClickListener
+):
     RecyclerView.Adapter<ShopByCategoryAdapter.ViewHolder>() {
 
     private var categoryList = listOf<Category>()
@@ -36,10 +37,12 @@ class ShopByCategoryAdapter :
                 .load(category.category_img_path)
                 .into(categoryImageView)
             categoryImageView.setOnClickListener {
-                val intent = Intent(root.context, ProductByCategoryActivity::class.java)
+              /*  val intent = Intent(root.context, ProductByCategoryActivity::class.java)
                 intent.putExtra("categoryId", category.cat_id.toString())
                 intent.putExtra("categoryName", category.category_name)
-                root.context.startActivity(intent)
+                root.context.startActivity(intent)*/
+                listener.onProductClicked(category.cat_id.toString(), category.category_name)
+
             }
         }
     }

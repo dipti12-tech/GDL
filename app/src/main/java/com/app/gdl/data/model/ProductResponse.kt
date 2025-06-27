@@ -14,7 +14,9 @@ data class ProductItem(
     val CustomCategory: ValueWrapper<String>,
     val CustomDescription: ValueWrapper<String>,
     val CustomName: ValueWrapper<String>,
-    val CustomSubCategory: ValueWrapper<String>
+    val CustomSubCategory: ValueWrapper<String>,
+    val item_price: Double
+
 )
 data class ValueWrapper<T>(
     val value: T

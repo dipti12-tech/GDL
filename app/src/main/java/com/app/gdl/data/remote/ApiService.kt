@@ -5,6 +5,7 @@ import com.app.gdl.data.model.CategoryResponse
 import com.app.gdl.data.model.GetPopularCategoryResponse
 import com.app.gdl.data.model.LoginRequest
 import com.app.gdl.data.model.LoginResponse
+import com.app.gdl.data.model.PriceResponse
 import com.app.gdl.data.model.ProductResponse
 import com.app.gdl.data.model.SignupRequest
 import com.app.gdl.data.model.SignupResponse
@@ -45,5 +46,7 @@ interface ApiService {
     @GET("get_popular_products/")
     suspend fun getPopularProducts(): ProductResponse
 
+    @GET("get_default_prices/{price_class}")
+    suspend fun getDefaultPrices(@Path("price_class") priceclass:String): PriceResponse
 }
 

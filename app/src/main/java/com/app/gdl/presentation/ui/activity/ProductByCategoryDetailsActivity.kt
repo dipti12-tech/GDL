@@ -69,7 +69,7 @@ class ProductByCategoryDetailsActivity : AppCompatActivity() {
     }
 
     fun incrementQuantity() {
-        if (quantity < 10000) {
+        if (quantity < 1000) {
             quantity++
         }
         binding.tvQuantity.text ="Qty : " +quantity

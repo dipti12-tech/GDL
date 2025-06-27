@@ -4,6 +4,7 @@ import android.content.Context
 import com.app.gdl.data.remote.ApiService
 import com.app.gdl.data.repository.AllCategoryRepositoryImp
 import com.app.gdl.data.repository.CategoryRepositoryImp
+import com.app.gdl.data.repository.DefaultPricesImp
 import com.app.gdl.data.repository.GetPastPopularCategoryImp
 import com.app.gdl.data.repository.LoginRepositoryImpl
 import com.app.gdl.data.repository.PopularItemRepositoryImp
@@ -13,6 +14,7 @@ import com.app.gdl.data.repository.SignupRepositoryImpl
 import com.app.gdl.data.repository.SubCategoryRepositoryImp
 import com.app.gdl.domain.repository.AllCategoryRepository
 import com.app.gdl.domain.repository.CategoryRepository
+import com.app.gdl.domain.repository.DefaultPriceRepository
 import com.app.gdl.domain.repository.GetPopularCategoryRepository
 import com.app.gdl.domain.repository.LoginRepository
 import com.app.gdl.domain.repository.PopularItemRepository
@@ -111,5 +113,11 @@ object AppModule {
         return  PopularItemRepositoryImp(apiService)
     }
 
-
+    @Provides
+    @Singleton
+    fun provideDefaultPriceRepository(
+        apiService: ApiService
+    ): DefaultPriceRepository{
+        return  DefaultPricesImp(apiService)
+    }
 }

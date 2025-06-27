@@ -1,3 +1,4 @@
+/*
 package com.app.gdl.presentation.ui.activity
 
 import android.os.Bundle
@@ -97,3 +98,4 @@ class ProductByCategoryActivity : AppCompatActivity() {
     }
 }
 
+*/

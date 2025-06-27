@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
 
-        <EditText
+     <!--   <EditText
             android:id="@+id/searchField"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -36,7 +36,7 @@
         </View>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/padding_30dp"
+        android:layout_height="@dimen/padding_40dp"
         android:background="@color/white"
         android:orientation="horizontal"
         android:weightSum="1"
@@ -70,10 +70,9 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#C4C4C4"
-            android:layout_marginTop="@dimen/padding_8dp">
             >
 
-        </View>
+        </View>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,7 +86,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/card_height"
                 android:layout_marginTop="@dimen/padding_8dp"
-                android:layout_marginStart="@dimen/padding_8dp"
+                android:layout_marginLeft="@dimen/padding_8dp"
+                android:layout_marginRight="@dimen/padding_8dp"
                 android:orientation="horizontal"
                 android:visibility="visible"
                 tools:listitem="@layout/row_featurelist" />
@@ -118,6 +118,7 @@
                     android:background="@drawable/rounded_button_bg"
                     android:text="@string/popular_items"
                     android:textAllCaps="false"
+
                     android:textAppearance="@style/textview" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -138,7 +139,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_default"
-                android:layout_marginStart="@dimen/padding_8dp"
+                android:layout_marginLeft="@dimen/padding_8dp"
+                android:layout_marginRight="@dimen/padding_8dp"
                 android:nestedScrollingEnabled="false"
                 android:scrollbars="vertical" />
 
@@ -172,9 +174,10 @@
             android:id="@+id/categoryRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/padding_8dp"
             android:layout_marginTop="@dimen/padding_default"
             android:layout_weight="1"
+            android:layout_marginLeft="@dimen/padding_8dp"
+            android:layout_marginRight="@dimen/padding_8dp"
             android:nestedScrollingEnabled="false"
             android:scrollbars="vertical" />
 
@@ -223,7 +226,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_default"
             android:nestedScrollingEnabled="false"
-            android:scrollbars="vertical" />
+            android:scrollbars="vertical"
+            android:layout_marginLeft="@dimen/padding_8dp"
+            android:layout_marginRight="@dimen/padding_8dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/bannerAdsRecyclerView"
@@ -231,7 +236,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_default"
             android:nestedScrollingEnabled="false"
-            android:scrollbars="vertical" />
+            android:scrollbars="vertical"
+            android:layout_marginLeft="@dimen/padding_8dp"
+            android:layout_marginRight="@dimen/padding_8dp"/>
 
 
 
@@ -302,9 +309,8 @@
                         android:textAppearance="@style/textview" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="@dimen/padding_8dp"
+                        android:layout_width="200dp"
+                        android:layout_height="100dp"
                         android:src="@drawable/ic_google_play" />
                 </LinearLayout>
 

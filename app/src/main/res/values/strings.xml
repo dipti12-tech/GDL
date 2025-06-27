@@ -39,5 +39,10 @@
     <string name="bycreating">By creating a Gilian\'s account, you are agreeing to our terms and conditions (opens in new window). Read our privacy policy (opens in new window) to know how we collect and use your personal data.</string>
     <string name="asterisk">*</string>
     <string name="reviews">Reviews</string>
+    <string-array name="uom_options">
+        <item>Carton</item>
+        <item>Bale</item>
+        <item>6 PCS</item>
+    </string-array>
 
 </resources>

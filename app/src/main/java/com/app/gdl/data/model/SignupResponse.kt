@@ -11,6 +11,7 @@ data class SignupRequest(
     val email_id: String,
     val phone: String,
     val password: String,
+    val fcm_token: String,
     val address: List<Address>
 )
 

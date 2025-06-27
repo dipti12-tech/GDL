@@ -7,18 +7,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gdl.data.model.Category
+import com.app.gdl.data.model.PriceResponse
 import com.app.gdl.databinding.RowPoupularcategoriesBinding
-import com.app.gdl.presentation.ui.activity.ProductByCategoryActivity
+import com.app.gdl.presentation.ui.adapters.FeatureAdapter.OnProductClickListener
+import com.app.gdl.presentation.viewmodel.DefaultPriceViewModel
 import com.app.gdl.presentation.viewmodel.ProductViewModel
+
 
 class PopularCategoryAdapter(
     private val lifecycleOwner: LifecycleOwner,
-    private val productViewModel: ProductViewModel
-) : RecyclerView.Adapter<PopularCategoryAdapter.ViewHolder>() {
+    private val productViewModel: ProductViewModel,
+    private val listener: OnProductClickListener,
+    private val productlistener: ProductAdapter.OnProductListener,
+    private val addToCartListener : ProductAdapter.AddToCartListener
+
+    ) : RecyclerView.Adapter<PopularCategoryAdapter.ViewHolder>() {
 
     private var categoryList = listOf<Category>()
     private val pageSize = 3
@@ -55,17 +63,19 @@ class PopularCategoryAdapter(
         with(holder.binding) {
             categoryTitle.text = category.category_name
             popularRecyclerView.layoutManager = GridLayoutManager(context, 2)
-            val adapter = ProductAdapter()
+            val adapter = ProductAdapter(productlistener,addToCartListener)
             popularRecyclerView.adapter = adapter
 
             // Load products for this specific category and page
             loadProductsForCategory(catId, currentPage, adapter,btnShopall)
 
             btnShopall.setOnClickListener {
-                val intent = Intent(root.context, ProductByCategoryActivity::class.java)
+              /*  val intent = Intent(root.context, ProductByCategoryActivity::class.java)
                 intent.putExtra("categoryId", catId)
                 intent.putExtra("categoryName", category.category_name)
-                root.context.startActivity(intent)
+                root.context.startActivity(intent)*/
+                listener.onProductClicked(category.cat_id.toString(), category.category_name)
+
             }
 
             btnLeft.setOnClickListener {
@@ -107,6 +117,7 @@ class PopularCategoryAdapter(
         }
 
         productViewModel.fetchProducts(categoryId)
+
     }
 
     override fun getItemCount(): Int = categoryList.size

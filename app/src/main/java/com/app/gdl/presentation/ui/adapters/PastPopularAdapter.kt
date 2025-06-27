@@ -1,13 +1,17 @@
 package com.app.gdl.presentation.ui.adapters
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.app.gdl.R
 import com.app.gdl.data.model.Category
 import com.app.gdl.databinding.RowPastpopularlistBinding
 import com.app.gdl.presentation.ui.activity.ProductByCategoryDetailsActivity
 import com.app.gdl.presentation.ui.activity.ShoppingCartActivity
+import com.app.gdl.presentation.ui.fragment.ProductByCategoryDetailsFragment
 import com.bumptech.glide.Glide
 
 
@@ -41,12 +45,28 @@ class PastPopularAdapter :
                 .into(productImage)
 
             addToCartButton.setOnClickListener {
-                val intent = Intent(root.context, ShoppingCartActivity::class.java)
-                root.context.startActivity(intent)
+              /*  val intent = Intent(root.context, ShoppingCartActivity::class.java)
+                root.context.startActivity(intent)*/
+
+               // addtocartlistener.addToCartClicked()
+
+
+
             }
             constraintDetails.setOnClickListener {
-                val intent = Intent(root.context, ProductByCategoryDetailsActivity::class.java)
-               root.context.startActivity(intent)
+               /* val intent = Intent(root.context, ProductByCategoryDetailsActivity::class.java)
+               root.context.startActivity(intent)*/
+                /*val fragment = ProductByCategoryDetailsFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("inventory_id", product.InventoryID.value)
+                    }
+                }
+
+                parentFragment.requireActivity()
+                    .supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_content, fragment)
+                    .addToBackStack(null)
+                    .commit()*/
             }
         }
     }

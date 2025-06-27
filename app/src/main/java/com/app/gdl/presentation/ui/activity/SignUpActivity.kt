@@ -58,7 +58,9 @@ class SignUpActivity : AppCompatActivity() {
     private var headingAddress: String? = null
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
-
+    private var fcm_token: String = ""
+    private var default:Int =0
+    lateinit var prefs :SharedPref
     private val mapResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
@@ -74,6 +76,7 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+         prefs = SharedPref(this)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 101)
@@ -81,6 +84,7 @@ class SignUpActivity : AppCompatActivity() {
 
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
             Log.d("FCM_TOKEN", "FCM Token: $token")
+            fcm_token= token
         }
         askPermission()
         setupAddressChips(saveasAddress)
@@ -89,6 +93,7 @@ class SignUpActivity : AppCompatActivity() {
         binding.btnSignIn.setOnClickListener {
             intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
+            finish()
         }
         binding.etEmail.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -113,31 +118,44 @@ class SignUpActivity : AppCompatActivity() {
         })
 
         binding.btnCreateAccount.setOnClickListener {
+            if(addressType == "Home"){
+                default= 1
+            }else{
+                default =0
+            }
             val request = SignupRequest(
                 first_name = binding.etFirstName.text.toString(),
                 last_name = binding.etLastName.text.toString(),
                 email_id = binding.etEmail.text.toString(),
                 phone = binding.etEmail.text.toString(),
                 password = binding.etPassword.text.toString(),
+                fcm_token,
                 address = listOf(
                     Address(
                         addressType,
                         binding.etAddress.text.toString(),
                         listOf(latitude, longitude),
-                        1
+                        default
                     )
                     //  Address("office", "Colaba, Mumbai", listOf(18.900117, 72.805541), 0)
                 )
             )
+            Log.d("requestFCM", "onCreate: "+request)
             signupViewModel.signup(request)
         }
         signupViewModel.signupResult.observe(this) { result ->
             result.onSuccess {
                 Toast.makeText(this, "Signup Successfully", Toast.LENGTH_LONG).show()
-                val prefs = SharedPref(this)
                 intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("addressUser", binding.etAddress.text.toString())
+             /*   intent.putExtra("name", binding.etFirstName.text.toString()+" "+binding.etLastName.toString())
+                intent.putExtra("mobileoremail", binding.etEmail.text.toString())
+*/
                 prefs.userAdrress = binding.etAddress.text.toString()
+                prefs.name = binding.etFirstName.text.toString()+" "+binding.etLastName.text.toString()
+                prefs.mobile =  binding.etEmail.text.toString()
+                Log.d("TAG", "onCreate: " +"Name"+ prefs.name+"Mobile"+prefs.mobile+"Address"+prefs.userAdrress)
+
                 prefs.isLoggedIn = true
                 Log.d("TAG", "onCreate: " + prefs.isLoggedIn)
                 startActivity(intent)

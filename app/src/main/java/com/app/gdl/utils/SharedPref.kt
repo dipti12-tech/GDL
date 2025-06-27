@@ -50,6 +50,8 @@ class SharedPref :SharedPreferences {
 }*/
 
 import android.content.Context
+import com.app.gdl.data.model.User
+import com.google.gson.Gson
 
 class SharedPref(context: Context) {
 
@@ -57,6 +59,9 @@ class SharedPref(context: Context) {
         private const val PREF_NAME = "UserSession"
         private const val KEY_IS_LOGGED_IN = "isLoggedIn"
         private const val KEY_USER_ADDRESS = "userAdrress"
+        private const val KEY_USER_NAME = "userName"
+        private const val KEY_USER_MOBILE = "userMobile"
+
     }
 
     private val sharedPref: SharedPreferences =
@@ -69,6 +74,29 @@ class SharedPref(context: Context) {
     var userAdrress: String?
         get() = sharedPref.getString(KEY_USER_ADDRESS, null)
         set(value) = sharedPref.edit().putString(KEY_USER_ADDRESS, value).apply()
+
+    var name: String?
+        get() = sharedPref.getString(KEY_USER_NAME, null)
+        set(value) = sharedPref.edit().putString(KEY_USER_NAME, value).apply()
+
+    var mobile: String?
+        get() = sharedPref.getString(KEY_USER_MOBILE, null)
+        set(value) = sharedPref.edit().putString(KEY_USER_MOBILE, value).apply()
+
+    fun saveCustomerToPrefs(context: Context, customer: User) {
+        val editor = sharedPref.edit()
+        val gson = Gson()
+        val json = gson.toJson(customer)
+        editor.putString("customer_data", json)
+        editor.apply()
+    }
+    fun getCustomerFromPrefs(context: Context): User? {
+        val json = sharedPref.getString("customer_data", null)
+        return if (json != null) {
+            Gson().fromJson(json, User::class.java)
+        } else null
+    }
+
 
     fun clearSession() {
         sharedPref.edit().clear().apply()

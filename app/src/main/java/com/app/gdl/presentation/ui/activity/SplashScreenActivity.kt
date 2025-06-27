@@ -26,7 +26,9 @@ class SplashScreenActivity : AppCompatActivity() {
             } else {
                 startActivity(Intent(this, SignUpActivity::class.java))
             }
+            //for default user
+          //  startActivity(Intent(this, MainActivity::class.java))
             finish()
-        }, 500) // 1.5 second delay
+        }, 500)
     }
 }

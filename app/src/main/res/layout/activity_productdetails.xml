@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_24dp"
         android:orientation="vertical"
-        android:padding="16dp">
+      >
 
         <!-- Title and Weight -->
         <TextView
@@ -18,13 +18,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
+            android:layout_marginLeft="@dimen/padding_default"
             android:textAppearance="@style/header_title" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPagerImages"
             android:layout_width="match_parent"
             android:layout_height="220dp"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="@dimen/padding_default"
+            android:layout_marginRight="@dimen/padding_default"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerThumbnails"
@@ -34,7 +37,17 @@
             android:orientation="horizontal"
             android:overScrollMode="never"
             android:paddingEnd="8dp"
-            android:scrollbars="none" />
+            android:scrollbars="none"
+            android:layout_marginLeft="@dimen/padding_default"
+            android:layout_marginRight="@dimen/padding_default"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminate="true"
+            />
 
         <!-- Rating & Reviews -->
         <LinearLayout
@@ -42,7 +55,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/padding_default"
+            android:layout_marginRight="@dimen/padding_default">
 
             <RatingBar
                 style="?android:attr/ratingBarStyleSmall"
@@ -70,12 +85,23 @@
                 android:textColor="@color/blue" />
         </LinearLayout>
 
-        <!-- Price Options -->
-        <LinearLayout
+        <!--// Price Options -->
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/recycleview_UOM"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="@dimen/padding_default"
+            android:layout_marginRight="@dimen/padding_default">
+
+        </androidx.recyclerview.widget.RecyclerView>
+      <!--  <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/padding_default"
+            android:layout_marginRight="@dimen/padding_default">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -85,18 +111,21 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-                <!-- 1–24 pieces -->
+                &lt;!&ndash; 1–24 pieces &ndash;&gt;
                 <LinearLayout
+                    android:id="@+id/ll_peices"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:visibility="visible"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/pieces"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:text="1–24 pieces"
+                        android:text=""
                         android:textAppearance="@style/price_title" />
 
                     <LinearLayout
@@ -105,13 +134,14 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/txt_picesprice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:background="@drawable/bg_yellow_rounded"
                             android:paddingHorizontal="12dp"
                             android:paddingVertical="6dp"
-                            android:text="KES 200"
+                            android:text=""
                             android:textAppearance="@style/price_title"
                             android:textSize="@dimen/textsize_18sp" />
 
@@ -119,23 +149,27 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="KES 250"
+                            android:visibility="gone"
                             android:textColor="#E11D48"
                             android:textSize="13sp" />
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- 1 Carton -->
+                &lt;!&ndash; 1 Carton &ndash;&gt;
                 <LinearLayout
+                    android:id="@+id/ll_carton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:visibility="visible"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/txt_carton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:text="1 Carton"
+                        android:text=""
                         android:textAppearance="@style/price_title" />
 
                     <LinearLayout
@@ -144,13 +178,14 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/cartonprice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:background="@drawable/bg_yellow_rounded"
                             android:paddingHorizontal="12dp"
                             android:paddingVertical="6dp"
-                            android:text="KES 190"
+                            android:text=""
                             android:textAppearance="@style/price_title"
                             android:textSize="@dimen/textsize_18sp" />
 
@@ -158,23 +193,28 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="KES 250"
+                            android:visibility="gone"
                             android:textColor="#E11D48"
                             android:textSize="13sp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Row 2: 1 Bale -->
+            &lt;!&ndash; Row 2: 1 Bale &ndash;&gt;
             <LinearLayout
+                android:id="@+id/ll_bale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible"
+                >
 
                 <TextView
+                    android:id="@+id/txt_bale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:text="1 Bale"
+                    android:text=""
                     android:textAppearance="@style/price_title" />
 
                 <LinearLayout
@@ -183,13 +223,14 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/baleprice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/bg_yellow_rounded"
                         android:paddingHorizontal="12dp"
                         android:paddingVertical="6dp"
-                        android:text="KES 180"
+                        android:text=""
                         android:textAppearance="@style/price_title"
                         android:textSize="@dimen/textsize_18sp" />
 
@@ -197,11 +238,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="KES 250"
+                        android:visibility="gone"
                         android:textColor="#E11D48"
                         android:textSize="13sp" />
+
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </LinearLayout>-->
 
         <!--  &lt;!&ndash; Options Section &ndash;&gt;
           <TextView
@@ -282,11 +325,56 @@
 
                 </LinearLayout>
         -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:gravity="center_vertical"
+            android:background="#F0EBDD"
+            android:layout_marginLeft="@dimen/padding_default"
+            android:layout_marginRight="@dimen/padding_default">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Size"
+                android:textAppearance="@style/header_title"
+                android:textSize="14sp"
+                android:layout_marginEnd="8dp" />
+
+            <Spinner
+                android:id="@+id/spinnerSize"
+                android:layout_width="150dp"
+                android:layout_height="36dp"
+                android:popupBackground="#FFFFFF"
+                android:spinnerMode="dropdown"
+                android:dropDownWidth="match_parent"
+                android:backgroundTint="@color/textview"
+                android:layout_marginLeft="@dimen/padding_default"
+                />
+        </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quantity"
+                android:textAppearance="@style/header_title"
+                android:textSize="14sp"
+                android:paddingLeft="@dimen/padding_8dp"
+                android:background="#F0EBDD"
+                android:layout_marginRight="@dimen/padding_default"
+                android:layout_marginLeft="@dimen/padding_default"
+                 />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:background="#F0EBDD"
+            android:layout_marginLeft="@dimen/padding_default"
+            android:layout_marginRight="@dimen/padding_default">
 
             <!-- Quantity Selector -->
             <LinearLayout
@@ -310,11 +398,11 @@
                     android:id="@+id/tvQuantity"
                     android:layout_width="200dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/blue_square_bg"
+                    android:background="@drawable/white_square_bg"
                     android:gravity="center"
-                    android:text="Qty : 1"
-                    android:textColor="#71717A"
-                    android:textSize="@dimen/textsize_14sp" />
+                    android:text="1"
+                    android:textAppearance="@style/header_title"
+                    android:textSize="@dimen/textsize_14sp"/>
 
                 <ImageView
                     android:id="@+id/btnPlus"
@@ -344,6 +432,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_default"
                 android:text="Shipping"
+                android:visibility="gone"
                 android:textAppearance="@style/price_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -357,6 +446,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Shipping fee: KES 20 for 1 carton"
                 android:textSize="14sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvShipping" />
@@ -368,6 +458,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Ships from: Sigona"
                 android:textSize="14sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvShippingFee" />
@@ -379,6 +470,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Delivery by: June 7, 2025"
                 android:textSize="14sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvShipsFrom" />
@@ -392,6 +484,7 @@
                 android:background="@drawable/edittext_background"
                 android:hint="Add to shopping list"
                 android:padding="8dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvDeliveryDate" />
@@ -403,8 +496,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="Description"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:textAppearance="@style/header_title"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/etAddToList" />
 
@@ -428,6 +521,7 @@
                 android:text="Reviews"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvDescription" />
 
@@ -438,6 +532,7 @@
                 android:layout_marginTop="8dp"
                 android:text="4.6 ★★★★★ (1,649 reviews)"
                 android:textSize="14sp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvReviews" />
 
@@ -451,11 +546,408 @@
                 android:text="Write review"
                 android:textAllCaps="false"
                 android:textSize="@dimen/textsize_14sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/tvRating"
                 app:layout_constraintTop_toBottomOf="@id/tvReviews" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bannerAdsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_default"
+            android:nestedScrollingEnabled="false"
+            android:scrollbars="vertical"
+            android:visibility="gone"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/padding_default">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_createaccount"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/padding_24dp"
+                android:paddingTop="@dimen/padding_8dp"
+                android:paddingRight="@dimen/padding_24dp"
+                android:paddingBottom="@dimen/padding_8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_createacc"
+                    android:drawablePadding="@dimen/padding_8dp"
+                    android:text="@string/ic_create"
+                    android:textAppearance="@style/textview"
+                    android:textColor="#FCFCFC"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/padding_8dp"
+                    android:text="@string/signup"
+                    android:textAppearance="@style/textview"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginLeft="@dimen/padding_8dp"
+                android:layout_marginRight="@dimen/padding_8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/padding_24dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gilanis"
+                        android:textAppearance="@style/header_title" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_8dp"
+                        android:text="@string/download"
+                        android:textAppearance="@style/textview" />
+
+                    <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_google_play" />
+                </LinearLayout>
+
+                <ImageView
+
+                    android:layout_width="120dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="@dimen/padding_8dp"
+                    android:src="@drawable/ic_profile_image" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_8dp"
+                android:layout_marginRight="@dimen/padding_8dp"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/padding_24dp"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Help"
+                        android:textAppearance="@style/header_title" />
+                    />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_8dp"
+                        android:text="Customer service"
+                        android:textAppearance="@style/textview"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="Delivery"
+                        android:textAppearance="@style/textview"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="Answers"
+                        android:textAppearance="@style/textview"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Shop online"
+                        android:textAppearance="@style/header_title" />
+                    />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_4dp"
+                        android:text="My account"
+                        android:textAppearance="@style/textview"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="My orders"
+                        android:textAppearance="@style/textview"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="Re-order"
+                        android:textAppearance="@style/textview"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="Deals"
+                        android:textAppearance="@style/textview"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Connect"
+                        android:textAppearance="@style/header_title" />
+                    />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_4dp"
+                        android:text="Partner with us"
+                        android:textAppearance="@style/textview"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="Restaurants"
+                        android:textAppearance="@style/textview"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="Careers"
+                        android:textAppearance="@style/textview"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="Contact us"
+                        android:textAppearance="@style/textview"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_8dp"
+                android:layout_marginRight="@dimen/padding_8dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/padding_default">
+
+                    <ImageView
+
+                        android:layout_width="@dimen/padding_default"
+                        android:layout_height="@dimen/padding_default"
+                        android:layout_marginEnd="@dimen/padding_8dp"
+                        android:src="@drawable/phone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/padding_8dp"
+                        android:text="Phone"
+                        android:textAppearance="@style/textview">
+
+                    </TextView>
+
+                    <ImageView
+                        android:layout_width="@dimen/padding_default"
+                        android:layout_height="@dimen/padding_default"
+                        android:layout_marginEnd="@dimen/padding_8dp"
+                        android:src="@drawable/envelope" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:textAppearance="@style/textview">
+
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_default"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/padding_6dp">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_marginEnd="@dimen/padding_8dp"
+                        android:src="@drawable/ic_mpesa" />
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_marginEnd="@dimen/padding_8dp"
+                        android:src="@drawable/ic_visa" />
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/ic_mastercard" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F2F2F2"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_default"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/padding_default"
+                        android:text="@string/privacy_policy"
+                        android:textColor="@color/bg_text"
+                        android:textAppearance="@style/textview"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/padding_default"
+                        android:text="@string/terms_conditions"
+                        android:textColor="@color/bg_text"
+                        android:textAppearance="@style/textview" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/purchase_order_terms"
+                        android:textColor="@color/bg_text"
+                        android:textAppearance="@style/textview" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_6dp"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/store_directory"
+                        android:textColor="@color/bg_text"
+                        android:textAppearance="@style/textview" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_8dp"
+                android:layout_marginTop="@dimen/padding_8dp"
+                android:layout_marginBottom="@dimen/padding_default"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/padding_24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/padding_8dp"
+                    android:text="@string/copyright"
+                    android:textAppearance="@style/textview" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_default"
+                    android:layout_marginEnd="@dimen/padding_8dp"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/padding_24dp"
+                        android:layout_height="@dimen/padding_24dp"
+                        android:layout_marginStart="@dimen/padding_8dp"
+                        android:src="@drawable/ic_facebook" />
+
+                    <ImageView
+                        android:layout_width="@dimen/padding_24dp"
+                        android:layout_height="@dimen/padding_24dp"
+                        android:layout_marginEnd="@dimen/padding_8dp"
+                        android:src="@drawable/ic_twitter" />
+
+                    <ImageView
+                        android:layout_width="@dimen/padding_24dp"
+                        android:layout_height="@dimen/padding_24dp"
+                        android:src="@drawable/ic_linkedin" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <!-- Section Title -->
+    <TextView
+        android:id="@+id/selected_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_default"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="@dimen/padding_default"
+        android:text="Groceries"
+        android:visibility="invisible"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- Item Row Example -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_default"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="@dimen/padding_default"
+        android:gravity="center|top"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/selected_img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="8dp"
+            android:scaleType="centerCrop"
+           />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/selected_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Smoked Paprika Dulce Sweet"
+                android:textAppearance="@style/textview" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="70g"
+                android:visibility="invisible"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_default"
+        android:layout_marginTop="@dimen/padding_default"
+        android:layout_marginRight="@dimen/padding_default"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnMinus"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_minus" />
+
+            <TextView
+                android:id="@+id/tvQuantity"
+                android:layout_width="@dimen/padding_40dp"
+                android:layout_height="@dimen/padding_40dp"
+                android:layout_marginHorizontal="6dp"
+                android:background="@drawable/white_square_bg"
+                android:gravity="center"
+                android:text=""
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnPlus"
+                android:layout_width="@dimen/padding_30dp"
+                android:layout_height="@dimen/padding_30dp"
+                android:background="@drawable/ic_plus"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/selected_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/padding_8dp"
+                android:textAppearance="@style/price_title"
+                android:text="KES 4,560\nKES 190/carton"
+                android:textSize="14sp"
+               />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/btnDelete"
+                android:layout_width="@dimen/padding_40dp"
+                android:layout_height="@dimen/padding_40dp"
+                android:layout_gravity="end|center"
+                android:src="@drawable/ic_delete" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/padding_default"
+        android:layout_marginTop="@dimen/padding_8dp"
+        android:layout_marginRight="@dimen/padding_default"
+        android:background="@color/light_gray">
+
+    </View>
+</LinearLayout>
