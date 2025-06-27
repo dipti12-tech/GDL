@@ -89,10 +89,11 @@
                 android:layout_width="@dimen/padding_40dp"
                 android:layout_height="@dimen/padding_40dp"
                 android:layout_marginHorizontal="6dp"
-                android:background="@drawable/white_square_bg"
+                android:background="@drawable/white_square_grey"
                 android:gravity="center"
-                android:text=""
-                android:textStyle="bold" />
+                android:text="1"
+               android:textAppearance="@style/price_title"
+                android:textSize="@dimen/textsize_14sp"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnPlus"

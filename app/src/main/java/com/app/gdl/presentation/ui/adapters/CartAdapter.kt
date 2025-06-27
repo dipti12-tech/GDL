@@ -35,7 +35,6 @@ class CartAdapter(private val items: MutableList<CartItem>, private val totalLis
             .into(holder.binding.selectedImg)
 
         Log.d("item.quantity", "onBindViewHolder: " + item.quantity)
-        //quantity=item.quantity
         setQuantity = item.quantity
         holder.binding.tvQuantity.text = "${setQuantity} "
 
@@ -43,10 +42,6 @@ class CartAdapter(private val items: MutableList<CartItem>, private val totalLis
             "KES $totalPrice \n ${item.pricePerUnit} / ${item.unit}  "
         calculateTotals()
 
-        /* holder.binding.btnDelete.setOnClickListener {
-            CartManager.removeItem(item.inventoryId, item.unit)
-            notifyItemRemoved(position)
-        }*/
         holder.binding.btnDelete.setOnClickListener {
             CartManager.removeItem(item.inventoryId, item.unit)
 
@@ -68,24 +63,6 @@ class CartAdapter(private val items: MutableList<CartItem>, private val totalLis
 
     }
 
-    /* private fun incrementQuantity(holder: CartViewHolder, item: CartItem) {
-        if (item.quantity < 10000) {
-            setQuantity++
-            //price will also increase setQuantity * price
-            val totalPrice = setQuantity * item.pricePerUnit
-            holder.binding.selectedQuantity.text = "KES $totalPrice \n ${item.pricePerUnit} / ${item.unit}  "
-        }
-        holder.binding.tvQuantity.text = "$setQuantity"
-        calculateTotals()
-
-    }
-
-    private fun decrementQuantity(holder: CartViewHolder, item: CartItem) {
-        if (setQuantity > 1) {
-            setQuantity--
-            val totalPrice = setQuantity * item.pricePerUnit
-            holder.binding.selectedQuantity.text = "KES $totalPrice \n ${item.pricePerUnit} / ${item.unit}  "
-        }*/
     private fun incrementQuantity(holder: CartViewHolder, item: CartItem) {
         if (item.quantity < 1000) {
             item.quantity++
@@ -106,11 +83,6 @@ class CartAdapter(private val items: MutableList<CartItem>, private val totalLis
             holder.binding.tvQuantity.text = "${item.quantity}"
             calculateTotals()
         }
-
-
-
-    holder.binding.tvQuantity.text = "$setQuantity"
-        calculateTotals()
 
     }
     fun emptyData() {
