@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheetAddressInput"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:padding="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Close Button -->
+        <ImageView
+            android:id="@+id/btnClose"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/close"
+            android:contentDescription="Close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Enter complete address"
+            android:textSize="18sp"
+            android:textAppearance="@style/header_title"
+            android:paddingTop="8dp"
+            android:paddingBottom="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/btnClose"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+        <LinearLayout
+            android:id="@+id/ll_saveaddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+            android:layout_marginTop="@dimen/padding_6dp">
+
+            <TextView
+                android:id="@+id/txt_saveaddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save address as"
+                android:textAppearance="@style/textview">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/asterisksave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:paddingStart="@dimen/padding_2dp"
+                android:text="@string/asterisk"
+                android:textAppearance="@style/asterisk" />
+        </LinearLayout>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupAddressType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:textAppearance="@style/textview"
+            app:chipSpacing="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_saveaddress"
+            app:singleLine="false"
+            app:singleSelection="true" />
+
+
+        <!-- Flat / House no -->
+        <EditText
+            android:id="@+id/etBuilding"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Flat / House no / Building name *"
+            android:background="@drawable/edittext_background"
+            android:textAppearance="@style/textview"
+            app:layout_constraintTop_toBottomOf="@id/chipGroupAddressType"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
+
+        <!-- Floor -->
+        <EditText
+            android:id="@+id/etFloor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Floor (optional)"
+            android:background="@drawable/edittext_background"
+            android:textAppearance="@style/textview"
+            app:layout_constraintTop_toBottomOf="@id/etBuilding"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp" />
+
+        <!-- Locality with Change -->
+        <LinearLayout
+            android:id="@+id/layoutLocality"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:textAppearance="@style/textview"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/etFloor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:id="@+id/tvLocality"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:textSize="14sp"
+                android:textAppearance="@style/textview"
+                 />
+
+            <TextView
+                android:id="@+id/btnChangeLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="Change"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:padding="@dimen/padding_8dp"
+                android:background="@drawable/white_square_bg"
+                android:textColor="@color/blue"
+                android:textAppearance="@style/textview"
+                android:textSize="@dimen/textsize_12sp"/>
+        </LinearLayout>
+
+        <!-- Landmark -->
+        <EditText
+            android:id="@+id/etLandmark"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Nearby landmark (optional)"
+            android:background="@drawable/edittext_background"
+            android:textAppearance="@style/textview"
+
+            app:layout_constraintTop_toBottomOf="@id/layoutLocality"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp" />
+
+        <!-- Save Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSaveAddress"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:text="Save address"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:background="@drawable/rounded_btn_all"
+            app:layout_constraintTop_toBottomOf="@id/etLandmark"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

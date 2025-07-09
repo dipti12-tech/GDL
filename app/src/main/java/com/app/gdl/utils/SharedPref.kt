@@ -50,8 +50,10 @@ class SharedPref :SharedPreferences {
 }*/
 
 import android.content.Context
+import android.util.Log
 import com.app.gdl.data.model.User
 import com.google.gson.Gson
+import java.security.MessageDigest
 
 class SharedPref(context: Context) {
 
@@ -97,6 +99,34 @@ class SharedPref(context: Context) {
         } else null
     }
 
+    fun addInventoryId(context: Context, newId: String) {
+        val ids = getInventoryIds(context).toMutableSet()
+        ids.add(newId)
+        sharedPref.edit().putStringSet("inventory_ids", ids).apply()
+
+        Log.d("ids ki size", "addInventoryId: "+ids.size)
+        /*val idList = current?.split(",")?.mapNotNull { it.toIntOrNull() }?.toMutableList() ?: mutableListOf()
+
+        if (!idList.contains(newId.toInt())) {
+            idList.add(newId.toInt())
+            val updated = idList.joinToString(",")
+            sharedPref.edit().putString("inventory_ids", updated).apply()
+        }*/
+    }
+    /*fun getInventoryIds(context: Context): List<Int> {
+        val stored = sharedPref.getString("inventory_ids", "") ?: ""
+        return stored.split(",").mapNotNull { it.toIntOrNull() }
+    }
+*/
+
+    fun getInventoryIds(context: Context): Set<String> {
+        return sharedPref.getStringSet("inventory_ids", emptySet()) ?: emptySet()
+    }
+
+    fun md5Hash(input: String): String {
+        val bytes = MessageDigest.getInstance("MD5").digest(input.toByteArray())
+        return bytes.joinToString("") { "%02x".format(it) }
+    }
 
     fun clearSession() {
         sharedPref.edit().clear().apply()

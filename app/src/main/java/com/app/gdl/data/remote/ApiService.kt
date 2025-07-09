@@ -9,11 +9,13 @@ import com.app.gdl.data.model.PriceResponse
 import com.app.gdl.data.model.ProductResponse
 import com.app.gdl.data.model.SignupRequest
 import com.app.gdl.data.model.SignupResponse
+import com.app.gdl.data.model.WarehouseResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     @GET("get_categories/featured")
@@ -41,12 +43,16 @@ interface ApiService {
 //    suspend fun getProductsDetails(@Path("id") id: String): ProductDetailsResponse
 
     @GET("get_sub_categories/{id}")
-    suspend fun getSubCategory(@Path("id") id:String): CategoryResponse
+    suspend fun getSubCategory(@Path("id") id: String): CategoryResponse
 
     @GET("get_popular_products/")
     suspend fun getPopularProducts(): ProductResponse
 
-    @GET("get_default_prices/{price_class}")
-    suspend fun getDefaultPrices(@Path("price_class") priceclass:String): PriceResponse
+    @GET("get_default_prices/")
+    suspend fun getDefaultPrices(@Query("price_class") priceclass: String): PriceResponse
+
+    @GET("get_warehouses/")
+    suspend fun getWarehouses(@Query("city") city: String): WarehouseResponse
+
 }
 

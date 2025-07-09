@@ -20,7 +20,7 @@
             android:text="Shopping Cart"
             android:textColor="@android:color/black"
             android:textSize="24sp"
-            android:textStyle="bold">
+            android:textAppearance="@style/header_title">
 
         </TextView>
         <!-- Header -->
@@ -33,12 +33,12 @@
             android:layout_marginLeft="@dimen/padding_default">
 
             <TextView
+                android:id="@+id/selectionItems"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
-                android:text="1 selections"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:text=""
+                android:textAppearance="@style/header_title" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnEmptyCart"
@@ -137,7 +137,8 @@
                 android:id="@+id/subTotal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sub-total     KES 5,240"
+                android:text="Sub-total     "
+                android:textAppearance="@style/header_title"
                 android:textSize="16sp"
                 android:layout_marginRight="@dimen/padding_default"
                 android:layout_marginLeft="@dimen/padding_default"/>
@@ -158,9 +159,9 @@
                 android:layout_marginTop="8dp"
                 android:background="#FFEB3B"
                 android:padding="8dp"
-                android:text="Grand Total    KES 5,540"
+                android:text="Grand Total   "
+                android:textAppearance="@style/header_title"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 android:layout_marginRight="@dimen/padding_default"
                 android:layout_marginLeft="@dimen/padding_default"/>
         </LinearLayout>

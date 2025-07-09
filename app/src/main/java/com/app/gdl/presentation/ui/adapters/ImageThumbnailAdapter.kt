@@ -21,7 +21,7 @@ class ImageThumbnailAdapter(
             Glide.with(imageView.context)
                 .load(url)
                 .centerCrop()
-                .placeholder(R.drawable.pastpopularitem)
+                //.placeholder(R.drawable.pastpopularitem)
                 .into(imageView)
             imageView.setOnClickListener {
                 onImageClick(url)

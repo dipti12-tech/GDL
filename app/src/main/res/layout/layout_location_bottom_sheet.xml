@@ -1,97 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/locationBottomSheet"
+    android:id="@+id/bottomSheetLocationPicker"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
+    android:background="@drawable/bg_bottom_sheet_rounded"
+    android:elevation="12dp"
+    android:gravity="center"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="24dp">
 
-    <EditText
-        android:id="@+id/etSearchLocation"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/search_field_bg"
-        android:drawableStart="@drawable/ic_search"
-        android:hint="  Search for location"
-        android:inputType="text"
-        android:paddingHorizontal="5dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSearchResults"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:visibility="gone" />
-
-<!--
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/name"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/search_field_bg"
-            android:hint="Name"
-            android:inputType="text"
-            android:paddingHorizontal="5dp" />
-
-        <EditText
-            android:id="@+id/mobileNumber"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/search_field_bg"
-            android:hint="Mobile"
-            android:inputType="number"
-            android:paddingHorizontal="5dp" />
-    </LinearLayout>
--->
-
-    <EditText
-        android:id="@+id/etFlats"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/search_field_bg"
-        android:hint="Fill Flat No. / Building Name"
-        android:paddingHorizontal="5dp" />
-
-    <EditText
-        android:id="@+id/etStreetAddress"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/search_field_bg"
-        android:hint="Street Address"
-        android:paddingHorizontal="5dp" />
-
-    <Button
-        android:id="@+id/btnUseCurrentLocation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="📍 Use Current Location" />
-
-    <Button
-        android:id="@+id/btnOpenMap"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <!-- Close Icon -->
+    <ImageView
+        android:id="@+id/ivClose"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="8dp"
-        android:text="🗺️ Open Map" />
+        android:layout_marginEnd="8dp"
+        android:layout_gravity="end"
+        android:contentDescription="Close"
+        android:src="@drawable/close" />
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:contentDescription="Location Icon"
+        android:src="@drawable/ic_maps" />
+
+    <!-- Heading -->
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="16dp"
+        android:paddingBottom="4dp"
+        android:text="Where do you want us to deliver this order?"
+        android:textAppearance="@style/header_title"
+        android:textSize="18sp" />
+
+    <!-- Subtext -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="24dp"
+        android:text="This will help us find the nearest store for you"
+        android:textAppearance="@style/textview" />
+
+    <!-- Button: Far away -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnFarAway"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/rounded_btn_all"
+        android:text="Far away from my current location"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white" />
+
+    <!-- Button: Near current location -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnNearCurrent"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
         android:layout_marginTop="8dp"
-        android:text="Save Address" />
+        android:background="@drawable/bg_current_location"
+        android:text="Near my current location"
+        android:textAllCaps="false"
+        android:textAppearance="@style/textview" />
 
 </LinearLayout>

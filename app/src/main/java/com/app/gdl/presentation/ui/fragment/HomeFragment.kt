@@ -1,6 +1,7 @@
 package com.app.gdl.presentation.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.gdl.R
+import com.app.gdl.data.model.PriceItem
 import com.app.gdl.data.model.User
 import com.app.gdl.databinding.FragmentHomeBinding
 import com.app.gdl.presentation.ui.adapters.FeatureAdapter
@@ -63,12 +65,10 @@ class HomeFragment : Fragment(), FeatureAdapter.OnProductClickListener,
     private lateinit var shopByCategoryAdapter: ShopByCategoryAdapter
     private lateinit var popularAdapter: PopularCategoryAdapter
     private lateinit var popularItemsAdapter: PopularItemsAdapter
-    var priceclass=""
-    private  var customer: User? = null
+    var priceclass = ""
+    private var customer: User? = null
     lateinit var prefs: SharedPref
     private val defaultPriceViewModel: DefaultPriceViewModel by viewModels()
-
-
     /* private var etStreetInBottomSheet: EditText? = null
      private var etSearch: EditText? = null
      private var finalAddress: String? = null
@@ -88,7 +88,7 @@ class HomeFragment : Fragment(), FeatureAdapter.OnProductClickListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-         prefs = SharedPref(requireContext())
+        prefs = SharedPref(requireContext())
         // addressUser = arguments?.getString("addressUser").toString()
     }
 
@@ -106,27 +106,14 @@ class HomeFragment : Fragment(), FeatureAdapter.OnProductClickListener,
         setupUi()
         setupObservers()
         // setupPickLocation()
-        // call the default price api with priceclass for login user MLD CBD
-       /* customer = prefs.getCustomerFromPrefs(requireContext())
-        priceclass = customer?.address?.get(0)?.price_class.toString()
-        Log.d("priceclass", "onCreate: "+priceclass)
-        if(priceclass.isNotEmpty()){
-            defaultPriceViewModel.defaultPrice.observe(viewLifecycleOwner) { response ->
-                Log.d("ResponseWith Price", "onViewCreated: "+response)
-                val groupedByPrice: Map<String, List<PriceItem>> = response.list.groupBy { it.CustomerPriceClass.value}
-                Log.d("groupedByPrice Price", "groupedByPrice: "+response.list)
 
-                val priceItems = groupedByPrice[priceclass] ?: emptyList()
-                Log.d("priceItems", ""+priceItems)
-            }
-            defaultPriceViewModel.fetchDefaultPrice(priceclass)
-        }*/
     }
 
     private fun setupUi() {
         featureAdapter = FeatureAdapter(this)
-        binding.featureRecycleview.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        val gridLayoutManager = GridLayoutManager(context, 2)
+        binding.featureRecycleview.layoutManager = gridLayoutManager
         binding.featureRecycleview.adapter = featureAdapter
 
         shopByCategoryAdapter = ShopByCategoryAdapter(this)
@@ -167,12 +154,82 @@ class HomeFragment : Fragment(), FeatureAdapter.OnProductClickListener,
             popularItemsAdapter.submitData(response.list, response.s3_img_path)
         }
 
-        //
 
         categoryViewModel.fetchCategories()
         shopCategoryViewModel.fetchAllCategories()
         popularViewModel.fetchGetpopularCategories()
         popularItemViewModel.fetchPopularItems()
+
+
+        // call the default price api with priceclass for login user MLD CBD
+        customer = prefs.getCustomerFromPrefs(requireContext())
+        priceclass = customer?.address?.get(0)?.price_class.toString()
+        Log.d("priceclass", "onCreate: " + priceclass)
+
+        /*
+                if (priceclass.isNotEmpty() && prefs.isLoggedIn) {
+                    Log.d("ResponseWith Price", priceclass.isNotEmpty().toString()+""+prefs.isLoggedIn)
+                    val inventoryIds = prefs.getInventoryIds(requireContext())
+                    Log.d("SIZE IN PREF IDS", inventoryIds.size.toString())
+
+                    defaultPriceViewModel.defaultPrice.observe(viewLifecycleOwner) { response ->
+                        Log.d("ResponseWith Price", "Received: $response")
+
+                        // Group by CustomerPriceClass
+                        val groupedByPrice = response.list.groupBy { it.CustomerPriceClass.value }
+                        Log.d("GroupedByPrice", groupedByPrice.toString())
+
+                        // Get items for this price class
+                        val priceItems = groupedByPrice[priceclass] ?: emptyList()
+                        Log.d("PriceItems", priceItems.toString())
+
+                        // Filter using Inventory IDs
+                        val filteredPriceItems = priceItems.filter { inventoryIds.contains(it.InventoryID.value) }
+                        Log.d("FilteredItems", filteredPriceItems.toString())
+
+                    }
+
+                    defaultPriceViewModel.fetchDefaultPrice(priceclass)
+                }
+        */
+        if (priceclass.isNotEmpty() && prefs.isLoggedIn) {
+            Log.d("Check", "PriceClass: $priceclass, LoggedIn: ${prefs.isLoggedIn}")
+
+            val inventoryIds = prefs.getInventoryIds(requireContext())
+            Log.d("SIZE IN PREF IDS", inventoryIds.size.toString())
+
+            // Call this BEFORE observe
+            defaultPriceViewModel.fetchDefaultPrice(priceclass)
+
+            defaultPriceViewModel.defaultPrice.observe(viewLifecycleOwner) { response ->
+                Log.d("ResponseWith Price", "Received: $response")
+
+                val groupedByPrice = response.list.groupBy { it.CustomerPriceClass.value }
+                Log.d("groupedByPrice", "Received: $groupedByPrice")
+
+                val priceItems = groupedByPrice[priceclass] ?: emptyList()
+                Log.d("priceItems", "Received: $priceItems")
+
+                val filteredPriceItems =
+                    priceItems.filter { inventoryIds.contains(it.InventoryID.value) }
+
+                Log.d("FilteredItems", filteredPriceItems.toString())
+                popularItemsAdapter.setPriceMap(filteredPriceItems)
+
+            }
+        }/* else {
+            defaultPriceViewModel.defaultPrice.observe(viewLifecycleOwner) { response ->
+                Log.d("ResponseWithoutLogin", "Received: $response")
+
+                val groupedByPrice = response.list.groupBy { it.CustomerPriceClass.value }
+                val priceItems = groupedByPrice[priceclass] ?: emptyList()
+                Log.d("PriceItemsNoLogin", priceItems.toString())
+
+            }
+
+            defaultPriceViewModel.fetchDefaultPrice(priceclass)
+        }*/
+
     }
 
     /*

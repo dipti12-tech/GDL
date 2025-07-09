@@ -22,11 +22,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/featureRecycleview"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/card_height"
                 android:layout_marginTop="@dimen/padding_8dp"
-                android:layout_marginLeft="@dimen/padding_8dp"
-                android:layout_marginRight="@dimen/padding_8dp"
+                android:layout_marginLeft="@dimen/padding_4dp"
+                android:layout_marginRight="@dimen/padding_4dp"
                 android:orientation="horizontal"
                 android:visibility="visible"
                 tools:listitem="@layout/row_featurelist" />
@@ -77,8 +77,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_default"
-                android:layout_marginLeft="@dimen/padding_8dp"
-                android:layout_marginRight="@dimen/padding_8dp"
+                android:layout_marginLeft="@dimen/padding_4dp"
+                android:layout_marginRight="@dimen/padding_4dp"
                 android:nestedScrollingEnabled="false"
                 android:scrollbars="vertical" />
 
@@ -126,8 +126,8 @@
             android:layout_marginTop="@dimen/padding_default"
             android:nestedScrollingEnabled="false"
             android:scrollbars="vertical"
-            android:layout_marginLeft="@dimen/padding_8dp"
-            android:layout_marginRight="@dimen/padding_8dp"/>
+            android:layout_marginLeft="@dimen/padding_4dp"
+            android:layout_marginRight="@dimen/padding_4dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/bannerAdsRecyclerView"
@@ -138,7 +138,6 @@
             android:scrollbars="vertical"
             android:layout_marginLeft="@dimen/padding_8dp"
             android:layout_marginRight="@dimen/padding_8dp"/>
-
 
 
         <LinearLayout

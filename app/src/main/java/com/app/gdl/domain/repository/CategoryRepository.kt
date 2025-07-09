@@ -4,6 +4,5 @@ import com.app.gdl.data.model.CategoryResponse
 
 interface CategoryRepository {
     suspend fun getCategories(): CategoryResponse
-
 }
 

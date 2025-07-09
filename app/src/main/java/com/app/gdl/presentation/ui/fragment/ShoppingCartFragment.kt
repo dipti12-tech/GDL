@@ -11,7 +11,7 @@ import com.app.gdl.databinding.ActivityShoppingcartBinding
 import com.app.gdl.presentation.ui.adapters.CartAdapter
 import com.app.gdl.utils.CartManager
 
-class ShoppingCartFragment : Fragment() {
+class ShoppingCartFragment : Fragment(){
 
     private var _binding: ActivityShoppingcartBinding? = null
     private val binding get() = _binding!!
@@ -37,6 +37,7 @@ class ShoppingCartFragment : Fragment() {
 
         Log.d("CartManager", "Cart size: ${CartManager.getItems().size}")
         (activity as? CartAdapter.CartItemCountListener)?.onCartItemCountChanged(CartManager.getItems().size)
+        binding.selectionItems.text="${CartManager.getItems().size}  Selections"
 
         adapter = CartAdapter(
             CartManager.getItems().toMutableList(),
@@ -48,6 +49,7 @@ class ShoppingCartFragment : Fragment() {
             },
             object : CartAdapter.CartItemCountListener {
                 override fun onCartItemCountChanged(count: Int) {
+                    binding.selectionItems.text="$count  Selections"
                     Log.d("Fragment", "Forwarding item count to Activity: $count")
                     (activity as? CartAdapter.CartItemCountListener)?.onCartItemCountChanged(count)                }
             }
@@ -58,6 +60,7 @@ class ShoppingCartFragment : Fragment() {
         binding.btnEmptyCart.setOnClickListener {
             adapter.emptyData()
         }
+
     }
 
     override fun onDestroyView() {

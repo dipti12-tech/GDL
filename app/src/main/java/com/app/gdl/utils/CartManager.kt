@@ -14,6 +14,8 @@ object CartManager {
 
     private val cartItems = mutableListOf<CartItem>()
     private lateinit var preferences: SharedPreferences
+    private lateinit var pref: SharedPref
+
     private val gson = Gson()
 
     fun init(context: Context) {
@@ -22,7 +24,8 @@ object CartManager {
     }
 
     fun addItem(item: CartItem) {
-        val index = cartItems.indexOfFirst { it.inventoryId == item.inventoryId && it.unit == item.unit }
+        val index =
+            cartItems.indexOfFirst { it.inventoryId == item.inventoryId && it.unit == item.unit }
         if (index != -1) {
             val existing = cartItems[index]
             cartItems[index] = existing.copy(quantity = existing.quantity + item.quantity)
@@ -38,9 +41,9 @@ object CartManager {
         cartItems.removeAll { it.inventoryId == productId && it.unit == unit }
         saveCart()
     }
-   /* fun removeItem(inventoryId: String, unit: String) {
-        cartItems.removeIf { it.inventoryId == inventoryId && it.unit == unit }
-    }*/
+    /* fun removeItem(inventoryId: String, unit: String) {
+         cartItems.removeIf { it.inventoryId == inventoryId && it.unit == unit }
+     }*/
 
 
     fun clearCart() {
@@ -51,7 +54,7 @@ object CartManager {
     private fun saveCart() {
         val json = gson.toJson(cartItems)
         preferences.edit().putString(KEY_CART_ITEMS, json).apply()
-        Log.d("saveCart", "onViewCreated: "+CartManager.getItems())
+        Log.d("saveCart", "onViewCreated: " + CartManager.getItems())
 
     }
 

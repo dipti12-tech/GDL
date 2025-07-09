@@ -20,7 +20,7 @@
     <string name="werecommend">We recommend this option only on devices that you own</string>
     <string name="keepsignedin">Keep me signed in on this device</string>
     <string name="signinacc">Sign in to your Account</string>
-    <string name="emailmobile">E-mail address / Mobile number </string>
+    <string name="emailmobile">Mobile number </string>
     <string name="password">Password</string>
     <string name="forgotten">I\'ve forgotten my password</string>
     <string name="register">Register now</string>

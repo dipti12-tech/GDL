@@ -21,13 +21,20 @@ class SplashScreenActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             Log.d("TAG", "onCreate: "+prefs.isLoggedIn)
-            if (prefs.isLoggedIn) {
-                startActivity(Intent(this, MainActivity::class.java))
+          /*  if (prefs.isLoggedIn) {
+
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("addressUser", prefs.userAdrress)
+                intent.putExtra("from", "splash")
+
+                startActivity(intent)
             } else {
                 startActivity(Intent(this, SignUpActivity::class.java))
-            }
+            }*/
             //for default user
-          //  startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
+            intent.putExtra("addressUser", "")
+            intent.putExtra("from", "splash")
             finish()
         }, 500)
     }

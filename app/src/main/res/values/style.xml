@@ -8,7 +8,7 @@
 
     <style name="textview">
 
-        <item name="android:textSize">@dimen/textsize_14sp</item>
+        <item name="android:textSize">@dimen/textsize_16sp</item>
         <item name="android:fontFamily">@font/sourcesanregular</item>
         <item name="android:textColor">@color/textview</item>
         <item name="android:lineSpacingExtra">1sp</item>

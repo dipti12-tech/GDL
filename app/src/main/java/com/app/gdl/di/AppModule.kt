@@ -12,6 +12,7 @@ import com.app.gdl.data.repository.ProductDetailsRepositoryImpl
 import com.app.gdl.data.repository.ProductRepositoryImp
 import com.app.gdl.data.repository.SignupRepositoryImpl
 import com.app.gdl.data.repository.SubCategoryRepositoryImp
+import com.app.gdl.data.repository.WarehouseImp
 import com.app.gdl.domain.repository.AllCategoryRepository
 import com.app.gdl.domain.repository.CategoryRepository
 import com.app.gdl.domain.repository.DefaultPriceRepository
@@ -22,6 +23,7 @@ import com.app.gdl.domain.repository.ProductDetailRepository
 import com.app.gdl.domain.repository.ProductRepository
 import com.app.gdl.domain.repository.SignUpRepository
 import com.app.gdl.domain.repository.SubCategoryRepository
+import com.app.gdl.domain.repository.WarehouseRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -119,5 +121,13 @@ object AppModule {
         apiService: ApiService
     ): DefaultPriceRepository{
         return  DefaultPricesImp(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWarehouseRepository(
+        apiService: ApiService
+    ): WarehouseRepository{
+        return  WarehouseImp(apiService)
     }
 }

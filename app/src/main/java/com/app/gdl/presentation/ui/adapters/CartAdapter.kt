@@ -30,6 +30,8 @@ class CartAdapter(private val items: MutableList<CartItem>, private val totalLis
         // holder.binding.selectedCategory.text = item.category
         holder.binding.selectedTitle.text = item.name
         val totalPrice = item.quantity * item.pricePerUnit
+        val displayprice =String.format("KES %.2f",totalPrice)
+
         Glide.with(holder.binding.selectedImg.context)
             .load(item.imageUrl)
             .into(holder.binding.selectedImg)
@@ -39,7 +41,7 @@ class CartAdapter(private val items: MutableList<CartItem>, private val totalLis
         holder.binding.tvQuantity.text = "${setQuantity} "
 
         holder.binding.selectedQuantity.text =
-            "KES $totalPrice \n ${item.pricePerUnit} / ${item.unit}  "
+            "$displayprice \n ${item.pricePerUnit} / ${item.unit}  "
         calculateTotals()
 
         holder.binding.btnDelete.setOnClickListener {
@@ -67,8 +69,9 @@ class CartAdapter(private val items: MutableList<CartItem>, private val totalLis
         if (item.quantity < 1000) {
             item.quantity++
             val totalPrice = item.quantity * item.pricePerUnit
+            val displayprice =String.format("KES %.2f",totalPrice)
             holder.binding.selectedQuantity.text =
-                "KES $totalPrice \n ${item.pricePerUnit} / ${item.unit}"
+                "$displayprice \n ${item.pricePerUnit} / ${item.unit}"
             holder.binding.tvQuantity.text = "${item.quantity}"
             calculateTotals()
         }
@@ -78,8 +81,9 @@ class CartAdapter(private val items: MutableList<CartItem>, private val totalLis
         if (item.quantity > 1) {
             item.quantity--
             val totalPrice = item.quantity * item.pricePerUnit
+            val displayprice =String.format("KES %.2f",totalPrice)
             holder.binding.selectedQuantity.text =
-                "KES $totalPrice \n ${item.pricePerUnit} / ${item.unit}"
+                "$displayprice \n ${item.pricePerUnit} / ${item.unit}"
             holder.binding.tvQuantity.text = "${item.quantity}"
             calculateTotals()
         }

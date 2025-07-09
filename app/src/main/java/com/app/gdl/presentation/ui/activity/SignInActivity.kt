@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.app.gdl.data.model.LoginRequest
 import com.app.gdl.databinding.ActivityLoginBinding
+import com.app.gdl.domain.repository.LoginRepository
 import com.app.gdl.presentation.viewmodel.LoginViewModel
 import com.app.gdl.utils.NetworkUtils
 import com.app.gdl.utils.SharedPref
@@ -27,31 +28,39 @@ class SignInActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         prefs = SharedPref(this)
-
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            Log.d("FCM_TOKEN", "FCM Token: $token")
+            fcm_token= "$token"
+        }
         binding.btnSignIn.setOnClickListener {
-
-            val email = binding.etEmailMobile.text.toString().trim()
-            val password = binding.etPassword.text.toString().trim()
-
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Enter all fields", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
             if (!NetworkUtils.isInternetAvailable(this)) {
                 Toast.makeText(this, "No internet. Please try later.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-                Log.d("FCM_TOKEN", "FCM Token: $token")
-                fcm_token= token
+            val email = binding.etEmailMobile.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
+
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Please fill in all the required fields to proceed", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
             loginViewModel.loginUser(LoginRequest(email, password,fcm_token))
 
             loginViewModel.loginResponse.observe(this) { response ->
+                Log.d("loginResponse", "RESPONSE LOGIN: "+response.toString()+"SIZE"+response.customer_details?.email_id)
                 if (response.status == 1) {
+                    // Save login data
                     prefs.isLoggedIn = true
-                    intent = Intent(this, MainActivity::class.java)
+                    prefs.name =
+                        (response.customer_details?.first_name + response.customer_details?.last_name)
+                            ?: ""
+                    prefs.mobile = response.customer_details?.phone ?: ""
+                    prefs.userAdrress = (response.customer_details?.address?.get(0)?.text?: "").toString()
+
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("addressUser", prefs.userAdrress)
+                    intent.putExtra("from","SignIn")
                     startActivity(intent)
                     finish()
                 } else {

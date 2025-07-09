@@ -20,11 +20,11 @@ class ImageSliderAdapter(
     inner class SliderViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageView: PhotoView = itemView.findViewById(R.id.image_src)
         fun bind(url: String) {
-
+            val updatedUrl = url.replace("_thumbnail", "_large")
             Glide.with(imageView.context)
-                .load(url)
+                .load(updatedUrl)
                 .centerCrop()
-                .placeholder(R.drawable.pastpopularitem)
+                //.placeholder(R.drawable.pastpopularitem)
                 .into(imageView)
 
             imageView.setOnClickListener {
@@ -54,6 +54,7 @@ class ImageSliderAdapter(
     }
 
     override fun onBindViewHolder(holder: SliderViewHolder, position: Int) {
+        Log.d("imageUrls", "onBindViewHolder: "+imageUrls[position].toString()+"SIZEE"+imageUrls.size)
         holder.bind(imageUrls[position])
     }
 

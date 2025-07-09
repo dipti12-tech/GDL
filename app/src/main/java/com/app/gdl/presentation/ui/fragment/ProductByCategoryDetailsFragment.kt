@@ -98,10 +98,15 @@ class ProductByCategoryDetailsFragment : Fragment(), ProductAdapter.AddToCartLis
 
             priceItems = groupedByInventoryID[inventoryId] ?: emptyList()
 
-            val uomList = priceItems.map { it.UOM.value }
-            val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, uomList)
-            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.spinnerSize.adapter = spinnerAdapter
+        //    val uomList = priceItems.map { it.UOM.value }
+            val uomList = priceItems.map { it.UOM.value }.toSet().toList()
+
+            if(uomList.isNotEmpty()){
+              Log.d("uomList@@", "onViewCreated: "+uomList.size +uomList.get(0).toString())
+              val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, uomList)
+              spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+              binding.spinnerSize.adapter = spinnerAdapter
+          }
 
             binding.spinnerSize.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
@@ -169,11 +174,16 @@ class ProductByCategoryDetailsFragment : Fragment(), ProductAdapter.AddToCartLis
             val mainImage = item.ImageUrl?.value
             val additionalImages = item.Images?.value ?: emptyList()
 
+            Log.d("mainImage", "onViewCreated: "+mainImage)
+
             val allImages = mutableListOf<String>()
-            mainImage?.let {
+           /* mainImage?.let {
                 allImages.add(it)
+               // Log.d("additionalImages", "onViewCreated: "+additionalImages.)
+
                 mainImageUrl = "$basePath$productId/images/$it"
-            }
+            }*/
+
             allImages.addAll(additionalImages.filter { it.contains("_thumbnail") })
 
             val imageUrls = allImages.map { "$basePath$productId/images/$it" }
@@ -200,14 +210,14 @@ class ProductByCategoryDetailsFragment : Fragment(), ProductAdapter.AddToCartLis
         if (quantity < 1000) {
             quantity++
         }
-        binding.tvQuantity.text = "$quantity  $uom"
+        binding.tvQuantity.text = "$quantity"
     }
 
     private fun decrementQuantity(uom: String?) {
         if (quantity > 1) {
             quantity--
         }
-        binding.tvQuantity.text = "$quantity  $uom"
+        binding.tvQuantity.text = "$quantity"
     }
 
     override fun onDestroyView() {

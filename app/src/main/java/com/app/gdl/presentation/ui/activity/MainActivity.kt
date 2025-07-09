@@ -9,27 +9,35 @@ import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.decode.SvgDecoder
 import coil.load
 import com.app.gdl.R
-import com.app.gdl.data.model.User
+import com.app.gdl.data.model.Warehouse
 import com.app.gdl.databinding.ActivityMainBinding
 import com.app.gdl.databinding.ToolbarHeaderBinding
+import com.app.gdl.domain.repository.WarehouseRepository
 import com.app.gdl.presentation.ui.adapters.CartAdapter
 import com.app.gdl.presentation.ui.adapters.SearchSuggestionsAdapter
 import com.app.gdl.presentation.ui.fragment.HomeFragment
+import com.app.gdl.presentation.ui.fragment.ShoppingCartFragment
+import com.app.gdl.presentation.viewmodel.CategoryViewModel
+import com.app.gdl.presentation.viewmodel.WarehouseViewModel
 import com.app.gdl.utils.CartManager
 import com.app.gdl.utils.SharedPref
 import com.google.android.gms.location.LocationServices
@@ -41,24 +49,30 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
+import kotlin.math.*
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
 
-    private var etStreetInBottomSheet: EditText? = null
-    private var etSearch: EditText? = null
+   // private var etStreetInBottomSheet: EditText? = null
+   // private var etSearch: EditText? = null
     private var finalAddress: String? = null
     private var headingAddress: String? = null
-    var addressUser: String = ""
+   // var addressUser: String = ""
+    var from: String=""
     lateinit var prefs: SharedPref
+    private val warehouseViewModel: WarehouseViewModel by viewModels()
 
     private val mapResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                val address = it.data?.getStringExtra("address") ?: ""
+                val address = it.data?.getStringExtra("address")
                 headingAddress = it.data?.getStringExtra("headingAddress")
-                etStreetInBottomSheet?.setText(finalAddress)
-                etSearch?.setText(finalAddress)
+                finalAddress = address
+                binding.deliveryLocation.text = finalAddress
+               // addressType = it.data?.getStringExtra("addressType").toString()
+              //  lat = it.data?.getDoubleExtra("lat", 0.0) ?: 0.0
+               // lng = it.data?.getDoubleExtra("lng", 0.0) ?: 0.0
 
             }
         }
@@ -73,14 +87,21 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
         prefs = SharedPref(this)
 
         setupPickLocation()
-        addressUser = intent.getStringExtra("addressUser").toString()
-       val headerView = binding.navView.getHeaderView(0)
+        getCurrentLocation()
+    //    addressUser = intent.getStringExtra("addressUser").toString()
+        from = intent.getStringExtra("from").toString()
+
+        if(from.equals("SignUp")){
+            CartManager.clearCart()
+        }
+        val headerView = binding.navView.getHeaderView(0)
        val tvName = headerView.findViewById<TextView>(R.id.textViewName)
         val tvMobile = headerView.findViewById<TextView>(R.id.textViewMobile)
         Log.d("TAG", "onCreate: " +"Name"+ prefs.name+"Mobile"+prefs.mobile+"Address"+prefs.userAdrress)
 
-        tvName.text = prefs.name
-        tvMobile.text = prefs.mobile
+        tvName.text = if (!prefs.name.isNullOrBlank()) prefs.name else "Guest User"
+        tvMobile.text = prefs.mobile.orEmpty()
+
 
         // Set Toolbar
         toolbarBinding = binding.toolbarHeader
@@ -121,7 +142,15 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
         // Cart Icon click listener (if needed)
         toolbarBinding.cartIcon.setOnClickListener {
             // Navigate to cart screen or fragment
+            navigateTo(ShoppingCartFragment.newInstance())
+
         }
+        toolbarBinding.cartBadge.setOnClickListener {
+            // Navigate to cart screen or fragment
+            navigateTo(ShoppingCartFragment.newInstance())
+
+        }
+
 
 
         // Set up NavigationView menu item selection
@@ -136,8 +165,11 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
 
                 R.id.nav_logout -> {
                     prefs.isLoggedIn = false
+                    prefs.clearSession()
+                 //   CartManager.clearCart()
                     intent = Intent(this, SignInActivity::class.java)
                     startActivity(intent)
+
                     true
                 }
 
@@ -148,7 +180,13 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
         if (savedInstanceState == null) {
             navigateTo(HomeFragment.newInstance(address))
         }
+        warehouseViewModel.loadWarehouses()
+        warehouseViewModel.warehouses.observe(this) { response  ->
+            Log.d("ResponseWith Warehouse", "Received: $response")
+            val cities = response.map { it.city }.distinct()
+            Log.d("ResponseWith Warehouse", "Received: ${cities.toString()}")
 
+        }
     }
 
     override fun onBackPressed() {
@@ -175,15 +213,12 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
     private fun setupPickLocation() {
         var isTextFromUser = true
         val bottomSheetView = layoutInflater.inflate(R.layout.layout_location_bottom_sheet, null)
-        etSearch = bottomSheetView.findViewById(R.id.etSearchLocation)
+     //   etSearch = bottomSheetView.findViewById(R.id.etSearchLocation)
         val bottomSheetDialog = BottomSheetDialog(this)
         bottomSheetDialog.setContentView(bottomSheetView)
-        Log.d("addressUser", "setupPickLocation: "+addressUser)
-        if (addressUser.isNotEmpty()) {
-            binding.deliveryLocation.text = addressUser
-        } else {
-            binding.deliveryLocation.text = prefs.userAdrress
+        if (prefs.userAdrress?.isNotEmpty() == true) {
 
+            binding.deliveryLocation.text = prefs.userAdrress
         }
         binding.deliveryLocation.setOnClickListener {
             if (!Places.isInitialized()) {
@@ -191,7 +226,7 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
             }
             val placesClient = Places.createClient(this)
 
-            val rvSearchResults = bottomSheetView.findViewById<RecyclerView>(R.id.rvSearchResults)
+          //  val rvSearchResults = bottomSheetView.findViewById<RecyclerView>(R.id.rvSearchResults)
             val searchAdapter = SearchSuggestionsAdapter { prediction ->
                 val placeId = prediction.placeId
                 val request = FetchPlaceRequest.builder(
@@ -231,11 +266,11 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
                     }
 
                     isTextFromUser = false
-                    etStreetInBottomSheet?.setText(finalAddress)
+                   /* etStreetInBottomSheet?.setText(finalAddress)
                     etSearch?.setText(finalAddress)
                     etSearch?.clearFocus()
                     isTextFromUser = true
-                    rvSearchResults.visibility = View.GONE
+                    rvSearchResults.visibility = View.GONE*/
 
 
                 }.addOnFailureListener {
@@ -248,10 +283,10 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
                 }
             }
 
-            rvSearchResults.layoutManager = LinearLayoutManager(this)
+         /*   rvSearchResults.layoutManager = LinearLayoutManager(this)
             rvSearchResults.adapter = searchAdapter
-
-            val etSearch = bottomSheetView.findViewById<EditText>(R.id.etSearchLocation)
+*/
+         /*   val etSearch = bottomSheetView.findViewById<EditText>(R.id.etSearchLocation)
             etSearch.addTextChangedListener {
                 if (!isTextFromUser) return@addTextChangedListener
                 val query = it.toString()
@@ -279,21 +314,23 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
                     rvSearchResults.visibility = View.GONE
                 }
             }
+*/
+          //  etStreetInBottomSheet = bottomSheetView.findViewById(R.id.etStreetAddress)
 
-            etStreetInBottomSheet = bottomSheetView.findViewById(R.id.etStreetAddress)
-
-            bottomSheetView.findViewById<Button>(R.id.btnUseCurrentLocation).setOnClickListener {
-                getCurrentLocation()
-            }
-
-            bottomSheetView.findViewById<Button>(R.id.btnOpenMap).setOnClickListener {
+            bottomSheetView.findViewById<Button>(R.id.btnNearCurrent).setOnClickListener {
+              //  getCurrentLocation()
                 val intent = Intent(this, MapPickerActivity::class.java)
                 mapResultLauncher.launch(intent)
+                bottomSheetDialog.dismiss()
             }
 
-            bottomSheetView.findViewById<Button>(R.id.btnSave).setOnClickListener {
-                binding.deliveryLocation.text =
-                    "${SpannableStringBuilder(headingAddress)}"
+            bottomSheetView.findViewById<Button>(R.id.btnFarAway).setOnClickListener {
+                val intent = Intent(this, MapPickerActivity::class.java)
+                mapResultLauncher.launch(intent)
+                bottomSheetDialog.dismiss()
+            }
+
+            bottomSheetView.findViewById<ImageView>(R.id.ivClose).setOnClickListener {
                 bottomSheetDialog.dismiss()
             }
 
@@ -342,9 +379,11 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
                     headingAddress = "$area, $city, $state"
                     finalAddress = cleanedAddress
                 }
+                binding.deliveryLocation.text =
+                    "${SpannableStringBuilder(finalAddress)}"
 
-                etStreetInBottomSheet?.setText(finalAddress)
-                etSearch?.setText(finalAddress)
+          //      etStreetInBottomSheet?.setText(finalAddress)
+          //      etSearch?.setText(finalAddress)
 
             } else {
                 Toast.makeText(this, "Couldn't fetch location", Toast.LENGTH_SHORT)
@@ -361,6 +400,24 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
         {
             toolbarBinding.cartBadge.visibility =View.VISIBLE
             toolbarBinding.cartBadge.text ="${count}"
+        }
+    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == 101) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted
+                getCurrentLocation()
+            } else {
+                // Permission denied
+                Toast.makeText(this, "Location permission denied. Please allow it in settings.", Toast.LENGTH_LONG).show()
+                //show the cities list popup here
+            }
         }
     }
 

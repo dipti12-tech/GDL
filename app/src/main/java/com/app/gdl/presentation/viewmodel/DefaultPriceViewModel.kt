@@ -1,5 +1,6 @@
 package com.app.gdl.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,7 +26,8 @@ class DefaultPriceViewModel @Inject constructor(
                 _defaultPrice.postValue(response)
             } catch (e: Exception) {
                 e.printStackTrace()
-            }
+                    Log.e("ViewModel", "Error fetching price: ${e.message}")
+                            }
         }
     }
 }

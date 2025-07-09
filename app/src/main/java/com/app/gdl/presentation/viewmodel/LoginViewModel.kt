@@ -20,6 +20,7 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
     val loginResponse: LiveData<LoginResponse> = _loginResponse
 
     fun loginUser(request: LoginRequest) {
+        Log.d("requestlogin", "loginUser: "+request)
         viewModelScope.launch {
             val response = repository.loginUser(request)
             Log.d("LoginViewModel", "loginUser: $response")

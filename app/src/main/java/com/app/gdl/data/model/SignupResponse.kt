@@ -3,7 +3,7 @@ package com.app.gdl.data.model
 data class SignupResponse(
     val status: Int,
     val message: String,
-    val user_id: Int?
+    val customer_id: Int?
 )
 data class SignupRequest(
     val first_name: String,

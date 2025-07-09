@@ -1,45 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
+    <!-- Map Fragment -->
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
+    <!-- Center Pin -->
+    <ImageView
+        android:id="@+id/ivCenterPin"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/ic_pin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="30dp"
+        app:tint="@color/bg_button" />
+
+    <!-- Search Bar + Suggestions -->
+    <LinearLayout
+        android:id="@+id/searchContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="16dp"
-        android:background="#CCFFFFFF">
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <EditText
             android:id="@+id/etSearchLocation"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:background="@drawable/search_field_bg"
+            android:hint="Search for a new area, locality..."
             android:drawableStart="@drawable/ic_search"
-            android:hint="  Search for location"
+            android:drawablePadding="8dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:inputType="text"
-            android:paddingHorizontal="5dp" />
+            android:layout_marginTop="@dimen/padding_30dp"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSearchResults"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:visibility="gone"/>
+            android:background="@android:color/white"
+            android:visibility="gone"
+            android:elevation="4dp" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnSelectLocation"
-        android:layout_width="match_parent"
+    <!-- Use Current Location -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnUseCurrentLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:padding="@dimen/padding_8dp"
+        android:text="Use current location"
+        android:drawablePadding="10dp"
+        android:background="@drawable/white_square_grey"
+        android:textAppearance="@style/textview"
+        android:textColor="@color/textview"
+        app:layout_constraintTop_toBottomOf="@id/searchContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- Address Card -->
+    <LinearLayout
+        android:id="@+id/addressCard"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Select Location"
-        android:layout_gravity="bottom"
-        android:layout_margin="16dp"
-        android:backgroundTint="@android:color/holo_blue_dark"
-        android:textColor="@android:color/white"/>
-</FrameLayout>
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/white_square_grey"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toTopOf="@id/confirmContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/tvHeadingAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="@style/header_title"
+            android:textSize="16sp"
+            android:drawableStart="@drawable/ic_pin"
+            android:drawableTint="@color/blue"
+            android:drawablePadding="10dp" />
+
+        <TextView
+            android:id="@+id/tvFinalAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#666666"
+            android:textSize="14sp"
+            android:paddingTop="4dp" />
+
+
+    </LinearLayout>
+
+    <!-- Confirm + Request Address -->
+    <LinearLayout
+        android:id="@+id/confirmContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSelectLocation"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Add more address details"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:background="@drawable/rounded_btn_all" />
+
+        <TextView
+            android:id="@+id/tvRequestFromOthers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Request address from someone else"
+            android:textColor="@color/textview"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            android:paddingTop="8dp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

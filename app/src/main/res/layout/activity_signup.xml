@@ -154,49 +154,11 @@
                         android:id="@+id/et_email"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edt_height"
-                        android:hint="E-mail address / Mobile number"
+                        android:hint="Mobile number"
                         android:textAppearance="@style/edittext"
                         android:layout_marginTop="@dimen/padding_4dp"
                         android:background="@drawable/edittext_background" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/padding_6dp">
-
-                        <TextView
-                            android:id="@+id/txt_saveaddress"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Save address as"
-                            android:textAppearance="@style/textview">
-
-                        </TextView>
-
-                        <TextView
-                            android:id="@+id/asterisksave"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="top"
-                            android:paddingStart="@dimen/padding_2dp"
-                            android:text="@string/asterisk"
-                            android:textAppearance="@style/asterisk" />
-                    </LinearLayout>
-
-
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/category_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:textAppearance="@style/textview"
-                        app:chipSpacing="5dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvTitle"
-                        app:singleLine="false"
-                        app:singleSelection="true" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -233,6 +195,8 @@
                         android:layout_height="@dimen/edt_height"
                         android:background="@drawable/edittext_background"
                         android:hint="Address"
+                        android:maxLines="1"
+                        android:gravity="center|start"
                         android:layout_marginTop="@dimen/padding_4dp"
                         android:textAppearance="@style/textview" />
 
@@ -376,12 +340,12 @@
 
                         <ImageView
                             android:id="@+id/iv_toggle_password"
-                            android:layout_width="34dp"
-                            android:layout_height="34dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_marginEnd="@dimen/padding_2dp"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:src="@drawable/ic_eye" />
+                            app:tint="@color/hint_text" />
 
                     </RelativeLayout>
 
@@ -456,12 +420,12 @@
 
                         <ImageView
                             android:id="@+id/iv_toggle_confirmpassword"
-                            android:layout_width="34dp"
-                            android:layout_height="34dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="@dimen/padding_2dp"
-                            android:src="@drawable/ic_eye" />
+                            app:tint="@color/hint_text" />
 
                     </RelativeLayout>
 
