@@ -2,17 +2,26 @@ package com.app.gdl.presentation.ui.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.app.gdl.R
 import com.app.gdl.data.model.CartItem
-import com.app.gdl.data.model.PriceItem
+import com.app.gdl.data.model.Product
 import com.app.gdl.data.model.ProductItem
 import com.app.gdl.databinding.RowProductlistBinding
-import com.app.gdl.utils.CartManager
+import com.app.gdl.presentation.ui.activity.SignInActivity
+import com.app.gdl.presentation.ui.activity.SignUpActivity
+import com.app.gdl.utils.AuthPromptDialog
 import com.app.gdl.utils.SharedPref
 import com.bumptech.glide.Glide
+import java.text.NumberFormat
+import java.util.Currency
 
 class ProductAdapter(
     private val listener: OnProductListener,
@@ -20,19 +29,23 @@ class ProductAdapter(
 ) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     private var productList = listOf<ProductItem>()
+    private var productCustomList = listOf<Product>()
+
     private var imageBasePath: String = ""
-    private var imageBaseUrl: String = ""
+    private var fromCustomList: String = ""
     lateinit var prefs: SharedPref
     lateinit var context: Context
-    private var priceMap: Map<String, Double> = emptyMap() // InventoryID -> price
 
     fun submitData(list: List<ProductItem>, imgPath: String) {
         productList = list
         imageBasePath = imgPath
         notifyDataSetChanged()
     }
-    fun setPriceMap(prices: List<PriceItem>) {
-        priceMap = prices.associate { it.InventoryID.value to it.Price.value }
+
+    fun submitCustomData(fromCustomlist: String, list: List<Product>, imgPath: String) {
+        this.fromCustomList = fromCustomlist
+        productCustomList = list
+        imageBasePath = imgPath
         notifyDataSetChanged()
     }
 
@@ -47,66 +60,151 @@ class ProductAdapter(
         context = parent.context
         val binding =
             RowProductlistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        /* // Get screen width
+         val displayMetrics = parent.context.resources.displayMetrics
+         val screenWidth = displayMetrics.widthPixels
+
+         // Set item width to ~85% of screen width
+         val layoutParams = binding.root.layoutParams
+         layoutParams.width = (screenWidth * 0.85).toInt()
+         binding.root.layoutParams = layoutParams*/
         return ViewHolder(binding)
     }
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val product = productList[position]
-        Log.d("productList", "PRODUCT: " + productList.size)
-        with(holder.binding) {
-            prefs.addInventoryId(context, product.InventoryID.value)
-            Log.d("item_price", "onBindViewHolder: " + product.item_price.toString())
-            productTitle.text = product.CustomName.value ?: "Unnamed"
-            productWeight.text =
-                "${product.DimensionWeight.value ?: 0.0} ${product.WeightUOM.value ?: ""}"
-         //  currentPrice.text = String.format("KES %.2f", product.item_price)
-            val inventoryId = product.InventoryID.value
-            val displayPrice = if (prefs.isLoggedIn && priceMap.containsKey(inventoryId)) {
-                priceMap[inventoryId] ?: product.item_price
-            } else {
-                product.item_price
-            }
-            currentPrice.text = String.format("KES %.2f", displayPrice)
+        val binding = holder.binding
 
-            Log.d("displayPrice", "displayPrice: "+displayPrice)
+        if (fromCustomList == "FROMCustomList" && productCustomList.isNotEmpty()) {
+            val item = productCustomList[position]
 
-            imageBaseUrl = imageBasePath + product.InventoryID.value + "/images/"
-            val imageUrl = "$imageBaseUrl${product.ImageUrl.value ?: ""}"
-            Log.d("TAG", "onBindViewHolder: " + imageUrl)
-            Glide.with(productImage.context)
-                .load(imageUrl)
-                // .placeholder(com.app.gdl.R.drawable.featureimage) // Add placeholder
-                .into(productImage)
-            addToCartButton.setOnClickListener {
-                val selectedItem = CartItem(
-                    inventoryId = product.InventoryID.value,
-                    name = productTitle.text.toString(),
-                    imageUrl = imageUrl,
-                    unit = product.WeightUOM.value,
-                    quantity = 1,
-                    pricePerUnit = product.item_price,
-                    category = product.CustomCategory.value
-                )
-                CartManager.addItem(selectedItem)
-                addtocartlistener.addToCartClicked()
-            }
-            constraintDetails.setOnClickListener {
-                /* val intent = Intent(root.context, ProductByCategoryDetailsActivity::class.java)
-                 intent.putExtra("inventory_id", product.InventoryID.value)
-                 root.context.startActivity(intent)*/
-                Log.d("inventory_id", "onBindViewHolder: " + product.InventoryID.value)
-                val inventoryId = product.InventoryID.value
-                if (inventoryId.isNotEmpty()) {
-                    Log.d("inventory_id", "Clicked: $inventoryId")
-                    listener.onProductDataClicked(inventoryId)
-                } else {
-                    Log.w("inventory_id", "Inventory ID is null or empty")
+            with(binding) {
+                productTitle.text = item.CustomName?.value ?: "Unnamed"
+                productWeight.text = "${item.BaseUOM?.value}"
+                item.item_price?.value?.let { price ->
+                    currentPrice.text = formatCurrency(price)
+                    currentPrice.visibility = View.VISIBLE
                 }
 
+                val imageUrl = buildImageUrl(item.InventoryID?.value, item.ImageUrl?.value)
+
+                Glide.with(productImage.context).load(imageUrl)
+                    .placeholder(R.drawable.default_placeholder).into(productImage)
+
+                addToCartButton.setOnClickListener {
+                    if (prefs.isLoggedIn) {
+                        val cartItem = CartItem(
+                            inventoryId = item.InventoryID?.value.orEmpty(),
+                            name = productTitle.text.toString(),
+                            imageUrl = imageUrl,
+                            unit = item.WeightUOM?.value.orEmpty(),
+                            quantity = 1,
+                            pricePerUnit = item.item_price?.value ?: 0.0,
+                            BaseUOM = item.BaseUOM?.value.toString(),
+                            category = item.CustomCategory?.value.orEmpty()
+                        )
+                        addtocartlistener.addToCartClicked(cartItem)
+                        Toast.makeText(
+                            context,
+                            "Added ${item.CustomName?.value.orEmpty()} to cart",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        showAuthPromptDialog()
+                    }
+                }
+
+                constraintDetails.setOnClickListener {
+                    val inventoryId = item.InventoryID?.value.orEmpty()
+                    if (inventoryId.isNotEmpty()) {
+                        Log.d("inventory_id", "Clicked:ProductAdapter $inventoryId")
+                        listener.onProductDataClicked(inventoryId)
+                    } else {
+                        Log.w("inventory_id", "Inventory ID is null or empty")
+                    }
+                }
             }
 
+        } else if (productList.isNotEmpty()) {
+            val item = productList[position]
+
+            with(binding) {
+                productTitle.text = item.CustomName.value ?: "Unnamed"
+                productWeight.text = "${item.BaseUOM?.value}"
+
+                item.item_price.value.let { price ->
+                    currentPrice.text = formatCurrency(price)
+                    currentPrice.visibility = View.VISIBLE
+                }
+
+                val imageUrl = buildImageUrl(item.InventoryID.value, item.ImageUrl.value)
+
+                Glide.with(productImage.context).load(imageUrl)
+                    .placeholder(R.drawable.default_placeholder).into(productImage)
+
+                addToCartButton.setOnClickListener {
+                    if (prefs.isLoggedIn) {
+                        val cartItem = CartItem(
+                            inventoryId = item.InventoryID.value,
+                            name = productTitle.text.toString(),
+                            imageUrl = imageUrl,
+                            unit = item.WeightUOM.value,
+                            quantity = 1,
+                            pricePerUnit = item.item_price?.value ?: 0.0,
+                            BaseUOM = item.BaseUOM.value,
+                            category = item.CustomCategory.value
+                        )
+                        addtocartlistener.addToCartClicked(cartItem)
+
+                        Toast.makeText(
+                            context,
+                            "Added ${item.CustomName.value} to cart",
+                            Toast.LENGTH_SHORT
+                        ).apply {
+                            setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 100)
+                            show()
+                        }
+                    } else {
+                        showAuthPromptDialog()
+                    }
+                }
+
+                constraintDetails.setOnClickListener {
+                    val inventoryId = item.InventoryID.value
+                    if (inventoryId.isNotEmpty()) {
+                        Log.d("inventory_id", "Clicked:ProductAdapter $inventoryId")
+                        listener.onProductDataClicked(inventoryId)
+                    } else {
+                        Log.w("inventory_id", "Inventory ID is null or empty")
+                    }
+                }
+            }
         }
+    }
+
+    fun formatCurrency(amount: Double, currencyCode: String = "KES"): String {
+        val formatter = NumberFormat.getCurrencyInstance()
+        formatter.currency = Currency.getInstance(currencyCode)
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 2
+        return formatter.format(amount).replace(formatter.currency.symbol, currencyCode + " ")
+    }
+
+    private fun buildImageUrl(inventoryId: String?, imageName: String?): String {
+        return "$imageBasePath${inventoryId.orEmpty()}/images/${imageName.orEmpty()}"
+    }
+
+    private fun showAuthPromptDialog() {
+        AuthPromptDialog(
+            activity = context,
+            txtString = "Please log in/sign up to add items to your cart",
+            onRegisterClicked = {
+                context.startActivity(Intent(context, SignUpActivity::class.java))
+            },
+            onSignInClicked = {
+                context.startActivity(Intent(context, SignInActivity::class.java))
+            }
+        ).show()
     }
 
     interface OnProductListener {
@@ -114,10 +212,16 @@ class ProductAdapter(
     }
 
     interface AddToCartListener {
-        fun addToCartClicked()
+        fun addToCartClicked(item: CartItem)
     }
 
+    override fun getItemCount(): Int {
+        return if (fromCustomList == "FROMCustomList" && productCustomList.isNotEmpty()) {
+            productCustomList.size
+        } else {
+            productList.size
+        }
+    }
 
-    override fun getItemCount() = productList.size
 }
 

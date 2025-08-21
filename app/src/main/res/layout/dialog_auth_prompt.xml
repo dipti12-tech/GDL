@@ -11,7 +11,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Please Sign In or Register"
+        android:text=""
         android:textAppearance="@style/header_title"
         android:layout_marginBottom="16dp" />
 
@@ -30,6 +30,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign In"
+        android:textAppearance="@style/textview"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/white_square_bg" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:visibility="gone"
         android:textAppearance="@style/textview"
         android:layout_marginBottom="12dp"
         android:background="@drawable/white_square_bg" />

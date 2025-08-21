@@ -1,18 +1,27 @@
 package com.app.gdl.presentation.ui.activity
 
 import android.Manifest
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.ColorDrawable
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.SpannableStringBuilder
 import android.util.Log
+import android.view.Gravity
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
+import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.BounceInterpolator
 import android.widget.ImageView
+import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,48 +29,53 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.lifecycleScope
 import coil.decode.SvgDecoder
 import coil.load
+import com.app.gdl.BuildConfig
 import com.app.gdl.R
 import com.app.gdl.data.model.Warehouse
 import com.app.gdl.databinding.ActivityMainBinding
 import com.app.gdl.databinding.ToolbarHeaderBinding
-import com.app.gdl.domain.repository.WarehouseRepository
 import com.app.gdl.presentation.ui.adapters.CartAdapter
-import com.app.gdl.presentation.ui.adapters.SearchSuggestionsAdapter
+import com.app.gdl.presentation.ui.dialog.CityPickerDialogFragment
 import com.app.gdl.presentation.ui.fragment.HomeFragment
+import com.app.gdl.presentation.ui.fragment.MyOrdersHistoryFragment
+import com.app.gdl.presentation.ui.fragment.ShopByCategoryFragment
 import com.app.gdl.presentation.ui.fragment.ShoppingCartFragment
-import com.app.gdl.presentation.viewmodel.CategoryViewModel
 import com.app.gdl.presentation.viewmodel.WarehouseViewModel
+import com.app.gdl.utils.AnalyticsHelper
+import com.app.gdl.utils.AuthPromptDialog
 import com.app.gdl.utils.CartManager
+import com.app.gdl.utils.PermissionManager
 import com.app.gdl.utils.SharedPref
 import com.google.android.gms.location.LocationServices
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FetchPlaceRequest
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.IOException
 import java.util.Locale
-import kotlin.math.*
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
+class MainActivity : AppCompatActivity(), CartAdapter.CartItemCountListener {
 
-   // private var etStreetInBottomSheet: EditText? = null
-   // private var etSearch: EditText? = null
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var toolbarBinding: ToolbarHeaderBinding
+
+    private val warehouseViewModel: WarehouseViewModel by viewModels()
+    private lateinit var prefs: SharedPref
+
+    private var cities: List<String> = emptyList()
+    private var warehousesList: List<Warehouse> = emptyList()
+
     private var finalAddress: String? = null
     private var headingAddress: String? = null
-   // var addressUser: String = ""
-    var from: String=""
-    lateinit var prefs: SharedPref
-    private val warehouseViewModel: WarehouseViewModel by viewModels()
+    private var address: String = ""
+    private var warehouseData :String?=null
+    private var from: String = ""
+    private var addressFromSignUp: String = ""
 
     private val mapResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -69,55 +83,125 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
                 val address = it.data?.getStringExtra("address")
                 headingAddress = it.data?.getStringExtra("headingAddress")
                 finalAddress = address
-                binding.deliveryLocation.text = finalAddress
-               // addressType = it.data?.getStringExtra("addressType").toString()
-              //  lat = it.data?.getDoubleExtra("lat", 0.0) ?: 0.0
-               // lng = it.data?.getDoubleExtra("lng", 0.0) ?: 0.0
-
+                binding.deliveryLocation.text = address
             }
         }
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var toolbarBinding: ToolbarHeaderBinding
 
-    var address: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        prefs = SharedPref(this)
+        AnalyticsHelper.logScreenView(this, "MainActivity")
 
-        setupPickLocation()
-        getCurrentLocation()
-    //    addressUser = intent.getStringExtra("addressUser").toString()
-        from = intent.getStringExtra("from").toString()
+        supportFragmentManager.addOnBackStackChangedListener {
+            updateToolbarNavigation()
 
-        if(from.equals("SignUp")){
-            CartManager.clearCart()
         }
-        val headerView = binding.navView.getHeaderView(0)
-       val tvName = headerView.findViewById<TextView>(R.id.textViewName)
-        val tvMobile = headerView.findViewById<TextView>(R.id.textViewMobile)
-        Log.d("TAG", "onCreate: " +"Name"+ prefs.name+"Mobile"+prefs.mobile+"Address"+prefs.userAdrress)
 
-        tvName.text = if (!prefs.name.isNullOrBlank()) prefs.name else "Guest User"
-        tvMobile.text = prefs.mobile.orEmpty()
+        prefs = SharedPref(this)
+        from = intent.getStringExtra("from").orEmpty()
+        addressFromSignUp = intent.getStringExtra("addressUser").orEmpty()
+
+        if (from == "SignUp") CartManager.clearCart()
+
+        if (!addressFromSignUp.isNullOrBlank() && addressFromSignUp != "null") {
+            binding.deliveryLocation.text = SpannableStringBuilder(addressFromSignUp)
+        } else {
+            binding.deliveryLocation.text = prefs.userAdrress
+        }
+
+        observeWarehouseData()
+        observeSelectedPriceClass()
+        observeSelectedWarehouse()
+
+        setupToolbar()
+        setupNavigationDrawer()
+        setupClickListeners()
+
+        if (savedInstanceState == null) {
+            navigateTo(HomeFragment.newInstance(address), addToBackStack = false)
+        }
+    }
+
+    private fun observeWarehouseData() {
+        warehouseViewModel.loadWarehouses()
+        warehouseViewModel.warehouses.observe(this) { response ->
+            if (!response.isNullOrEmpty()) {
+                warehousesList = response
+                cities = response.map { it.city }.distinct().toMutableList().apply {
+                    add(0, "Select a city")
+                }
+                prefs.savedCities = cities
+
+                if (!PermissionManager.hasAllPermissions(this)) {
+                    if (!prefs.hasPermissionBeenRequestedOnce) {
+                        prefs.hasPermissionBeenRequestedOnce = true
+                        PermissionManager.requestAllPermissions(this)
+                    } else if (!prefs.citySelected && from!="SignIn") {
+                        showCityPopupIfNeeded()
+                    }
+                }
+                else if (from == "SignUp") {
+                    getCurrentCityOnly()
+                }
 
 
-        // Set Toolbar
+                else if (!prefs.citySelected && from != "SignUp" && from != "SignIn" && from != "SignUp") {
+                    showCityPopupIfNeeded()
+                }
+            }
+        }
+    }
+
+    private fun observeSelectedPriceClass() {
+        warehouseViewModel.selectedPriceClass.observe(this) { priceClass ->
+            Handler(Looper.getMainLooper()).postDelayed({
+                val fragment = supportFragmentManager.findFragmentById(R.id.main_content)
+                if (fragment is HomeFragment) {
+                    val customer = prefs.getCustomerFromPrefs(this)
+                    val priceclass = customer?.address?.getOrNull(0)?.price_class.orEmpty()
+
+                    if (prefs.isLoggedIn && priceclass != "null" && priceclass.isNotBlank()) {
+                        fragment.fetchPopularItemsWithNewPriceClass(priceclass,warehouseData)
+                    } else {
+                        fragment.fetchPopularItemsWithNewPriceClass(priceClass,warehouseData)
+                    }
+                } else {
+                    Log.e("MainActivity", "HomeFragment not attached yet")
+                }
+            }, 300)
+        }
+    }
+
+    private fun observeSelectedWarehouse() {
+        warehouseViewModel.selectedWarehouse.observe(this) { warehouse ->
+            Log.d("SelectedWarehouse", "Warehouse: $warehouse")
+            warehouseData= warehouse
+        }
+    }
+
+    private fun setupToolbar() {
         toolbarBinding = binding.toolbarHeader
         setSupportActionBar(toolbarBinding.customToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        toolbarBinding.customToolbar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
-        Log.d("CartManagerMainactivity", "Cart size: ${CartManager.getItems().size}")
-        if(CartManager.getItems().size==0){
-            toolbarBinding.cartBadge.visibility=View.GONE
-        }else{
-            toolbarBinding.cartBadge.visibility=View.VISIBLE
-            toolbarBinding.cartBadge.text = "${CartManager.getItems().size}"
+       // supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_arrow) // Add your own back icon
+        toolbarBinding.appTitle.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
         }
 
         toolbarBinding.menuIcon.load("file:///android_asset/hamberger.svg") {
             decoderFactory(SvgDecoder.Factory())
+        }
+        toolbarBinding.appTitle.load("file:///android_asset/appname_header.svg") {
+            decoderFactory(SvgDecoder.Factory())
+
         }
         toolbarBinding.userIcon.load("file:///android_asset/user.svg") {
             decoderFactory(SvgDecoder.Factory())
@@ -126,79 +210,145 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
             decoderFactory(SvgDecoder.Factory())
         }
 
-        // Menu icon opens/closes drawer
-        toolbarBinding.menuIcon.setOnClickListener {
-            if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                binding.drawerLayout.closeDrawer(GravityCompat.START)
-            } else {
-                binding.drawerLayout.openDrawer(GravityCompat.START)
+
+
+        toolbarBinding.cartBadge.apply {
+            CartManager.cartLiveData.observe(this@MainActivity) { cartItems ->
+                if (cartItems.isNotEmpty()) {
+                    visibility = View.VISIBLE
+                    text = cartItems.size.toString()
+                    animateCartBadge(this)
+                } else {
+                    visibility = View.GONE
+                }
             }
         }
-        // User Icon click listener (if needed)
-        toolbarBinding.userIcon.setOnClickListener {
-            // You can navigate to user profile or show a dialog here
-        }
 
-        // Cart Icon click listener (if needed)
         toolbarBinding.cartIcon.setOnClickListener {
-            // Navigate to cart screen or fragment
-            navigateTo(ShoppingCartFragment.newInstance())
-
+            if (CartManager.getItems().isNotEmpty()) {
+                navigateTo(ShoppingCartFragment.newInstance(), true)
+            }
         }
+
         toolbarBinding.cartBadge.setOnClickListener {
-            // Navigate to cart screen or fragment
-            navigateTo(ShoppingCartFragment.newInstance())
-
+            if (CartManager.getItems().isNotEmpty()) {
+                navigateTo(ShoppingCartFragment.newInstance(), true)
+            }
         }
 
+        toolbarBinding.userIcon.setOnClickListener {
+            if (prefs.isLoggedIn) {
+                showLogoutPopup()
+            } else {
+                AuthPromptDialog(
+                    activity = this,
+                    txtString = "Please log in/sign up to add items to your cart",
+                    onRegisterClicked = { startActivity(Intent(this, SignUpActivity::class.java)) },
+                    onSignInClicked = { startActivity(Intent(this, SignInActivity::class.java)) }
+                ).show()
+            }
+        }
+    }
 
+    private fun setupNavigationDrawer() {
+        val headerView = binding.navView.getHeaderView(0)
+        val tvName = headerView.findViewById<TextView>(R.id.textViewName)
+        val tvMobile = headerView.findViewById<TextView>(R.id.textViewMobile)
+        val close = headerView.findViewById<ImageView>(R.id.closeIcon)
 
-        // Set up NavigationView menu item selection
+        tvName.text = prefs.name ?: "Guest User"
+        tvMobile.text = prefs.mobile.orEmpty()
+        val versionName = BuildConfig.VERSION_NAME
+        findViewById<TextView>(R.id.textViewVersion).text = "Version $versionName"
+
+        close.setOnClickListener {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        if (!prefs.userAdrress.isNullOrBlank()) {
+            binding.deliveryLocation.text = prefs.userAdrress
+        }
+
         binding.navView.setNavigationItemSelectedListener { menuItem ->
-
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    navigateTo(HomeFragment.newInstance(address))
-                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    navigateTo(HomeFragment.newInstance(address), addToBackStack = true)
                     true
                 }
 
-                R.id.nav_logout -> {
-                    prefs.isLoggedIn = false
-                    prefs.clearSession()
-                 //   CartManager.clearCart()
-                    intent = Intent(this, SignInActivity::class.java)
+                R.id.nav_orders -> {
+                    if (prefs.isLoggedIn) {
+                        navigateTo(
+                            MyOrdersHistoryFragment.newInstance(prefs.custid.toString()),
+                            addToBackStack = true
+                        )
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Please log in/sign up to view items",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    true
+                }
+
+                R.id.nav_shopbycategory -> {
+                    navigateTo(ShopByCategoryFragment.newInstance(address), addToBackStack = true)
+                    true
+                }
+                /*R.id.nav_Privacy -> {
+                    val url = "https://www.example.com"
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                     startActivity(intent)
 
                     true
                 }
+                R.id.nav_terms_of_use -> {
+                    val url = "https://www.example.com"
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivity(intent)
+
+                    true
+                }*/
 
                 else -> false
+            }.also {
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
             }
         }
+    }
 
-        if (savedInstanceState == null) {
-            navigateTo(HomeFragment.newInstance(address))
-        }
-        warehouseViewModel.loadWarehouses()
-        warehouseViewModel.warehouses.observe(this) { response  ->
-            Log.d("ResponseWith Warehouse", "Received: $response")
-            val cities = response.map { it.city }.distinct()
-            Log.d("ResponseWith Warehouse", "Received: ${cities.toString()}")
-
+    private fun setupClickListeners() {
+        binding.deliveryLocation.setOnClickListener {
+            if (!prefs.isLoggedIn) {
+                AuthPromptDialog(
+                    activity = this,
+                    txtString = "Please log in to save/access your addresses",
+                    onRegisterClicked = { startActivity(Intent(this, SignUpActivity::class.java)) },
+                    onSignInClicked = { startActivity(Intent(this, SignInActivity::class.java)) }
+                ).show()
+            }
         }
     }
 
-    override fun onBackPressed() {
-            if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                binding.drawerLayout.closeDrawer(GravityCompat.START)
-            } else if (supportFragmentManager.backStackEntryCount > 0) {
-                supportFragmentManager.popBackStack()  // Pops the current fragment
-            } else {
-                super.onBackPressed()
-        }
+    private fun showLogoutPopup() {
+        val view = layoutInflater.inflate(R.layout.logout_popup, null)
+        val popupWindow = PopupWindow(view, 300, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+        popupWindow.elevation = 10f
+        popupWindow.setBackgroundDrawable(ColorDrawable())
+        popupWindow.isOutsideTouchable = true
 
+        popupWindow.showAtLocation(toolbarBinding.userIcon, Gravity.TOP or Gravity.END, 40, 30)
+
+        view.findViewById<TextView>(R.id.btnLogout).setOnClickListener {
+            popupWindow.dismiss()
+            prefs.clearSession()
+            CartManager.clearCart()
+            startActivity(Intent(this, SignInActivity::class.java))
+            finish()
+        }
     }
+
     private fun navigateTo(fragment: Fragment, addToBackStack: Boolean = false) {
         val transaction = supportFragmentManager.beginTransaction()
             .replace(R.id.main_content, fragment)
@@ -208,137 +358,139 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
         }
 
         transaction.commit()
+        updateToolbarNavigation()
+
     }
 
-    private fun setupPickLocation() {
-        var isTextFromUser = true
-        val bottomSheetView = layoutInflater.inflate(R.layout.layout_location_bottom_sheet, null)
-     //   etSearch = bottomSheetView.findViewById(R.id.etSearchLocation)
-        val bottomSheetDialog = BottomSheetDialog(this)
-        bottomSheetDialog.setContentView(bottomSheetView)
-        if (prefs.userAdrress?.isNotEmpty() == true) {
-
-            binding.deliveryLocation.text = prefs.userAdrress
+    private fun showCitySpinnerPopup(anchorView: View) {
+        if (cities.isEmpty()) return
+        val dialog = CityPickerDialogFragment(
+            cities = cities,
+            prefs = prefs,
+            warehousesList = warehousesList
+        ) { selected ->
+            binding.deliveryLocation.text = SpannableStringBuilder(selected)
+            prefs.citySelected = true
+            warehouseViewModel.onCitySelected(selected, warehousesList)
         }
-        binding.deliveryLocation.setOnClickListener {
-            if (!Places.isInitialized()) {
-                Places.initialize(this, getString(R.string.google_maps_key))
+        dialog.show(supportFragmentManager, "CityPickerDialog")
+    }
+
+    private fun showCityPopupIfNeeded() {
+        if (!prefs.citySelected || prefs.userAdrress.isNullOrBlank() || from == "SignUp" ) {
+            if (cities.isNotEmpty()) {
+                val rootView = window.decorView.findViewById<View>(android.R.id.content)
+                rootView.post { showCitySpinnerPopup(rootView) }
             }
-            val placesClient = Places.createClient(this)
+        }
+    }
 
-          //  val rvSearchResults = bottomSheetView.findViewById<RecyclerView>(R.id.rvSearchResults)
-            val searchAdapter = SearchSuggestionsAdapter { prediction ->
-                val placeId = prediction.placeId
-                val request = FetchPlaceRequest.builder(
-                    placeId,
-                    listOf(Place.Field.LAT_LNG, Place.Field.ADDRESS)
-                ).build()
+    override fun onBackPressed() {
+        when {
+            binding.drawerLayout.isDrawerOpen(GravityCompat.START) -> {
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
+            }
 
-                placesClient.fetchPlace(request).addOnSuccessListener { response ->
-                    val place = response.place
-                    finalAddress = place.address
 
-                    val latLng = place.latLng
-                    if (latLng != null) {
-                        val geocoder = Geocoder(this, Locale.getDefault())
-                        val addressList =
-                            geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-                        if (!addressList.isNullOrEmpty()) {
-                            val addr = addressList[0]
-//                            finalAddress = addr.getAddressLine(0)
+            supportFragmentManager.backStackEntryCount > 0 -> {
+                supportFragmentManager.popBackStack()
+                updateToolbarNavigation()
+            }
 
-                            val featureName = addr.featureName ?: ""
-                            val fullAddress = addr.getAddressLine(0) ?: ""
+            else -> super.onBackPressed()
+        }
+    }
 
-                            val cleanedAddress = if (fullAddress.startsWith(featureName)) {
-                                fullAddress.removePrefix(featureName).trimStart(',', ' ')
-                            } else {
-                                fullAddress
-                            }
-                            val area = addr.subLocality
-                            val city = addr.locality
-                            val state = addr.adminArea
-                            headingAddress = listOfNotNull(area, city, state).joinToString(", ")
-                            finalAddress = cleanedAddress
-                        } else {
-                            headingAddress = place.name ?: place.address
-                        }
+    override fun onCartItemCountChanged(count: Int) {
+        toolbarBinding.cartBadge.apply {
+            visibility = if (count == 0) View.GONE else View.VISIBLE
+            text = count.toString()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        PermissionManager.handlePermissionsResult(
+            this,
+            requestCode,
+            permissions,
+            grantResults,
+            onAllGranted = {
+                prefs.hasPermissionBeenRequestedOnce = true
+                Toast.makeText(this, "All permissions granted!", Toast.LENGTH_SHORT).show()
+                //city current city is matching with list of cities if not then show popup
+                // otherwise diretly show the city name on deliveryto
+                getCurrentCityOnly()
+
+            },
+            onSomeDenied = { denied ->
+                if (denied.contains(Manifest.permission.ACCESS_FINE_LOCATION) ||
+                    denied.contains(Manifest.permission.ACCESS_COARSE_LOCATION)
+                ) {
+                    if (!prefs.citySelected) {
+                        showCityPopupIfNeeded()
                     }
-
-                    isTextFromUser = false
-                   /* etStreetInBottomSheet?.setText(finalAddress)
-                    etSearch?.setText(finalAddress)
-                    etSearch?.clearFocus()
-                    isTextFromUser = true
-                    rvSearchResults.visibility = View.GONE*/
-
-
-                }.addOnFailureListener {
-                    Log.e("PlacesError", "Failed to fetch place details", it)
-                    Toast.makeText(
-                        this,
-                        "Failed to fetch place details",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
+        )
+    }
 
-         /*   rvSearchResults.layoutManager = LinearLayoutManager(this)
-            rvSearchResults.adapter = searchAdapter
-*/
-         /*   val etSearch = bottomSheetView.findViewById<EditText>(R.id.etSearchLocation)
-            etSearch.addTextChangedListener {
-                if (!isTextFromUser) return@addTextChangedListener
-                val query = it.toString()
-                if (query.length > 2) {
-                    val token = AutocompleteSessionToken.newInstance()
-                    val request = FindAutocompletePredictionsRequest.builder()
-                        .setSessionToken(token)
-                        .setQuery(query)
-                        .build()
+    private fun animateCartBadge(badgeView: TextView) {
+        val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
+            badgeView,
+            PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 1.8f),
+            PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1.8f)
+        ).apply {
+            duration = 750
+            interpolator = AccelerateDecelerateInterpolator()
+        }
 
-                    placesClient.findAutocompletePredictions(request)
-                        .addOnSuccessListener { response ->
-                            searchAdapter.submitList(response.autocompletePredictions)
-                            rvSearchResults.visibility = View.VISIBLE
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e("PlacesError", "Prediction failed", e)
-                            Toast.makeText(
-                                this,
-                                "Prediction failed: ${e.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                } else {
-                    rvSearchResults.visibility = View.GONE
-                }
-            }
-*/
-          //  etStreetInBottomSheet = bottomSheetView.findViewById(R.id.etStreetAddress)
+        val alphaFlash = ObjectAnimator.ofFloat(badgeView, View.ALPHA, 2f, 0.6f, 2f).apply {
+            duration = 750
+        }
 
-            bottomSheetView.findViewById<Button>(R.id.btnNearCurrent).setOnClickListener {
-              //  getCurrentLocation()
-                val intent = Intent(this, MapPickerActivity::class.java)
-                mapResultLauncher.launch(intent)
-                bottomSheetDialog.dismiss()
-            }
+        val scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+            badgeView,
+            PropertyValuesHolder.ofFloat(View.SCALE_X, 1.8f, 1f),
+            PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.8f, 1f)
+        ).apply {
+            duration = 750
+            interpolator = BounceInterpolator()
+        }
 
-            bottomSheetView.findViewById<Button>(R.id.btnFarAway).setOnClickListener {
-                val intent = Intent(this, MapPickerActivity::class.java)
-                mapResultLauncher.launch(intent)
-                bottomSheetDialog.dismiss()
-            }
-
-            bottomSheetView.findViewById<ImageView>(R.id.ivClose).setOnClickListener {
-                bottomSheetDialog.dismiss()
-            }
-
-            bottomSheetDialog.show()
+        AnimatorSet().apply {
+            playSequentially(AnimatorSet().apply { playTogether(scaleUp, alphaFlash) }, scaleDown)
+            start()
         }
     }
 
-    private fun getCurrentLocation() {
+    private fun updateToolbarNavigation() {
+        val showBackButton = supportFragmentManager.backStackEntryCount > 0
+        if (showBackButton) {
+            toolbarBinding.menuIcon.setImageResource(R.drawable.ic_back_arrow) // Replace with your back icon
+            toolbarBinding.menuIcon.visibility = View.VISIBLE
+            toolbarBinding.menuIcon.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
+        } else {
+            toolbarBinding.menuIcon.visibility = View.VISIBLE
+            toolbarBinding.menuIcon.load("file:///android_asset/hamberger.svg") {
+                decoderFactory(SvgDecoder.Factory())
+            }
+            toolbarBinding.menuIcon.setOnClickListener {
+                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    binding.drawerLayout.openDrawer(GravityCompat.START)
+                }
+            }
+        }
+    }
+
+    private fun getCurrentCityOnly() {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         if (ActivityCompat.checkSelfPermission(
@@ -359,66 +511,74 @@ class MainActivity : AppCompatActivity(),CartAdapter.CartItemCountListener {
                 val lat = location.latitude
                 val lng = location.longitude
 
-                val geocoder = Geocoder(this, Locale.getDefault())
-                val address = geocoder.getFromLocation(lat, lng, 1)
-                if (!address.isNullOrEmpty()) {
-                    val addr = address[0]
-//                  finalAddress = addr.getAddressLine(0)
-                    val featureName = addr.featureName ?: ""
-                    val fullAddress = addr.getAddressLine(0) ?: ""
+                if (Geocoder.isPresent()) {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        try {
+                            val geocoder = Geocoder(this@MainActivity, Locale.getDefault())
+                            val addressList = geocoder.getFromLocation(lat, lng, 1)
+                            if (!addressList.isNullOrEmpty()) {
+                                val city = addressList[0].locality ?: "Unknown"
 
-                    val cleanedAddress = if (fullAddress.startsWith(featureName)) {
-                        fullAddress.removePrefix(featureName).trimStart(',', ' ')
-                    } else {
-                        fullAddress
+                                withContext(Dispatchers.Main) {
+                                    Log.d(
+                                        "CITIES==",
+                                        "getCurrentCityOnly: " + cities.size + "CITY" + city
+                                    )
+                                    if (!city.isNullOrEmpty()) {
+                                        val isMatch = cities.any {
+                                            it.equals(
+                                                city,
+                                                ignoreCase = true
+                                            )
+                                        }
+                                        if (isMatch) {
+                                            Log.d("CityCheck", "City $city is supported")
+                                            prefs.citySelected = true
+                                            prefs.userAdrress = city
+                                            binding.deliveryLocation.text =
+                                                SpannableStringBuilder(city)
+
+                                            warehouseViewModel.onCitySelected(city, warehousesList)
+
+                                        } else {
+                                            Log.d("CityCheck", "City $city is NOT supported"+prefs.citySelected)
+                                           if (!prefs.citySelected) {
+                                                showCityPopupIfNeeded()
+                                            }else if(from=="SignUp"){
+                                               showCityPopupIfNeeded()
+
+                                           }
+
+                                        }
+                                    }
+
+                                }
+                            } else {
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        this@MainActivity,
+                                        "Unable to get city",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "Geocoder failed",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
                     }
-
-                    val area = addr.subLocality
-                    val city = addr.locality
-                    val state = addr.adminArea
-                    headingAddress = "$area, $city, $state"
-                    finalAddress = cleanedAddress
                 }
-                binding.deliveryLocation.text =
-                    "${SpannableStringBuilder(finalAddress)}"
-
-          //      etStreetInBottomSheet?.setText(finalAddress)
-          //      etSearch?.setText(finalAddress)
-
             } else {
-                Toast.makeText(this, "Couldn't fetch location", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, "Couldn't fetch location", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    override fun onCartItemCountChanged(count: Int) {
-        Log.d("COUNT", "onCartItemCountChanged: "+count)
-        if(count==0){
-            toolbarBinding.cartBadge.visibility =View.GONE
-        }else
-        {
-            toolbarBinding.cartBadge.visibility =View.VISIBLE
-            toolbarBinding.cartBadge.text ="${count}"
-        }
-    }
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == 101) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted
-                getCurrentLocation()
-            } else {
-                // Permission denied
-                Toast.makeText(this, "Location permission denied. Please allow it in settings.", Toast.LENGTH_LONG).show()
-                //show the cities list popup here
-            }
-        }
-    }
 
 }

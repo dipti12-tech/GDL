@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_orderplacd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/successCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_default"
+            android:layout_marginRight="@dimen/padding_default"
+            app:cardBackgroundColor="@color/white"
+            app:strokeColor="#065F46"
+            app:strokeWidth="1dp"
+            android:layout_marginTop="@dimen/padding_default"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_default"
+                android:layout_gravity="center">
+
+
+                <TextView
+                    android:id="@+id/successTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Your order has been received"
+                    android:textAppearance="@style/header_title"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/successDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Thanks for shopping at Gilani’s! We will send you an update once your items have been shipped."
+                    android:textAppearance="@style/textview"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:id="@+id/shippingInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_default"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="@dimen/padding_default"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/successCard">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shipping address"
+                    android:textAppearance="@style/textview"
+                    android:textColor="#8A8A8A"
+
+                    />
+
+                <TextView
+                    android:id="@+id/shippingaddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text=""
+                    android:textAppearance="@style/textview"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Order placed"
+                    android:textColor="#8A8A8A"
+                    android:textAppearance="@style/textview"
+
+                    />
+
+                <TextView
+                    android:id="@+id/orderplaced"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text=""
+                    android:textAppearance="@style/textview"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/itemsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_default"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="@dimen/padding_default"
+            android:text="Items in this order"
+            android:textAppearance="@style/header_title"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/shippingInfo" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_default"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="@dimen/padding_default"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@id/btnContinue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/itemsTitle" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_btn_all"
+            android:padding="@dimen/padding_8dp"
+            android:layout_marginTop="@dimen/padding_default"
+            android:text="@string/continue_shopping"
+            android:textAllCaps="false"
+            android:textAppearance="@style/textview"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerItems"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_24dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnContinue">
+
+            <LinearLayout
+                android:id="@+id/llCreateAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_createaccount"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/padding_24dp"
+                android:paddingTop="@dimen/padding_8dp"
+                android:paddingRight="@dimen/padding_24dp"
+                android:paddingBottom="@dimen/padding_8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_createacc"
+                    android:drawablePadding="@dimen/padding_8dp"
+                    android:text="@string/ic_create"
+                    android:textAppearance="@style/textview"
+                    android:textColor="#FCFCFC" />
+
+                <TextView
+                    android:id="@+id/header_signup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/padding_8dp"
+                    android:text="@string/signup"
+                    android:textAppearance="@style/textview"
+                    android:textColor="#FFFFFF"
+
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginLeft="@dimen/padding_8dp"
+                android:layout_marginRight="@dimen/padding_8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/padding_24dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gilanis"
+                        android:textAppearance="@style/header_title" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_8dp"
+                        android:text="@string/download"
+                        android:textAppearance="@style/textview" />
+
+                    <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_google_play" />
+                </LinearLayout>
+
+                <ImageView
+
+                    android:layout_width="120dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="@dimen/padding_8dp"
+                    android:src="@drawable/ic_profile_image" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_8dp"
+                android:layout_marginRight="@dimen/padding_8dp"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/padding_24dp"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Help"
+                        android:textAppearance="@style/header_title" />
+                    />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_4dp"
+                        android:text="Customer service "
+                        android:textAppearance="@style/textview" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="Delivery"
+                        android:textAppearance="@style/textview" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="Answers"
+                        android:textAppearance="@style/textview" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_6dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Shop online"
+                        android:textAppearance="@style/header_title" />
+                    />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_4dp"
+                        android:text="My account"
+                        android:textAppearance="@style/textview" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="My orders"
+                        android:textAppearance="@style/textview" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="Re-order"
+                        android:textAppearance="@style/textview" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="Deals"
+                        android:textAppearance="@style/textview" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Connect"
+                        android:textAppearance="@style/header_title" />
+                    />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_4dp"
+                        android:text="Partner with us"
+                        android:textAppearance="@style/textview" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="Restaurants"
+                        android:textAppearance="@style/textview" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="Careers"
+                        android:textAppearance="@style/textview" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/padding_2dp"
+                        android:text="Contact us"
+                        android:textAppearance="@style/textview" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_8dp"
+                android:layout_marginRight="@dimen/padding_8dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/padding_default">
+
+                    <ImageView
+
+                        android:layout_width="@dimen/padding_default"
+                        android:layout_height="@dimen/padding_default"
+                        android:layout_marginEnd="@dimen/padding_8dp"
+                        android:src="@drawable/phone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/padding_8dp"
+                        android:text="Phone"
+                        android:textAppearance="@style/textview">
+
+                    </TextView>
+
+                    <ImageView
+                        android:layout_width="@dimen/padding_default"
+                        android:layout_height="@dimen/padding_default"
+                        android:layout_marginEnd="@dimen/padding_8dp"
+                        android:src="@drawable/envelope" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:textAppearance="@style/textview">
+
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_default"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/padding_6dp">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_marginEnd="@dimen/padding_8dp"
+                        android:src="@drawable/ic_mpesa" />
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_marginEnd="@dimen/padding_8dp"
+                        android:src="@drawable/ic_visa" />
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/ic_mastercard" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F2F2F2"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_8dp"
+                    android:layout_marginTop="@dimen/padding_8dp"
+                    android:layout_marginEnd="@dimen/padding_8dp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="@dimen/padding_8dp"
+                        android:text="@string/privacy_policy"
+                        android:textAppearance="@style/textview"
+                        android:textColor="@color/bg_text"
+                        android:textSize="@dimen/textsize_14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="@dimen/padding_8dp"
+                        android:text="@string/terms_conditions"
+                        android:textAppearance="@style/textview"
+                        android:textColor="@color/bg_text"
+                        android:textSize="@dimen/textsize_14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/purchase_order_terms"
+                        android:textAppearance="@style/textview"
+                        android:textColor="@color/bg_text"
+                        android:textSize="@dimen/textsize_14sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="9dp"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/store_directory"
+                        android:textAppearance="@style/textview"
+                        android:textColor="@color/bg_text"
+                        android:textSize="@dimen/textsize_14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/padding_8dp"
+                android:layout_marginTop="@dimen/padding_8dp"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/padding_24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_marginEnd="@dimen/padding_8dp"
+                    android:text="@string/copyright"
+                    android:textAppearance="@style/textview" />
+
+                <ImageView
+                    android:id="@+id/img_logo"
+                    android:layout_width="@dimen/padding_32dp"
+                    android:layout_height="@dimen/padding_32dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/padding_8dp">
+
+                </ImageView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|end"
+                    android:layout_marginStart="@dimen/padding_default"
+                    android:layout_marginEnd="@dimen/padding_8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/padding_24dp"
+                        android:layout_height="@dimen/padding_24dp"
+                        android:layout_marginStart="@dimen/padding_8dp"
+                        android:src="@drawable/ic_facebook" />
+
+                    <ImageView
+                        android:layout_width="@dimen/padding_24dp"
+                        android:layout_height="@dimen/padding_24dp"
+                        android:layout_marginEnd="@dimen/padding_8dp"
+                        android:src="@drawable/ic_twitter" />
+
+                    <ImageView
+                        android:layout_width="@dimen/padding_24dp"
+                        android:layout_height="@dimen/padding_24dp"
+                        android:src="@drawable/ic_linkedin" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

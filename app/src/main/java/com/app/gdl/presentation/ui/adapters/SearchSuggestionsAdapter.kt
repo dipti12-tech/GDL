@@ -17,11 +17,17 @@ class SearchSuggestionsAdapter(
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<AutocompletePrediction>() {
-            override fun areItemsTheSame(old: AutocompletePrediction, newItem: AutocompletePrediction): Boolean {
+            override fun areItemsTheSame(
+                old: AutocompletePrediction,
+                newItem: AutocompletePrediction
+            ): Boolean {
                 return old.placeId == newItem.placeId
             }
 
-            override fun areContentsTheSame(old: AutocompletePrediction, newItem: AutocompletePrediction): Boolean {
+            override fun areContentsTheSame(
+                old: AutocompletePrediction,
+                newItem: AutocompletePrediction
+            ): Boolean {
                 return old.getFullText(null) == newItem.getFullText(null)
             }
         }

@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_address_card"
+    android:padding="@dimen/padding_8dp"
+    android:layout_marginTop="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_50dp"
+        android:orientation="horizontal"
+        android:gravity="top|left">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/home"
+         />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:layout_marginStart="8dp"
+            android:textAppearance="@style/header_title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You are here"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/bg_createaccount"
+            android:textAppearance="@style/textview" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_saveaddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Full Address"
+        android:layout_marginStart="@dimen/padding_70dp"
+        android:textAppearance="@style/textview" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Phone number: 8329191493"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="@dimen/padding_70dp"
+        android:textAppearance="@style/textview" />
+
+</LinearLayout>

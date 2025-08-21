@@ -3,5 +3,7 @@ package com.app.gdl.domain.repository
 import com.app.gdl.data.model.CategoryResponse
 
 interface AllCategoryRepository {
-    suspend fun getAllCategories(): CategoryResponse
+
+    suspend fun getFeaturedCategories(): CategoryResponse
+
 }

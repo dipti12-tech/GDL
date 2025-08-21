@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_image">
 
-    <!-- Top Header Links -->
     <LinearLayout
         android:id="@+id/top_links"
         android:layout_width="match_parent"
@@ -17,22 +16,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Home link -->
         <TextView
             android:id="@+id/tv_home"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
+            android:layout_weight="1"
             android:drawableLeft="@drawable/ic_backarrow"
             android:drawablePadding="@dimen/padding_8dp"
             android:fontFamily="@font/sourcesanregular"
             android:text="Home"
-            android:layout_weight="1"
             android:textColor="#FFFFFF"
             android:textSize="@dimen/textsize_13sp"
             android:textStyle="bold" />
 
-        <!-- Lock Icon -->
         <ImageView
             android:id="@+id/iv_lock"
             android:layout_width="16dp"
@@ -40,7 +37,6 @@
             android:layout_marginEnd="4dp"
             android:src="@drawable/ic_lock" />
 
-        <!-- Secure Text -->
         <TextView
             android:id="@+id/tv_secure"
             android:layout_width="wrap_content"
@@ -51,7 +47,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_13sp" />
     </LinearLayout>
-    <!-- Login CardView (centered) -->
+
     <androidx.cardview.widget.CardView
         android:id="@+id/card_login"
         android:layout_width="0dp"
@@ -70,7 +66,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Title Text -->
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
@@ -89,7 +84,6 @@
                 android:text="@string/emailmobile"
                 android:textAppearance="@style/textview" />
 
-            <!-- Mobile EditText -->
             <EditText
                 android:id="@+id/et_email_mobile"
                 android:layout_width="match_parent"
@@ -112,78 +106,72 @@
                 android:textColor="#424242"
                 android:textSize="14sp" />
 
-            <!-- Password EditText -->
-            <EditText
-                android:id="@+id/et_password"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/edt_height"
-                android:layout_marginTop="@dimen/padding_8dp"
-                android:layout_marginBottom="12dp"
-                android:hint="Password"
-                android:textAppearance="@style/edittext"
-                android:background="@drawable/edittext_background"
 
-                />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edt_height"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/padding_6dp"
+                    android:background="@drawable/edittext_background"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:textAppearance="@style/edittext" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="41dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_toLeftOf="@+id/iv_toggle_password"
+                    android:background="@color/light_gray">
+
+                </View>
+
+                <ImageView
+                    android:id="@+id/iv_toggle_password"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/padding_2dp"
+                    app:tint="@color/hint_text" />
+
+            </RelativeLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/padding_2dp"
                 android:text="OR"
                 android:textSize="16sp"
-                android:padding="@dimen/padding_2dp"
-                android:layout_gravity="center">
+                android:visibility="invisible">
 
             </TextView>
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_send_otp"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:background="@drawable/rounded_btn_all"
+                android:gravity="center"
                 android:text="Login with OTP"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:gravity="center" />
+                android:visibility="gone" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp"
-                >
 
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/switch_remember"
-                    android:layout_width="@dimen/padding_60dp"
-                    android:layout_height="0dp"
-                    android:text="" />
-
-                <TextView
-                    android:id="@+id/tv_remember_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/padding_8dp"
-                    android:text="Keep me signed in on this device"
-                    android:textAppearance="@style/price_title"
-                    android:textColor="#18181B"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/padding_60dp"
-                android:textAppearance="@style/textview"
-                android:text="@string/werecommend">
-
-            </TextView>
-            <!-- Sign In Button -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_sign_in"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginStart="100dp"
                 android:layout_marginTop="@dimen/padding_6dp"
-                android:layout_marginEnd="100dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/rounded_btn_all"
                 android:gravity="center"
@@ -191,12 +179,13 @@
                 android:textAllCaps="false"
                 android:textColor="@android:color/white" />
 
-            <!-- Forgot Password Text -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/card_backgroundborder"
                 android:gravity="center"
-                app:cardBackgroundColor="@color/light_blue">
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/white">
 
                 <TextView
                     android:id="@+id/tv_forgot_password"
@@ -205,12 +194,11 @@
                     android:layout_gravity="center_horizontal"
                     android:padding="@dimen/padding_8dp"
                     android:text="@string/forgotten"
-                    android:textColor="@color/bg_button"
+                    android:textColor="@color/black"
                     android:textSize="14sp" />
             </androidx.cardview.widget.CardView>
 
 
-            <!-- Register Now Text -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -224,7 +212,8 @@
                     android:layout_gravity="center_horizontal"
                     android:padding="@dimen/padding_8dp"
                     android:text="Don't have an account?"
-                    android:textAppearance="@style/textview" />
+                    android:textAppearance="@style/textview"
+                    android:textSize="@dimen/textsize_14sp" />
 
                 <TextView
                     android:id="@+id/tv_register_now"
@@ -242,44 +231,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Footer Links -->
-    <!--    <LinearLayout
-            android:id="@+id/footer_links"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:padding="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView
-                android:id="@+id/tv_privacy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/privacy_policy"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:layout_marginEnd="12dp"/>
-
-            <TextView
-                android:id="@+id/tv_terms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_conditions"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:layout_marginEnd="12dp"/>
-
-            <TextView
-                android:id="@+id/tv_about"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="About"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"/>
-        </LinearLayout>-->
     <LinearLayout
         android:id="@+id/footer_links"
         android:layout_width="match_parent"
@@ -291,7 +243,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!-- Top Links Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -306,8 +257,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
                 android:text="Privacy Policy"
-                android:textColor="@color/bottom_text"
                 android:textAppearance="@style/textview"
+                android:textColor="@color/bottom_text"
                 android:textSize="@dimen/textsize_12sp" />
 
             <TextView
@@ -316,8 +267,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
                 android:text="@string/terms_conditions"
-                android:textColor="@color/bottom_text"
                 android:textAppearance="@style/textview"
+                android:textColor="@color/bottom_text"
                 android:textSize="@dimen/textsize_12sp" />
 
             <TextView
@@ -326,12 +277,10 @@
                 android:layout_height="wrap_content"
                 android:text="Purchase Order Terms"
                 android:textAppearance="@style/textview"
-                android:textSize="@dimen/textsize_12sp"
                 android:textColor="@color/bottom_text"
-                />
+                android:textSize="@dimen/textsize_12sp" />
         </LinearLayout>
 
-        <!-- Store Directory Link -->
         <TextView
             android:id="@+id/tv_store_directory"
             android:layout_width="wrap_content"
@@ -339,11 +288,9 @@
             android:layout_gravity="center"
             android:text="Store Directory"
             android:textAppearance="@style/textview"
-            android:textSize="@dimen/textsize_12sp"
             android:textColor="@color/bottom_text"
-            />
+            android:textSize="@dimen/textsize_12sp" />
 
-        <!-- Copyright Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -362,7 +309,6 @@
                 android:textColor="@color/bottom_text"
                 android:textSize="12sp" />
 
-            <!-- Some icons / logos -->
             <ImageView
                 android:id="@+id/iv_icon3"
                 android:layout_width="20dp"

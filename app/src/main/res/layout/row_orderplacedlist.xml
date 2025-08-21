@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/selected_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_default"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="@dimen/padding_default"
+        android:text=""
+        android:visibility="invisible"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_default"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="@dimen/padding_default"
+        android:gravity="center|top"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/padding_default"
+           >
+
+
+            <ImageView
+                android:id="@+id/selected_img"
+                android:layout_width="@dimen/padding_60dp"
+                android:layout_height="@dimen/padding_60dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_placeholder"
+                />
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/selected_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text=""
+                android:textAppearance="@style/textview" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:visibility="invisible"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_default"
+        android:layout_marginTop="@dimen/padding_default"
+        android:layout_marginRight="@dimen/padding_default"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+      >
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           >
+
+
+            <TextView
+                android:id="@+id/tvQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/padding_40dp"
+                android:layout_marginHorizontal="6dp"
+                android:background="@drawable/white_square_grey"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:paddingEnd="@dimen/padding_30dp"
+                android:paddingStart="@dimen/padding_30dp"
+                android:textAppearance="@style/price_title"
+                android:textSize="@dimen/textsize_14sp"/>
+
+
+            <TextView
+                android:id="@+id/selected_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/padding_8dp"
+                android:textAppearance="@style/price_title"
+                android:text=""
+                android:textSize="14sp"
+                />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/padding_default"
+        android:layout_marginTop="@dimen/padding_8dp"
+        android:layout_marginRight="@dimen/padding_default"
+        android:background="@color/light_gray">
+
+    </View>
+</LinearLayout>

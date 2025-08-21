@@ -3,7 +3,8 @@ package com.app.gdl.data.model
 data class SignupResponse(
     val status: Int,
     val message: String,
-    val customer_id: Int?
+    val customer_details: CustomerDetails?
+
 )
 data class SignupRequest(
     val first_name: String,
@@ -18,6 +19,7 @@ data class SignupRequest(
 data class Address(
     val name: String,
     val text: String,
+    val city:String,
     val map_location: List<Double>,
-    val `default`: Int
+    val default: Int,
 )

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Padding -->
+    <dimen name="padding_default">18dp</dimen>       <!-- 16dp * 1.125 -->
+    <dimen name="padding_2dp">2.25dp</dimen>
+    <dimen name="padding_4dp">4.5dp</dimen>
+    <dimen name="padding_6dp">6.75dp</dimen>
+    <dimen name="padding_8dp">9dp</dimen>
+    <dimen name="padding_20dp">22.5dp</dimen>
+    <dimen name="padding_24dp">27dp</dimen>
+    <dimen name="padding_30dp">33.75dp</dimen>
+    <dimen name="padding_32dp">35.75dp</dimen>
+
+    <dimen name="padding_40dp">45dp</dimen>
+    <dimen name="padding_50dp">56.25dp</dimen>
+    <dimen name="padding_60dp">67.5dp</dimen>
+    <dimen name="padding_70dp">78.75dp</dimen>
+    <dimen name="padding_100dp">112.5dp</dimen>
+
+    <!-- Text Sizes (sp) -->
+    <dimen name="textsize_12sp">13.5sp</dimen>
+    <dimen name="textsize_13sp">14.5sp</dimen>
+    <dimen name="textsize_14sp">15.75sp</dimen>
+    <dimen name="textsize_16sp">18sp</dimen>
+    <dimen name="textsize_18sp">20.25sp</dimen>
+    <dimen name="textsize">18sp</dimen>              <!-- was 16dp, likely a typo -->
+
+    <!-- Text headline -->
+    <dimen name="textheadline">20.25dp</dimen>       <!-- 18dp * 1.125 -->
+
+    <!-- EditText Height -->
+    <dimen name="edt_height">47.25dp</dimen>         <!-- 42dp * 1.125 -->
+
+    <!-- Card Sizes -->
+    <dimen name="card_width">191.25dp</dimen>        <!-- 170dp * 1.125 -->
+    <dimen name="card_height">297dp</dimen>          <!-- 264dp * 1.125 -->
+    <dimen name="card_width170dp">191.25dp</dimen>
+    <dimen name="carousel_spacing">10.25dp</dimen>
+
+</resources>

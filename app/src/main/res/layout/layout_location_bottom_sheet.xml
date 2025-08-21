@@ -9,7 +9,6 @@
     android:orientation="vertical"
     android:padding="24dp">
 
-    <!-- Close Icon -->
     <ImageView
         android:id="@+id/ivClose"
         android:layout_width="24dp"
@@ -18,54 +17,48 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_gravity="end"
-        android:contentDescription="Close"
         android:src="@drawable/close" />
 
     <ImageView
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_gravity="center"
-        android:contentDescription="Location Icon"
         android:src="@drawable/ic_maps" />
 
-    <!-- Heading -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingTop="16dp"
         android:paddingBottom="4dp"
-        android:text="Where do you want us to deliver this order?"
+        android:text="@string/where_do_you_want_us_to_deliver"
         android:textAppearance="@style/header_title"
         android:textSize="18sp" />
 
-    <!-- Subtext -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingBottom="24dp"
-        android:text="This will help us find the nearest store for you"
+        android:text="@string/this_will_help_us_find_the_nearest_store_for_you"
         android:textAppearance="@style/textview" />
 
-    <!-- Button: Far away -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnFarAway"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@drawable/rounded_btn_all"
-        android:text="Far away from my current location"
+        android:text="@string/far_away_from_my_current_location"
         android:textAllCaps="false"
         android:textColor="@android:color/white" />
 
-    <!-- Button: Near current location -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnNearCurrent"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_current_location"
-        android:text="Near my current location"
+        android:text="@string/near_my_current_location"
         android:textAllCaps="false"
         android:textAppearance="@style/textview" />
 

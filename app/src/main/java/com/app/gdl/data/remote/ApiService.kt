@@ -5,7 +5,11 @@ import com.app.gdl.data.model.CategoryResponse
 import com.app.gdl.data.model.GetPopularCategoryResponse
 import com.app.gdl.data.model.LoginRequest
 import com.app.gdl.data.model.LoginResponse
+import com.app.gdl.data.model.MyOrdersResponse
+import com.app.gdl.data.model.OrderRequest
+import com.app.gdl.data.model.OrderResponse
 import com.app.gdl.data.model.PriceResponse
+import com.app.gdl.data.model.ProductListResponse
 import com.app.gdl.data.model.ProductResponse
 import com.app.gdl.data.model.SignupRequest
 import com.app.gdl.data.model.SignupResponse
@@ -34,25 +38,35 @@ interface ApiService {
     suspend fun getPopularCategories(): GetPopularCategoryResponse
 
     @GET("get_products_by_categories/{id}")
-    suspend fun getProducts(@Path("id") id: String): ProductResponse
+    suspend fun getProducts(
+        @Path("id") id: String,
+        @Query("price_class") priceClass: String
+    ): ProductResponse
 
     @GET("get_product_details/{id}")
-    suspend fun getProductsDetails(@Path("id") id: String): ProductDetailsResponse
+    suspend fun getProductsDetails(
+        @Path("id") id: String,
+        @Query("price_class") priceClass: String
+    ): ProductDetailsResponse
 
-//    @GET("get_product_details/{id}")
-//    suspend fun getProductsDetails(@Path("id") id: String): ProductDetailsResponse
+    @GET("get_popular_products/")
+    suspend fun getPopularProducts(@Query("price_class") priceClass: String): ProductResponse
 
     @GET("get_sub_categories/{id}")
     suspend fun getSubCategory(@Path("id") id: String): CategoryResponse
 
-    @GET("get_popular_products/")
-    suspend fun getPopularProducts(): ProductResponse
-
-    @GET("get_default_prices/")
-    suspend fun getDefaultPrices(@Query("price_class") priceclass: String): PriceResponse
 
     @GET("get_warehouses/")
-    suspend fun getWarehouses(@Query("city") city: String): WarehouseResponse
+    suspend fun getWarehouses(): WarehouseResponse
+
+    @GET("get_custom_lists/")
+    suspend fun getCustomLists(@Query("price_class") priceclass: String,@Query("warehouse") warehouse:String): ProductListResponse
+
+    @POST("create_order/")
+    suspend fun placeOrder(@Body request: OrderRequest): Response<OrderResponse>
+
+    @GET("get_order_history/{id}")
+    suspend fun getOrderHistory(@Path("id") id: Int): MyOrdersResponse
 
 }
 

@@ -1,7 +1,6 @@
 package com.app.gdl.presentation.ui.adapters
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,25 +22,28 @@ class ImageSliderAdapter(
             val updatedUrl = url.replace("_thumbnail", "_large")
             Glide.with(imageView.context)
                 .load(updatedUrl)
-                .centerCrop()
-                //.placeholder(R.drawable.pastpopularitem)
+                .fitCenter()
+                .placeholder(R.drawable.default_placeholder)
                 .into(imageView)
 
             imageView.setOnClickListener {
-                if (openFullScreenOnClick){
+                if (openFullScreenOnClick) {
                     val context = imageView.context
                     val intent = Intent(context, ImageViewerActivity::class.java).apply {
-                        Log.d("@@@@", "bind: "+imageUrls.toString())
-                        putStringArrayListExtra(ImageViewerActivity.EXTRA_IMAGES, ArrayList(imageUrls))
+                        putStringArrayListExtra(
+                            ImageViewerActivity.EXTRA_IMAGES,
+                            ArrayList(imageUrls)
+                        )
                         putExtra(ImageViewerActivity.EXTRA_POSITION, bindingAdapterPosition)
                     }
                     context.startActivity(intent)
-                }else {
+                } else {
                     onImageClick?.invoke()
                 }
 
             }
         }
+
         fun resetZoom() {
             imageView.scale = 1.0f
         }
@@ -54,7 +56,6 @@ class ImageSliderAdapter(
     }
 
     override fun onBindViewHolder(holder: SliderViewHolder, position: Int) {
-        Log.d("imageUrls", "onBindViewHolder: "+imageUrls[position].toString()+"SIZEE"+imageUrls.size)
         holder.bind(imageUrls[position])
     }
 

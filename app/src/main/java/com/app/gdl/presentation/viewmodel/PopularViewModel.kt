@@ -11,9 +11,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PopularViewModel @Inject constructor(private val repository: GetPopularCategoryRepository
+class PopularViewModel @Inject constructor(
+    private val repository: GetPopularCategoryRepository
 
-) :ViewModel(){
+) : ViewModel() {
     private val _categories = MutableLiveData<GetPopularCategoryResponse>()
     val getpopularcategories: LiveData<GetPopularCategoryResponse> get() = _categories
 
@@ -22,6 +23,7 @@ class PopularViewModel @Inject constructor(private val repository: GetPopularCat
             try {
                 val response = repository.getpopularCategory()
                 _categories.postValue(response)
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }

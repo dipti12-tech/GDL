@@ -16,11 +16,6 @@ class SignupRepositoryImpl @Inject constructor(
     override suspend fun signup(request: SignupRequest): SignupResponse {
         val response = apiService.signUp(request)
         Log.d("SignupRepositoryImpl", "signup: RESPONSE" + response)
-        /*   if (response.message) {
-            return response.body()!!
-        } else {
-            throw Exception("Signup failed: ${response.message()}")
-        }*/
         return response
 }
 }

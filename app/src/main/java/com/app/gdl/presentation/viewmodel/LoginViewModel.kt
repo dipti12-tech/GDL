@@ -1,6 +1,5 @@
 package com.app.gdl.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,10 +19,8 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
     val loginResponse: LiveData<LoginResponse> = _loginResponse
 
     fun loginUser(request: LoginRequest) {
-        Log.d("requestlogin", "loginUser: "+request)
         viewModelScope.launch {
             val response = repository.loginUser(request)
-            Log.d("LoginViewModel", "loginUser: $response")
             if (response.isSuccessful) {
                 response.body()?.let {
                     _loginResponse.postValue(it)
@@ -41,7 +38,6 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
                         if (customer != null) {
                             repository.saveCustomerLocally(customer)
                         }
-                        Log.d("LoginViewModel**", "loginUser: " + repository.getCustomerLocally())
                     }
                 }
             }

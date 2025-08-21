@@ -3,6 +3,8 @@ package com.app.gdl.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.app.gdl.data.model.CartItem
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -14,9 +16,10 @@ object CartManager {
 
     private val cartItems = mutableListOf<CartItem>()
     private lateinit var preferences: SharedPreferences
-    private lateinit var pref: SharedPref
-
     private val gson = Gson()
+
+    private val _cartLiveData = MutableLiveData<List<CartItem>>()
+    val cartLiveData: LiveData<List<CartItem>> get() = _cartLiveData
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -33,6 +36,7 @@ object CartManager {
             cartItems.add(item)
         }
         saveCart()
+        notifyObservers()
     }
 
     fun getItems(): List<CartItem> = cartItems
@@ -40,22 +44,19 @@ object CartManager {
     fun removeItem(productId: String, unit: String) {
         cartItems.removeAll { it.inventoryId == productId && it.unit == unit }
         saveCart()
+        notifyObservers()
     }
-    /* fun removeItem(inventoryId: String, unit: String) {
-         cartItems.removeIf { it.inventoryId == inventoryId && it.unit == unit }
-     }*/
-
 
     fun clearCart() {
         cartItems.clear()
         saveCart()
+        notifyObservers()
     }
 
     private fun saveCart() {
         val json = gson.toJson(cartItems)
         preferences.edit().putString(KEY_CART_ITEMS, json).apply()
-        Log.d("saveCart", "onViewCreated: " + CartManager.getItems())
-
+        Log.d("CartManager", "Cart saved: $cartItems")
     }
 
     private fun loadCart() {
@@ -65,6 +66,11 @@ object CartManager {
             val items: MutableList<CartItem> = gson.fromJson(json, type)
             cartItems.clear()
             cartItems.addAll(items)
+            notifyObservers()
         }
+    }
+
+    private fun notifyObservers() {
+        _cartLiveData.postValue(cartItems.toList())
     }
 }

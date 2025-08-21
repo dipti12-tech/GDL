@@ -2,55 +2,101 @@ package com.app.gdl.presentation.ui.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.app.gdl.data.model.Category
+import com.app.gdl.data.model.ProductListItem
 import com.app.gdl.databinding.RowFeaturelistBinding
+import com.app.gdl.utils.SlotType
 import com.bumptech.glide.Glide
 
-class FeatureAdapter(private val listener: OnProductClickListener
-) :
-    RecyclerView.Adapter<FeatureAdapter.ViewHolder>() {
+class FeatureAdapter(
+    private val listener: OnProductClickListener,
+) : RecyclerView.Adapter<FeatureAdapter.ViewHolder>() {
 
-    private var categoryList = listOf<Category>()
-    private  var url: String =""
-    fun submitList(list: List<Category>) {
+    private var categoryList = listOf<ProductListItem>()
+
+    fun submitList(list: List<ProductListItem>) {
         categoryList = list
         notifyDataSetChanged()
     }
-    inner class ViewHolder(val binding: RowFeaturelistBinding) : RecyclerView.ViewHolder(binding.root)
+
+    inner class ViewHolder(val binding: RowFeaturelistBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = RowFeaturelistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            RowFeaturelistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categoryList[position]
-        with(holder.binding) {
-            featureName.text = category.category_name
-            featureDescription.text = category.category_desc
-            url=category.category_img_path.replace(".jpeg","_large.jpeg")
-            Log.d("Cat", "PATH: "+url)
+        val slotType = SlotType.fromCode(category.slot)
 
+        with(holder.binding) {
+            featureName.text = category.list_name
+            if (category.list_desc != null) {
+                featureDescription.visibility = View.VISIBLE
+                featureDescription.text = category.list_desc
+            } else {
+                featureDescription.visibility = View.INVISIBLE
+            }
+            val imageUrl = category.list_img_path.replace(".jpeg", "_large.jpeg")
             Glide.with(featureItem.context)
-                .load(url)
+                .load(imageUrl)
                 .into(featureItem)
 
+            when (slotType) {
+                SlotType.TBL -> {
+                    root.layoutDirection = View.LAYOUT_DIRECTION_LTR
+                    Log.d("FeatureAdapter", "Slot: TBL - Showing left aligned")
+                }
+
+                SlotType.TBR -> {
+                    root.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                    Log.d("FeatureAdapter", "Slot: TBR - Showing right aligned")
+                }
+
+                SlotType.MS -> {
+                    root.layoutDirection = View.LAYOUT_DIRECTION_LTR
+                    Log.d("FeatureAdapter", "Slot: MS - Showing main section")
+                }
+
+                SlotType.BBLS -> {
+                    root.layoutDirection = View.LAYOUT_DIRECTION_LTR
+                }
+
+                SlotType.BBRS -> {
+                    root.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                }
+
+                SlotType.UNKNOWN -> {
+                    root.layoutDirection = View.LAYOUT_DIRECTION_LTR
+                    Log.w("FeatureAdapter", "Slot unknown")
+                }
+
+            }
+
             btnShopNow.setOnClickListener {
-              /*  val intent = Intent(root.context, ProductByCategoryActivity::class.java)
-                intent.putExtra("categoryId", category.cat_id.toString())
-                intent.putExtra("categoryName", category.category_name)
-                root.context.startActivity(intent)*/
-                listener.onProductClicked(category.cat_id.toString(), category.category_name)
+                listener.onProductClicked(
+                    "FROMCustomList",
+                    position, category.list_id.toString(), category.list_name, categoryList
+                )
+
             }
         }
     }
+
     interface OnProductClickListener {
-        fun onProductClicked(categoryId: String, categoryName: String)
+        fun onProductClicked(
+            customlist: String,
+            position: Int,
+            categoryId: String,
+            categoryName: String,
+            list: List<ProductListItem>
+        )
     }
 
-
-    override fun getItemCount() = categoryList.size
+    override fun getItemCount(): Int = categoryList.size
 }
-

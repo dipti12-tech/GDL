@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     >
 
-    <!-- Map Fragment -->
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -17,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Center Pin -->
     <ImageView
         android:id="@+id/ivCenterPin"
         android:layout_width="wrap_content"
@@ -30,7 +28,6 @@
         android:layout_marginBottom="30dp"
         app:tint="@color/bg_button" />
 
-    <!-- Search Bar + Suggestions -->
     <LinearLayout
         android:id="@+id/searchContainer"
         android:layout_width="0dp"
@@ -65,7 +62,6 @@
             android:elevation="4dp" />
     </LinearLayout>
 
-    <!-- Use Current Location -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnUseCurrentLocation"
         android:layout_width="wrap_content"
@@ -81,7 +77,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
-    <!-- Address Card -->
     <LinearLayout
         android:id="@+id/addressCard"
         android:layout_width="0dp"
@@ -118,7 +113,6 @@
 
     </LinearLayout>
 
-    <!-- Confirm + Request Address -->
     <LinearLayout
         android:id="@+id/confirmContainer"
         android:layout_width="0dp"

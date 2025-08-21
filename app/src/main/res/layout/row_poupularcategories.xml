@@ -1,73 +1,182 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_rowproductList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="vertical"
-    android:layout_marginBottom="@dimen/padding_8dp"
-
+    android:layout_margin="4dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
+    app:strokeColor="#C4C4C4"
+    app:strokeWidth="1dp"
+    app:cardBackgroundColor="@color/white"
     >
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
 
-
-    <TextView
-        android:id="@+id/categoryTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/groceries"
-        android:textColor="#333333"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginEnd="@dimen/padding_8dp"
-        android:layout_marginStart="@dimen/padding_8dp"/>
-
-    <ImageButton
-        android:id="@+id/btnLeft"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:visibility="gone"
-        android:layout_marginEnd="@dimen/padding_8dp"
-        android:background="@drawable/circle_background"
-        android:padding="@dimen/padding_8dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/prevbutton" />
-
-    <ImageButton
-        android:id="@+id/btnRight"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:background="@drawable/circle_background"
-        android:padding="@dimen/padding_8dp"
-        android:visibility="gone"
-        android:scaleType="centerInside"
-        android:src="@drawable/nextbutton" />
-
-
-</LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/popularRecyclerView"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_default"
-        android:nestedScrollingEnabled="false"
-        android:scrollbars="vertical" />
+        android:layout_marginBottom="@dimen/padding_8dp"
+        >
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_shopall"
-        android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/padding_8dp"
-        android:layout_marginBottom="@dimen/padding_default"
-        android:background="@drawable/rounded_black_bg"
-        android:text="Shop all  >"
-        android:textAllCaps="false"
-        android:textColor="@color/white">
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="1:1"/>
 
+        <TextView
+            android:id="@+id/pointsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_8dp"
+            android:layout_marginTop="4dp"
+            android:padding="@dimen/padding_2dp"
+            android:text="Earn 5 points"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/productImage" />
 
-    </androidx.appcompat.widget.AppCompatButton>
+        <TextView
+            android:id="@+id/productTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_8dp"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:lines="2"
+            android:maxLines="2"
+            android:padding="@dimen/padding_2dp"
+            android:text="Smoked Paprika Dulce Sweet"
+            android:textAppearance="@style/header_title"
+            android:textSize="@dimen/padding_default"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pointsText" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/productWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_8dp"
+            android:layout_marginTop="2dp"
+            android:padding="@dimen/padding_2dp"
+            android:text="70g"
+            android:textAppearance="@style/textview"
+            android:textSize="@dimen/textsize_14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/productTitle" />
+
+        <LinearLayout
+            android:id="@+id/ratingLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_8dp"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_2dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/productWeight">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_star_filled" />
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_star_filled" />
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_star_filled" />
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_star_filled" />
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_star_filled" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/priceLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_8dp"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ratingLayout">
+
+            <TextView
+                android:id="@+id/currentPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_yellow_rounded"
+                android:text=""
+                android:textAppearance="@style/price_title"
+                android:textSize="16sp"
+                android:padding="@dimen/padding_6dp"/>
+
+            <TextView
+                android:id="@+id/originalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="KES 250"
+                android:visibility="gone"
+                android:textColor="#E11D48"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/specialDeal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_default"
+            android:layout_marginTop="4dp"
+            android:padding="@dimen/padding_2dp"
+            android:visibility="gone"
+            android:text="3 for KES 500"
+            android:textAppearance="@style/textview"
+            android:textColor="#52525B"
+            android:textSize="@dimen/textsize_12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/priceLayout" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/addToCartButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/padding_32dp"
+            android:layout_marginLeft="@dimen/padding_8dp"
+            android:layout_marginRight="@dimen/padding_8dp"
+            android:layout_marginTop="@dimen/padding_default"
+            android:layout_marginBottom="@dimen/padding_8dp"
+            android:background="@drawable/rounded_btn_all"
+            android:gravity="center"
+            android:paddingStart="@dimen/padding_20dp"
+            android:paddingEnd="@dimen/padding_20dp"
+            android:text="Add to cart"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/specialDeal" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

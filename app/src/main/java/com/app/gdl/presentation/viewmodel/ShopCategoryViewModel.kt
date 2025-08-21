@@ -18,10 +18,10 @@ class ShopCategoryViewModel @Inject constructor(
     private val _allcategories = MutableLiveData<CategoryResponse>()
     val allcategories: LiveData<CategoryResponse> get() = _allcategories
 
-    fun fetchAllCategories() {
+    fun fetchFeaturedCategories() {
         viewModelScope.launch {
             try {
-                val response = repository.getAllCategories()
+                val response = repository.getFeaturedCategories()
                 _allcategories.postValue(response)
             } catch (e: Exception) {
                 e.printStackTrace()

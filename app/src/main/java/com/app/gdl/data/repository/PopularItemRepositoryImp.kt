@@ -11,10 +11,9 @@ import javax.inject.Singleton
     class PopularItemRepositoryImp @Inject constructor(
         private val apiService: ApiService
     ) : PopularItemRepository {
-        override suspend fun getPopularItem(): ProductResponse {
-            return apiService.getPopularProducts();
+        override suspend fun getPopularItem(priceclass:String): ProductResponse {
+            return apiService.getPopularProducts(priceclass);
 
         }
-
 
     }

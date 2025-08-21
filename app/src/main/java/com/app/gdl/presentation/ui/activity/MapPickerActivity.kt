@@ -20,12 +20,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.gdl.R
-import com.app.gdl.data.model.Address
 import com.app.gdl.databinding.ActivityMapPickerBinding
 import com.app.gdl.databinding.AddressInputBottomSheetBinding
 import com.app.gdl.presentation.ui.adapters.SearchSuggestionsAdapter
-import com.app.gdl.utils.AuthPromptDialog
 import com.app.gdl.utils.SharedPref
+import com.app.gdl.utils.ToastMessage
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -50,13 +49,13 @@ class MapPickerActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMapPickerBinding
     private var finalAddress: String? = null
     private var headingAddress: String? = null
-
+    private var cityin: String? = null
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var bottomSheetBinding: AddressInputBottomSheetBinding
     private val saveasAddress = listOf("Home", "Work", "Other")
     private var addressType: String = ""
-    var lat:Double =0.0
-    var lng:Double =0.0
+    var lat: Double = 0.0
+    var lng: Double = 0.0
     lateinit var prefs: SharedPref
 
     private val mapResultLauncher =
@@ -68,11 +67,9 @@ class MapPickerActivity : AppCompatActivity(), OnMapReadyCallback {
                 addressType = it.data?.getStringExtra("addressType").toString()
                 lat = it.data?.getDoubleExtra("lat", 0.0) ?: 0.0
                 lng = it.data?.getDoubleExtra("lng", 0.0) ?: 0.0
-                Log.d(
-                    "NewAddressDetails",
-                    "Signup Request: $finalAddress addressType $addressType lat $lat lng  $lng")
             }
         }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMapPickerBinding.inflate(layoutInflater)
@@ -89,7 +86,6 @@ class MapPickerActivity : AppCompatActivity(), OnMapReadyCallback {
         val etSearch = binding.etSearchLocation
         val rvSearchResults = binding.rvSearchResults
 
-        // Setup adapter for predictions
         val searchAdapter = SearchSuggestionsAdapter { prediction ->
             val placeId = prediction.placeId
             val request = FetchPlaceRequest.builder(
@@ -126,39 +122,24 @@ class MapPickerActivity : AppCompatActivity(), OnMapReadyCallback {
                         rvSearchResults.visibility = View.VISIBLE
                     }
                     .addOnFailureListener { e ->
-                        Toast.makeText(this, "Prediction failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Prediction failed: ${e.message}", Toast.LENGTH_SHORT)
+                            .show()
                     }
             } else {
                 rvSearchResults.visibility = View.GONE
             }
         }
-
-        // Setup map
         val mapFragment =
             supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        // Confirm Button Click
-     /*   binding.btnSelectLocation.setOnClickListener {
-            val resultIntent = Intent().apply {
-                putExtra("lat", map.cameraPosition.target.latitude)
-                putExtra("lng", map.cameraPosition.target.longitude)
-                putExtra("address", finalAddress)
-                putExtra("headingAddress", headingAddress)
-            }
-            setResult(Activity.RESULT_OK, resultIntent)
-            finish()
-        }
-*/
-
         binding.btnSelectLocation.setOnClickListener {
 
             showAddressBottomSheet()
         }
 
-        // Use Current Location Button Click
         binding.btnUseCurrentLocation.setOnClickListener {
             getLastLocationAndMoveCamera()
         }
@@ -192,11 +173,13 @@ class MapPickerActivity : AppCompatActivity(), OnMapReadyCallback {
 
             if (!addressList.isNullOrEmpty()) {
                 val address = addressList[0]
-                val building = address.premises ?: address.featureName ?: address.subThoroughfare ?: ""
+                val building =
+                    address.premises ?: address.featureName ?: address.subThoroughfare ?: ""
                 val area = address.subLocality ?: ""
                 val city = address.locality ?: ""
                 val state = address.adminArea ?: ""
-
+                cityin = city
+                Log.d("City in Map Picker", "onMapReady: " + city)
                 finalAddress = listOf(building, area, city, state)
                     .filter { it.isNotBlank() }
                     .joinToString(", ")
@@ -205,13 +188,8 @@ class MapPickerActivity : AppCompatActivity(), OnMapReadyCallback {
                     .filter { it.isNotBlank() }
                     .joinToString(", ")
 
-                // Update bottom card UI
                 binding.tvHeadingAddress.text = headingAddress
                 binding.tvFinalAddress.text = finalAddress
-              /*  binding.tvDistance.text =
-                    "Pin location is approx. %.2f km away from your current location".format(
-                        calculateDistance(target)
-                    )*/
             }
         }
     }
@@ -245,6 +223,7 @@ class MapPickerActivity : AppCompatActivity(), OnMapReadyCallback {
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 18f))
         }
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -272,109 +251,85 @@ class MapPickerActivity : AppCompatActivity(), OnMapReadyCallback {
             start.distanceTo(end).toDouble() / 1000
         } else 0.0
     }
+
     private fun showAddressBottomSheet() {
         bottomSheetBinding = AddressInputBottomSheetBinding.inflate(LayoutInflater.from(this))
         bottomSheetDialog = BottomSheetDialog(this)
         bottomSheetDialog.setContentView(bottomSheetBinding.root)
 
-        // Handle Close
         bottomSheetBinding.btnClose.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
         bottomSheetBinding.tvLocality.text = headingAddress
         setupAddressChips(saveasAddress)
-        /*   val centerLatLng = map.cameraPosition.target
 
-                      lifecycleScope.launch {
-                          try {
-                              val addressList = withContext(Dispatchers.IO) {
-                                  geocoder.getFromLocation(centerLatLng.latitude, centerLatLng.longitude, 1)
-                              }
-
-                              if (!addressList.isNullOrEmpty()) {
-                                  val address = addressList[0]
-
-                                  val building = address.premises ?: address.featureName ?: address.subThoroughfare ?: ""
-                                  val area = address.subLocality ?: ""
-                                  val city = address.locality ?: ""
-                                  val state = address.adminArea ?: ""
-
-                                  finalAddress = listOf(building, area, city, state)
-                                      .filter { it.isNotBlank() }
-                                      .joinToString(", ")
-
-                                  headingAddress = listOf(building, area, city, state)
-                                      .filter { it.isNotBlank() }
-                                      .joinToString(", ")
-
-                                  Log.d("headingAddress$$$", "headingAddress: $headingAddress")
-                                  Log.d("finalAddress$$$", "finalAddress: $finalAddress")
-
-                                  val resultIntent = Intent().apply {
-                                      putExtra("lat", centerLatLng.latitude)
-                                      putExtra("lng", centerLatLng.longitude)
-                                      putExtra("address", finalAddress)
-                                      putExtra("headingAddress", headingAddress)
-                                      putExtra("addressType", addressType)
-                                  }
-                                  setResult(Activity.RESULT_OK, resultIntent)
-                                  finish()
-                              } else {
-                                  Toast.makeText(this@MapPickerActivity, "Unable to get address", Toast.LENGTH_SHORT).show()
-                              }
-
-                          } catch (e: Exception) {
-                              e.printStackTrace()
-                              Toast.makeText(this@MapPickerActivity, "Failed to fetch address", Toast.LENGTH_SHORT).show()
-                          }
-                      }*/
-        // Handle Save Address
         bottomSheetBinding.btnSaveAddress.setOnClickListener {
 
-            if(prefs.isLoggedIn){
+            val name = bottomSheetBinding.etName.text.toString().trim()
             val building = bottomSheetBinding.etBuilding.text.toString().trim()
             val floor = bottomSheetBinding.etFloor.text.toString().trim()
-            val landmark = bottomSheetBinding.etLandmark.text.toString().trim()
+            val landmark = bottomSheetBinding.etLandmark.text.toString().trim() // optional
             val locality = bottomSheetBinding.tvLocality.text.toString().trim()
+            val isCustom = addressType.lowercase() == "other"
 
+            if (isCustom) {
+                bottomSheetBinding.etName.visibility = View.VISIBLE
+                bottomSheetBinding.txtPhone.visibility = View.VISIBLE
+                val customerData = prefs.getCustomerDetailsFromPrefs(this)
+                bottomSheetBinding.txtPhone.text = customerData?.phone
+            } else {
+                bottomSheetBinding.etName.visibility = View.GONE
+                bottomSheetBinding.txtPhone.visibility = View.GONE
+            }
+
+            if (isCustom && name.isEmpty()) {
+                bottomSheetBinding.etName.error = "Name is required for 'Other' address"
+                return@setOnClickListener
+            }
+
+            if (addressType.isEmpty()) {
+                ToastMessage(this, "Select the Type of Address")
+                return@setOnClickListener
+            }
+            if (building.isEmpty()) {
+                bottomSheetBinding.etBuilding.error = "This is a required field"
+                return@setOnClickListener
+            }
+
+            if (floor.isEmpty()) {
+                bottomSheetBinding.etFloor.error = "This is a required field"
+                return@setOnClickListener
+            }
+            if (landmark.isEmpty()) {
+                bottomSheetBinding.etLandmark.error = "This is a required field"
+                return@setOnClickListener
+            }
+
+            if (locality.isEmpty()) {
+                Toast.makeText(this, "Please select locality", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val addressParts = listOf(building, floor, landmark, locality)
+            val finalAddress = addressParts.filter { it.isNotBlank() }.joinToString(", ")
 
             val resultIntent = Intent().apply {
                 putExtra("lat", map.cameraPosition.target.latitude)
                 putExtra("lng", map.cameraPosition.target.longitude)
-                //putExtra("address", building+","+floor+","+landmark+","+locality)
-                // putExtra("headingAddress", building+","+floor+","+landmark+","+locality)
-                val addressParts = listOf(building, floor, landmark, locality)
-                val finalAddress = addressParts.filter { it.isNotBlank() }.joinToString(", ")
-
-                intent.putExtra("address", finalAddress)
-                intent.putExtra("headingAddress", finalAddress)
-
+                putExtra("address", "$landmark, $locality")
+                putExtra("headingAddress", finalAddress)
                 putExtra("addressType", addressType)
+                putExtra("city", cityin)
             }
+            prefs.selectedAddress = locality
+
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
-
-            //  Toast.makeText(this, "Saved for: $orderingFor, as $addressType", Toast.LENGTH_SHORT).show()
             bottomSheetDialog.dismiss()
-        }else{
-                AuthPromptDialog(
-                    activity = this,
-                    onRegisterClicked = {
-                        // Navigate to Register screen
-                        startActivity(Intent(this, SignUpActivity::class.java))
-                    },
-                    onSignInClicked = {
-                        // Navigate to Login screen
-                        startActivity(Intent(this, SignInActivity::class.java))
-                    }
-                ).show()
-
-            }
         }
 
         // Handle Change Locality
         bottomSheetBinding.btnChangeLocation.setOnClickListener {
-            //Toast.makeText(this, "Change Location clicked", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, MapPickerActivity::class.java)
             mapResultLauncher.launch(intent)
             bottomSheetDialog.dismiss()
@@ -436,9 +391,18 @@ class MapPickerActivity : AppCompatActivity(), OnMapReadyCallback {
             val chip = group.findViewById<Chip>(checkedId)
             chip?.let {
                 addressType = "${chip.text}"
-                //   Toast.makeText(this, "Selected Type: ${chip.text}", Toast.LENGTH_SHORT).show()
+                val isCustom =
+                    addressType.lowercase() != "home" && addressType.lowercase() != "work"
+
+                bottomSheetBinding.etName.visibility = View.VISIBLE
+                bottomSheetBinding.txtPhone.visibility = View.VISIBLE
+                val customerData = prefs.getCustomerDetailsFromPrefs(this)
+                bottomSheetBinding.txtPhone.text = customerData?.phone
+                if (!isCustom) {
+                    bottomSheetBinding.etName.visibility = View.GONE
+                    bottomSheetBinding.txtPhone.visibility = View.GONE
+                }
             }
         }
     }
-
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/categoryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_8dp"
+        android:layout_marginTop="@dimen/padding_default"
+        android:layout_marginEnd="@dimen/padding_8dp"
+        android:textAppearance="@style/header_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/arrowRight"
+        android:layout_width="@dimen/padding_32dp"
+        android:layout_height="@dimen/padding_32dp"
+        android:layout_marginEnd="@dimen/padding_8dp"
+        android:layout_marginBottom="@dimen/padding_default"
+        app:layout_constraintRight_toRightOf="@+id/categoryTitle"
+        android:background="@drawable/circle_background"
+        app:layout_constraintBottom_toTopOf="@+id/productsRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/categoryTitle">
+
+    </ImageView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/productsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_4dp"
+        android:layout_marginTop="@dimen/padding_default"
+        android:layout_marginRight="@dimen/padding_4dp"
+        android:nestedScrollingEnabled="false"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/categoryTitle" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnShopAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/padding_default"
+        android:layout_marginBottom="@dimen/padding_default"
+        android:background="@drawable/rounded_black_bg"
+        android:gravity="center"
+        android:paddingStart="@dimen/padding_default"
+        android:paddingEnd="@dimen/padding_default"
+        android:paddingBottom="@dimen/padding_6dp"
+        android:paddingTop="@dimen/padding_6dp"
+        android:text="Shop all  "
+        android:drawableRight="@drawable/chevron_right"
+        android:textAllCaps="false"
+        android:textAppearance="@style/textview"
+        android:textColor="#E0FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productsRecyclerView">
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

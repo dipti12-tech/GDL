@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.gdl.data.model.CategoryResponse
-import com.app.gdl.domain.repository.CategoryRepository
 import com.app.gdl.domain.repository.SubCategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,7 +18,7 @@ class SubCategoryViewModel @Inject constructor(
     private val _categories = MutableLiveData<CategoryResponse>()
     val categories: LiveData<CategoryResponse> get() = _categories
 
-    fun fetchSubCategories(id:String) {
+    fun fetchSubCategories(id: String) {
         viewModelScope.launch {
             try {
                 val response = repository.getSubCategory(id)

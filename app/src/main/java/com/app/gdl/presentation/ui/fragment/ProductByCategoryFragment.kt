@@ -1,29 +1,43 @@
 package com.app.gdl.presentation.ui.fragment
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.BounceInterpolator
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import coil.decode.SvgDecoder
+import coil.load
 import com.app.gdl.R
+import com.app.gdl.data.model.CartItem
 import com.app.gdl.data.model.Category
-import com.app.gdl.data.model.User
+import com.app.gdl.data.model.Product
+import com.app.gdl.data.model.ProductListItem
 import com.app.gdl.databinding.ActivityGetproductbycategoryBinding
+import com.app.gdl.presentation.ui.activity.SignUpActivity
+import com.app.gdl.presentation.ui.adapters.CategoryCarouselAdapter
 import com.app.gdl.presentation.ui.adapters.ProductAdapter
-import com.app.gdl.presentation.viewmodel.DefaultPriceViewModel
 import com.app.gdl.presentation.viewmodel.ProductViewModel
 import com.app.gdl.presentation.viewmodel.SubCategoryViewModel
+import com.app.gdl.utils.CartManager
 import com.app.gdl.utils.SharedPref
-import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProductByCategoryFragment : Fragment(),ProductAdapter.OnProductListener,ProductAdapter.AddToCartListener {
+class ProductByCategoryFragment : Fragment(), ProductAdapter.OnProductListener,
+    ProductAdapter.AddToCartListener {
 
     private var _binding: ActivityGetproductbycategoryBinding? = null
     private val binding get() = _binding!!
@@ -31,10 +45,30 @@ class ProductByCategoryFragment : Fragment(),ProductAdapter.OnProductListener,Pr
     private val subcategoryViewModel: SubCategoryViewModel by viewModels()
     private lateinit var productAdapter: ProductAdapter
     private lateinit var categoryId: String
-    private val defaultPriceViewModel: DefaultPriceViewModel by viewModels()
-    var priceclass = ""
-    private var customer: User? = null
+    private lateinit var FromCustomList: String
+    private lateinit var topBanners: List<ProductListItem>
     lateinit var prefs: SharedPref
+    var positionCustom: Int = 0
+
+    companion object {
+        fun newInstance(
+            customlist: String,
+            position: Int,
+            categoryId: String,
+            categoryName: String,
+            topBanners: List<ProductListItem>
+        ) = ProductByCategoryFragment().apply {
+            arguments = Bundle().apply {
+                putString("categoryId", categoryId)
+                putInt("position", position)
+                putString("categoryName", categoryName)
+                putString("FROMCustomList", customlist)
+                putParcelableArrayList("topBanners", ArrayList(topBanners))
+
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,102 +87,108 @@ class ProductByCategoryFragment : Fragment(),ProductAdapter.OnProductListener,Pr
         super.onViewCreated(view, savedInstanceState)
 
         categoryId = arguments?.getString("categoryId").orEmpty()
+        positionCustom = arguments?.getInt("position")!!
         val categoryName = arguments?.getString("categoryName")
-        binding.tvTitle.text = categoryName
+        FromCustomList = arguments?.getString("FROMCustomList").orEmpty()
+        topBanners = arguments?.getParcelableArrayList<ProductListItem>("topBanners")!!
+        topBanners.let {
+            Log.d("TAG==topBanners", "onViewCreated: " + topBanners.size)
+        }
+        CartManager.cartLiveData.observe(viewLifecycleOwner) { cartItems ->
+            if (cartItems.isNotEmpty()) {
+                binding.fabViewCart.visibility = View.VISIBLE
+                binding.cartItemCount.text = cartItems.size.toString()
+                animateCartBadge(binding.cartItemCount)
+            } else {
+                binding.fabViewCart.visibility = View.GONE
+            }
+        }
 
-        setupObservers()
+        binding.fabViewCart.setOnClickListener {
+            val fragment = ShoppingCartFragment.newInstance()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.main_content, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
+        if (prefs.isLoggedIn) {
+            binding.llCreateAccount.visibility = View.GONE
+        }
+        binding.tvTitle.text = categoryName
+        binding.tvCategory.text = categoryName
+        binding.tvHome.setOnClickListener {
+            val fragment = HomeFragment.newInstance(prefs.userAdrress.toString())
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.main_content, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        binding.imgRightarrow.load("file:///android_asset/triangle_right.svg") {
+            decoderFactory(SvgDecoder.Factory())
+        }
 
         binding.btnFilters.setOnClickListener {
-            Toast.makeText(requireContext(), "Filter clicked", Toast.LENGTH_SHORT).show()
+            subcategoryViewModel.categories.observe(viewLifecycleOwner) {
+                Log.d("ProductsResponse", "Size: ${it.category_list.size}")
+            }
         }
 
         binding.btnSort.setOnClickListener {
             Toast.makeText(requireContext(), "Sort clicked", Toast.LENGTH_SHORT).show()
         }
-
-        productViewModel.products.observe(viewLifecycleOwner) { response ->
-            Log.d(
-                "ProductsResponse",
-                "Size: ${response.list.size}, ImgPath: ${response.s3_img_path}, Status: ${response.status}"
-            )
-            productAdapter.submitData(response.list, response.s3_img_path ?: "")
+        binding.headerSignup.setOnClickListener {
+            startActivity(Intent(context, SignUpActivity::class.java))
+        }
+        binding.imgLogo.load("file:///android_asset/artoftech_logo.svg") {
+            decoderFactory(SvgDecoder.Factory())
         }
 
-        if (categoryId.isNotEmpty()) {
-            productViewModel.fetchProducts(categoryId)
-        }
-
-        productAdapter = ProductAdapter(this,this)
+        productAdapter = ProductAdapter(this, this)
         binding.selectedItems.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.selectedItems.adapter = productAdapter
 
-    }
 
-    private fun setupCategoryChips(categories: List<Category>) {
-        binding.categoryGroup.removeAllViews()
-        for (name in categories) {
-            val chip = Chip(requireContext()).apply {
-                text = name.category_name
-                isCheckable = true
-                isClickable = true
-                isSingleLine = true
-                ellipsize = TextUtils.TruncateAt.END
-
-                layoutParams = ViewGroup.MarginLayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
+        if (FromCustomList != null && FromCustomList.equals("FROMCustomList")) {
+            val filteredList = if (topBanners.isNotEmpty()) {
+                topBanners[positionCustom].products.orEmpty().filter {
+                    it.item_price?.value != null && it.item_price.value != 0.0
+                            && it.ItemStatus?.value.equals("Active", ignoreCase = true)
+                }
+            } else {
+                emptyList()
             }
-            binding.categoryGroup.addView(chip)
-        }
+            if (filteredList.size != 0) {
+                binding.categoryCarousel.visibility = View.GONE
+                binding.selectedItems.visibility = View.VISIBLE
+                prefs.s3_img_path?.let {
+                    productAdapter.submitCustomData(
+                        FromCustomList, filteredList,
+                        it
+                    )
+                }
 
-        binding.categoryGroup.setOnCheckedChangeListener { group, checkedId ->
-            val chip = group.findViewById<Chip>(checkedId)
-            chip?.let {
-                Toast.makeText(requireContext(), "Selected category: ${chip.text}", Toast.LENGTH_SHORT).show()
+            } else {
+                binding.selectedItems.visibility = View.GONE
+                binding.noDataText.visibility = View.VISIBLE
+                binding.noDataText.text = "No products found"
             }
+        } else {
+            setupObservers()
+
         }
     }
 
     private fun setupObservers() {
         subcategoryViewModel.categories.observe(viewLifecycleOwner) {
-            Log.d("ProductsResponse", "Size: ${it.category_list.size}")
-            setupCategoryChips(it.category_list)
-        }
-        subcategoryViewModel.fetchSubCategories(categoryId)
-
-
-        // call the default price api with priceclass for login user MLD CBD
-        customer = prefs.getCustomerFromPrefs(requireContext())
-        priceclass = customer?.address?.get(0)?.price_class.toString()
-        Log.d("priceclass", "onCreate: " + priceclass)
-
-        if (priceclass.isNotEmpty() && prefs.isLoggedIn) {
-            Log.d("Check Category", "PriceClass: $priceclass, LoggedIn: ${prefs.isLoggedIn}")
-
-            val inventoryIds = prefs.getInventoryIds(requireContext())
-            Log.d("SIZE IN PREF IDS Category", inventoryIds.size.toString())
-
-            // Call this BEFORE observe
-            defaultPriceViewModel.fetchDefaultPrice(priceclass)
-
-            defaultPriceViewModel.defaultPrice.observe(viewLifecycleOwner) { response ->
-                Log.d("ResponseWith Price Category", "Received: $response")
-
-                val groupedByPrice = response.list.groupBy { it.CustomerPriceClass.value }
-                Log.d("groupedByPrice Category", "Received: $groupedByPrice")
-
-                val priceItems = groupedByPrice[priceclass] ?: emptyList()
-                Log.d("priceItems Category", "Received: $priceItems")
-
-                val filteredPriceItems =
-                    priceItems.filter { inventoryIds.contains(it.InventoryID.value) }
-
-                Log.d("FilteredItems Category", filteredPriceItems.toString())
-                productAdapter.setPriceMap(filteredPriceItems)
-
+            if (it.category_list.size != 0) {
+                setupCategoryChips(it.category_list)
+            } else {
+                binding.categoryCarousel.visibility = View.GONE
             }
         }
+
+        subcategoryViewModel.fetchSubCategories(categoryId)
 
     }
 
@@ -157,14 +197,6 @@ class ProductByCategoryFragment : Fragment(),ProductAdapter.OnProductListener,Pr
         _binding = null
     }
 
-    companion object {
-        fun newInstance(categoryId: String, categoryName: String) = ProductByCategoryFragment().apply {
-            arguments = Bundle().apply {
-                putString("categoryId", categoryId)
-                putString("categoryName", categoryName)
-            }
-        }
-    }
 
     override fun onProductDataClicked(inventoryId: String) {
         val fragment = ProductByCategoryDetailsFragment.newInstance(inventoryId)
@@ -174,11 +206,103 @@ class ProductByCategoryFragment : Fragment(),ProductAdapter.OnProductListener,Pr
             .commit()
     }
 
-    override fun addToCartClicked() {
-            val fragment = ShoppingCartFragment.newInstance()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.main_content, fragment)
-                .addToBackStack(null)
-                .commit()
+    override fun addToCartClicked(item: CartItem) {
+        CartManager.addItem(item)
     }
+
+
+    fun setupCategoryChips(categoryList: List<Category>) {
+        val allCategory = Category(
+            cat_id = categoryId.toInt(), category_name = "All",
+            category_desc = "",
+            category_img_path = "",
+            parent_cat_id = categoryId.toInt(),
+            status = 0,
+            created_at = ""
+        )
+        val modifiedCategoryList = mutableListOf<Category>().apply {
+            add(allCategory)
+            addAll(categoryList)
+        }
+        val adapter = CategoryCarouselAdapter(modifiedCategoryList) { selectedCategory ->
+            Log.d("Category", "Selected: ${selectedCategory.category_name}")
+            val categoryId = selectedCategory.cat_id
+
+            //check here verified priceclass
+            val customer = prefs.getCustomerFromPrefs(requireContext())
+            val priceclass = customer?.address?.getOrNull(0)?.price_class.orEmpty()
+
+            val priceClassToUse = if (prefs.isLoggedIn && priceclass.isNotEmpty()) {
+                priceclass
+            } else {
+                prefs.default_price
+            }
+            if (priceClassToUse != null) {
+                productViewModel.fetchProducts(categoryId.toString(), priceClassToUse)
+            }
+        }
+
+        productViewModel.products.observe(viewLifecycleOwner) { response ->
+            val filteredList = response.list.filter {
+                it.item_price.value != 0.0 &&
+                        it.ItemStatus.value.equals("Active", ignoreCase = true)
+            }
+
+            if (filteredList.size != 0 && filteredList.isNotEmpty()) {
+                binding.selectedItems.visibility = View.VISIBLE
+                binding.noDataText.visibility = View.GONE
+                productAdapter.submitData(filteredList, response.s3_img_path ?: "")
+            } else {
+                binding.selectedItems.visibility = View.GONE
+                binding.noDataText.visibility = View.VISIBLE
+                binding.noDataText.text = "No products found"
+            }
+        }
+
+        binding.categoryCarousel.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.categoryCarousel.adapter = adapter
+
+        binding.categoryCarousel.onFlingListener = null
+        val snapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(binding.categoryCarousel)
+
+        if (categoryList.isNotEmpty()) {
+            adapter.selectCategoryAt(0)
+        }
+    }
+
+    fun animateCartBadge(badgeView: TextView) {
+        val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
+            badgeView,
+            PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 1.8f),
+            PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1.8f)
+        ).apply {
+            duration = 750
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+
+        val alphaFlash = ObjectAnimator.ofFloat(badgeView, View.ALPHA, 2f, 0.6f, 2f).apply {
+            duration = 750
+        }
+
+        val scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+            badgeView,
+            PropertyValuesHolder.ofFloat(View.SCALE_X, 1.8f, 1f),
+            PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.8f, 1f)
+        ).apply {
+            duration = 750
+            interpolator = BounceInterpolator()
+        }
+
+        val scaleUpAndAlpha = AnimatorSet().apply {
+            playTogether(scaleUp, alphaFlash)
+        }
+
+        AnimatorSet().apply {
+            playSequentially(scaleUpAndAlpha, scaleDown)
+            start()
+        }
+    }
+
 }

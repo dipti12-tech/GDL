@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.gdl.R
 import com.bumptech.glide.Glide
 
-class ImageFullThumbnailAdapter (
+class ImageFullThumbnailAdapter(
     private val imageUrls: List<String>,
     private val onImageClick: (String) -> Unit
 ) : RecyclerView.Adapter<ImageFullThumbnailAdapter.ThumbViewHolder>() {
@@ -20,7 +20,6 @@ class ImageFullThumbnailAdapter (
             Glide.with(imageView.context)
                 .load(url)
                 .centerCrop()
-                //.placeholder(R.drawable.pastpopularitem)
                 .into(imageView)
 
             imageView.setOnClickListener {

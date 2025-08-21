@@ -10,7 +10,8 @@ import javax.inject.Singleton
 class AllCategoryRepositoryImp  @Inject constructor(
     private val apiService: ApiService
 ) : AllCategoryRepository {
-    override suspend fun getAllCategories(): CategoryResponse {
-     return apiService.getAllCategories()
+
+    override suspend fun getFeaturedCategories(): CategoryResponse {
+        return apiService.getCategories()
     }
 }

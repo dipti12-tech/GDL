@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.map.secret)
     alias(libs.plugins.google.services)
+    id("kotlin-parcelize")
+
 }
 
 
@@ -21,10 +23,15 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    lint {
+        disable.add("NullSafeMutableLiveData")
+    }
 
     buildTypes {
         release {
+            isDebuggable = false
             isMinifyEnabled = false
+            isShrinkResources =false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -43,6 +50,7 @@ android {
         dataBinding = true
         buildConfig = true
     }
+
 }
 
 dependencies {
@@ -76,6 +84,7 @@ dependencies {
 
     //hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.lifecycle.common.jvm)
     ksp(libs.hilt.android.compiler)
 
     // Coroutines

@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_image">
 
-    <!-- Top Header Links -->
     <LinearLayout
         android:id="@+id/top_links"
         android:layout_width="match_parent"
@@ -17,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Home link -->
         <TextView
             android:id="@+id/tv_home"
             android:layout_width="120dp"
@@ -31,7 +29,6 @@
             android:textSize="@dimen/textsize_13sp"
             android:textStyle="bold" />
 
-        <!-- Lock Icon -->
         <ImageView
             android:id="@+id/iv_lock"
             android:layout_width="16dp"
@@ -39,7 +36,6 @@
             android:layout_marginEnd="4dp"
             android:src="@drawable/ic_lock" />
 
-        <!-- Secure Text -->
         <TextView
             android:id="@+id/tv_secure"
             android:layout_width="wrap_content"
@@ -50,7 +46,6 @@
             android:textSize="@dimen/textsize_13sp" />
     </LinearLayout>
 
-    <!-- Centered Logo -->
     <ImageView
         android:id="@+id/iv_logo"
         android:layout_width="@dimen/padding_100dp"
@@ -95,7 +90,6 @@
                     android:orientation="vertical"
                     android:padding="@dimen/padding_30dp">
 
-                    <!-- Title -->
                     <TextView
                         android:id="@+id/tv_create_account"
                         android:layout_width="wrap_content"
@@ -109,7 +103,6 @@
                         android:textColor="@color/textheadline"
                         android:textSize="24sp" />
 
-                    <!-- Description -->
                     <TextView
                         android:id="@+id/tv_description"
                         android:layout_width="wrap_content"
@@ -125,7 +118,6 @@
                         android:translationY="-0.53sp" />
 
 
-                    <!-- E-mail / Mobile -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -154,17 +146,17 @@
                         android:id="@+id/et_email"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edt_height"
-                        android:hint="Mobile number"
-                        android:textAppearance="@style/edittext"
                         android:layout_marginTop="@dimen/padding_4dp"
-                        android:background="@drawable/edittext_background" />
+                        android:background="@drawable/edittext_background"
+                        android:hint="Mobile number"
+                        android:textAppearance="@style/edittext" />
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginTop="@dimen/padding_6dp"
+                        android:orientation="horizontal"
 
                         >
 
@@ -188,27 +180,26 @@
                             android:textAppearance="@style/asterisk" />
                     </LinearLayout>
 
-                    <!-- Address -->
                     <TextView
                         android:id="@+id/et_address"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edt_height"
+                        android:layout_marginTop="@dimen/padding_4dp"
                         android:background="@drawable/edittext_background"
+                        android:gravity="center|start"
                         android:hint="Address"
                         android:maxLines="1"
-                        android:gravity="center|start"
-                        android:layout_marginTop="@dimen/padding_4dp"
                         android:textAppearance="@style/textview" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_4dp"
                         android:drawableLeft="@drawable/ic_circle"
                         android:drawablePadding="@dimen/padding_4dp"
-                        android:layout_marginTop="@dimen/padding_4dp"
                         android:gravity="center_vertical"
 
-                    android:text="@string/starttyping"
+                        android:text="@string/starttyping"
                         android:textAppearance="@style/textview">
 
                     </TextView>
@@ -216,11 +207,10 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/padding_6dp">
+                        android:layout_marginTop="@dimen/padding_6dp"
+                        android:orientation="horizontal">
 
 
-                        <!-- First Name -->
                         <TextView
                             android:id="@+id/txt_firstname"
                             android:layout_width="wrap_content"
@@ -245,8 +235,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edt_height"
                         android:layout_marginTop="@dimen/padding_4dp"
-                        android:hint="First name"
                         android:background="@drawable/edittext_background"
+                        android:hint="First name"
                         android:textAppearance="@style/edittext"
 
                         />
@@ -254,9 +244,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/padding_6dp">
-                        <!-- Last Name -->
+                        android:layout_marginTop="@dimen/padding_6dp"
+                        android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/txt_lastname"
                             android:layout_width="wrap_content"
@@ -281,18 +271,18 @@
                         android:id="@+id/et_last_name"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edt_height"
+                        android:layout_marginTop="@dimen/padding_4dp"
                         android:background="@drawable/edittext_background"
                         android:hint="Last name "
                         android:padding="@dimen/padding_8dp"
-                        android:layout_marginTop="@dimen/padding_4dp"
                         android:textAppearance="@style/edittext" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/padding_6dp">
-                        <!-- Password -->
+                        android:layout_marginTop="@dimen/padding_6dp"
+                        android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/txt_password"
                             android:layout_width="wrap_content"
@@ -311,11 +301,10 @@
                             android:text="@string/asterisk"
                             android:textAppearance="@style/asterisk" />
                     </LinearLayout>
-                    <!-- Password input with eye icon -->
+
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        >
+                        android:layout_height="wrap_content">
 
                         <EditText
                             android:id="@+id/et_password"
@@ -323,17 +312,18 @@
                             android:layout_height="@dimen/edt_height"
                             android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"
-                            android:hint="Create password"
-                            android:inputType="textPassword"
                             android:layout_marginTop="@dimen/padding_6dp"
                             android:background="@drawable/edittext_background"
+                            android:hint="Create password"
+                            android:inputType="textPassword"
                             android:textAppearance="@style/edittext" />
 
                         <View
                             android:layout_width="2dp"
                             android:layout_height="41dp"
                             android:layout_marginTop="3dp"
-                            android:layout_marginEnd="5dp"                            android:layout_toLeftOf="@+id/iv_toggle_password"
+                            android:layout_marginEnd="5dp"
+                            android:layout_toLeftOf="@+id/iv_toggle_password"
                             android:background="@color/light_gray">
 
                         </View>
@@ -342,33 +332,28 @@
                             android:id="@+id/iv_toggle_password"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:layout_marginEnd="@dimen/padding_2dp"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
+                            android:layout_marginEnd="@dimen/padding_2dp"
                             app:tint="@color/hint_text" />
 
                     </RelativeLayout>
 
-
-                    <!-- Password Criteria Text -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_4dp"
                         android:layout_marginBottom="@dimen/padding_8dp"
                         android:drawableLeft="@drawable/ic_circle"
                         android:drawablePadding="@dimen/padding_4dp"
-                        android:layout_marginTop="@dimen/padding_4dp"
                         android:text="@string/passwordcontains"
                         android:textAppearance="@style/textview" />
-
-                    <!-- Confirm Password -->
-                    <!-- Password -->
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/padding_6dp">
+                        android:layout_marginTop="@dimen/padding_6dp"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/txt_confirmpassword"
@@ -400,12 +385,12 @@
                             android:layout_height="@dimen/edt_height"
                             android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"
+                            android:layout_marginTop="@dimen/padding_4dp"
+                            android:background="@drawable/edittext_background"
                             android:hint="Confirm Password"
                             android:inputType="textPassword"
                             android:padding="@dimen/padding_8dp"
                             android:paddingEnd="48dp"
-                            android:layout_marginTop="@dimen/padding_4dp"
-                            android:background="@drawable/edittext_background"
                             android:textAppearance="@style/edittext" />
 
                         <View
@@ -429,7 +414,6 @@
 
                     </RelativeLayout>
 
-                    <!-- Confirm Password Note -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -439,24 +423,22 @@
                         android:textColor="@color/textview"
                         android:textSize="12sp" />
 
-                    <!-- Create Account Button -->
                     <androidx.appcompat.widget.AppCompatButton
 
                         android:id="@+id/btn_create_account"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/padding_24dp"
                         android:layout_marginBottom="@dimen/padding_8dp"
                         android:background="@drawable/rounded_btn_all"
                         android:gravity="center"
-                        android:textAppearance="@style/textview"
                         android:padding="12dp"
-                        android:layout_marginTop="@dimen/padding_24dp"
                         android:text="@string/createaccount"
                         android:textAllCaps="false"
+                        android:textAppearance="@style/textview"
                         android:textColor="#FFFFFF" />
 
-                    <!-- Terms and Conditions Text -->
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -475,7 +457,6 @@
                             android:textSize="12sp" />
                     </androidx.cardview.widget.CardView>
 
-                    <!-- Already have account -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -496,12 +477,12 @@
                             android:id="@+id/btn_sign_in"
                             android:layout_width="wrap_content"
                             android:layout_height="36dp"
+                            android:layout_margin="@dimen/padding_6dp"
                             android:background="@drawable/rounded_button_bg"
+                            android:fontFamily="@font/sourceanssemibold"
                             android:paddingLeft="16dp"
                             android:paddingRight="16dp"
-                            android:layout_margin="@dimen/padding_6dp"
                             android:text="Sign in"
-                            android:fontFamily="@font/sourceanssemibold"
                             android:textAllCaps="false"
                             android:textColor="#000000"
                             android:textSize="14sp" />
@@ -527,7 +508,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollview_createaccount">
 
-        <!-- Top Links Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -542,8 +522,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
                 android:text="Privacy Policy"
-                android:textColor="@color/bottom_text"
                 android:textAppearance="@style/textview"
+                android:textColor="@color/bottom_text"
                 android:textSize="@dimen/textsize_12sp" />
 
             <TextView
@@ -552,8 +532,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
                 android:text="@string/terms_conditions"
-                android:textColor="@color/bottom_text"
                 android:textAppearance="@style/textview"
+                android:textColor="@color/bottom_text"
                 android:textSize="@dimen/textsize_12sp" />
 
             <TextView
@@ -562,12 +542,10 @@
                 android:layout_height="wrap_content"
                 android:text="Purchase Order Terms"
                 android:textAppearance="@style/textview"
-                android:textSize="@dimen/textsize_12sp"
                 android:textColor="@color/bottom_text"
-                />
+                android:textSize="@dimen/textsize_12sp" />
         </LinearLayout>
 
-        <!-- Store Directory Link -->
         <TextView
             android:id="@+id/tv_store_directory"
             android:layout_width="wrap_content"
@@ -575,11 +553,9 @@
             android:layout_gravity="center"
             android:text="Store Directory"
             android:textAppearance="@style/textview"
-            android:textSize="@dimen/textsize_12sp"
             android:textColor="@color/bottom_text"
-            />
+            android:textSize="@dimen/textsize_12sp" />
 
-        <!-- Copyright Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -598,7 +574,6 @@
                 android:textColor="@color/bottom_text"
                 android:textSize="12sp" />
 
-            <!-- Some icons / logos -->
             <ImageView
                 android:id="@+id/iv_icon3"
                 android:layout_width="20dp"

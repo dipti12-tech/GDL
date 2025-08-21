@@ -22,5 +22,7 @@ data class AddressDetails(
     val name: String,
     val text: String,
     val default: Int,
-    val map_location: List<Double>
+    val map_location: List<Double>,
+    val warehouse:String,
+    val price_class:String
 )

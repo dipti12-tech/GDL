@@ -18,10 +18,10 @@ class ProductDetailViewModel @Inject constructor(
     private val _products = MutableLiveData<ProductDetailsResponse>()
     val products: LiveData<ProductDetailsResponse> get() = _products
 
-    fun fetchProductDetail(id: String) {
+    fun fetchProductDetail(id: String, priceclass: String) {
         viewModelScope.launch {
             try {
-                val response = repository.getProductDetail(id)
+                val response = repository.getProductDetail(id, priceclass)
                 _products.postValue(response)
             } catch (e: Exception) {
                 e.printStackTrace()

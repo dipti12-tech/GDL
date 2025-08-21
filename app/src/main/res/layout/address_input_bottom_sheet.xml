@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Close Button -->
         <ImageView
             android:id="@+id/btnClose"
             android:layout_width="24dp"
@@ -21,7 +20,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Title -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
@@ -34,7 +32,6 @@
             app:layout_constraintTop_toBottomOf="@+id/btnClose"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-
 
 
         <LinearLayout
@@ -77,13 +74,12 @@
             app:singleLine="false"
             app:singleSelection="true" />
 
-
-        <!-- Flat / House no -->
         <EditText
-            android:id="@+id/etBuilding"
+            android:id="@+id/etName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Flat / House no / Building name *"
+            android:hint="Name *"
+            android:visibility="gone"
             android:background="@drawable/edittext_background"
             android:textAppearance="@style/textview"
             app:layout_constraintTop_toBottomOf="@id/chipGroupAddressType"
@@ -91,12 +87,35 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16dp" />
 
-        <!-- Floor -->
+        <TextView
+            android:id="@+id/txtPhone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@drawable/edittext_background"
+            android:textAppearance="@style/textview"
+            app:layout_constraintTop_toBottomOf="@id/etName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/etBuilding"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Flat / House no / Building name *"
+            android:background="@drawable/edittext_background"
+            android:textAppearance="@style/textview"
+            app:layout_constraintTop_toBottomOf="@id/txtPhone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
+
         <EditText
             android:id="@+id/etFloor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Floor (optional)"
+            android:hint="Floor *"
             android:background="@drawable/edittext_background"
             android:textAppearance="@style/textview"
             app:layout_constraintTop_toBottomOf="@id/etBuilding"
@@ -104,7 +123,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="12dp" />
 
-        <!-- Locality with Change -->
         <LinearLayout
             android:id="@+id/layoutLocality"
             android:layout_width="0dp"
@@ -140,24 +158,21 @@
                 android:background="@drawable/white_square_bg"
                 android:textColor="@color/blue"
                 android:textAppearance="@style/textview"
-                android:textSize="@dimen/textsize_12sp"/>
+                android:textSize="11sp"/>
         </LinearLayout>
 
-        <!-- Landmark -->
         <EditText
             android:id="@+id/etLandmark"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Nearby landmark (optional)"
+            android:hint="Nearby landmark *"
             android:background="@drawable/edittext_background"
             android:textAppearance="@style/textview"
-
             app:layout_constraintTop_toBottomOf="@id/layoutLocality"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="12dp" />
 
-        <!-- Save Button -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSaveAddress"
             android:layout_width="0dp"

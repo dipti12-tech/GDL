@@ -33,12 +33,13 @@ class ImageViewerActivity : AppCompatActivity() {
         binding.viewPager.setCurrentItem(startPosition, false)
         binding.recyclerThumbnails.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerThumbnails.adapter = ImageFullThumbnailAdapter(images.filter { it.contains("_thumbnail") }) { selectedImageUrl ->
-            val index = images.filter { it.contains("_medium") }.indexOf(selectedImageUrl)
-            if (index != -1) {
-                binding.viewPager.setCurrentItem(index, true)
+        binding.recyclerThumbnails.adapter =
+            ImageFullThumbnailAdapter(images.filter { it.contains("_thumbnail") }) { selectedImageUrl ->
+                val index = images.filter { it.contains("_medium") }.indexOf(selectedImageUrl)
+                if (index != -1) {
+                    binding.viewPager.setCurrentItem(index, true)
+                }
             }
-        }
 
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {

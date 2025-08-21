@@ -1,5 +1,4 @@
-<androidx.appcompat.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/customToolbar"
     android:layout_width="match_parent"
@@ -11,90 +10,79 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Horizontal Guideline for Visual Center -->
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineCenter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
-
-        <!-- Hamburger Icon (Start) -->
+        <!-- Menu Icon -->
         <ImageView
             android:id="@+id/menuIcon"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:contentDescription="Menu"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/appTitle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <!-- Notification Icon (Far End) -->
-        <ImageView
-            android:id="@+id/notificationIcon"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_notification"
-            android:visibility="gone"
-            android:contentDescription="Notifications"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <!-- Cart Icon -->
-        <ImageView
-            android:id="@+id/cartIcon"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginEnd="10dp"
-            android:contentDescription="Cart"
-            android:focusable="true"
-            android:clickable="true"
-            app:layout_constraintEnd_toStartOf="@id/notificationIcon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <!-- User Icon -->
+            app:layout_constraintTop_toTopOf="parent" />
+        <!-- Right Side Icons -->
         <ImageView
             android:id="@+id/userIcon"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginEnd="8dp"
             android:contentDescription="User"
-            app:layout_constraintEnd_toStartOf="@id/cartIcon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <!-- App Title (Center Aligned to Guideline) -->
-        <ImageView
-            android:id="@+id/appTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/appname_header"
-            android:contentDescription="App Logo"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/guidelineCenter"
-            app:layout_constraintEnd_toEndOf="@id/guidelineCenter" />
+            app:layout_constraintEnd_toStartOf="@id/cartIcon"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Cart Badge -->
+        <ImageView
+            android:id="@+id/cartIcon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="@dimen/padding_default"
+            android:contentDescription="Cart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/notificationIcon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/notificationIcon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="Notifications"
+            android:src="@drawable/ic_notification"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Badge on Cart -->
         <TextView
             android:id="@+id/cartBadge"
             android:layout_width="14dp"
             android:layout_height="14dp"
-            android:background="@drawable/badge_background"
-            android:text=""
-            android:textSize="10sp"
-            android:textColor="#1E40AF"
-            android:gravity="center"
-            android:visibility="gone"
-            android:focusable="true"
-            android:clickable="true"
-            app:layout_constraintTop_toTopOf="@id/cartIcon"
-            app:layout_constraintEnd_toEndOf="@id/cartIcon"
             android:layout_marginTop="2dp"
-            android:layout_marginEnd="2dp" />
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/badge_background"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/cartIcon"
+            app:layout_constraintTop_toTopOf="@id/cartIcon" />
+
+        <!-- Centered Logo -->
+        <ImageView
+            android:id="@+id/appTitle"
+            android:layout_width="@dimen/padding_100dp"
+            android:layout_height="@dimen/padding_30dp"
+            android:layout_marginEnd="@dimen/padding_6dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.appcompat.widget.Toolbar>

@@ -1,54 +1,64 @@
 package com.app.gdl.presentation.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
+import coil.decode.SvgDecoder
+import coil.load
 import com.app.gdl.R
-import com.app.gdl.data.model.PriceItem
-import com.app.gdl.data.model.User
+import com.app.gdl.data.model.CartItem
+import com.app.gdl.data.model.ProductListItem
 import com.app.gdl.databinding.FragmentHomeBinding
+import com.app.gdl.presentation.ui.activity.SignInActivity
+import com.app.gdl.presentation.ui.activity.SignUpActivity
+import com.app.gdl.presentation.ui.adapters.CategoryAdapter
+import com.app.gdl.presentation.ui.adapters.ChildCategoryAdapter
 import com.app.gdl.presentation.ui.adapters.FeatureAdapter
-import com.app.gdl.presentation.ui.adapters.PopularCategoryAdapter
 import com.app.gdl.presentation.ui.adapters.PopularItemsAdapter
 import com.app.gdl.presentation.ui.adapters.ProductAdapter
 import com.app.gdl.presentation.ui.adapters.ShopByCategoryAdapter
+import com.app.gdl.presentation.viewmodel.AllCategoryIdViewModel
 import com.app.gdl.presentation.viewmodel.CategoryViewModel
-import com.app.gdl.presentation.viewmodel.DefaultPriceViewModel
 import com.app.gdl.presentation.viewmodel.PopularItemViewModel
 import com.app.gdl.presentation.viewmodel.PopularViewModel
-import com.app.gdl.presentation.viewmodel.ProductViewModel
 import com.app.gdl.presentation.viewmodel.ShopCategoryViewModel
+import com.app.gdl.utils.AnalyticsHelper
+import com.app.gdl.utils.AuthPromptDialog
+import com.app.gdl.utils.CartManager
 import com.app.gdl.utils.SharedPref
+import com.app.gdl.utils.SlotType
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), FeatureAdapter.OnProductClickListener,
+class HomeFragment : Fragment(),
+    FeatureAdapter.OnProductClickListener,
     ProductAdapter.OnProductListener,
-    ProductAdapter.AddToCartListener {
-    override fun onProductClicked(categoryId: String, categoryName: String) {
-        val fragment = ProductByCategoryFragment.newInstance(categoryId, categoryName)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.main_content, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
+    ProductAdapter.AddToCartListener,
+    ChildCategoryAdapter.OnProductListener,
+    ChildCategoryAdapter.AddToCartListener {
 
     companion object {
         private const val ADDRESS = "addressUser"
 
         fun newInstance(address: String): HomeFragment {
-            val fragment = HomeFragment()
-            val bundle = Bundle().apply {
-                putString(ADDRESS, address)
+            return HomeFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ADDRESS, address)
+                }
             }
-            fragment.arguments = bundle
-            return fragment
         }
     }
 
@@ -57,39 +67,64 @@ class HomeFragment : Fragment(), FeatureAdapter.OnProductClickListener,
     private val categoryViewModel: CategoryViewModel by viewModels()
     private val shopCategoryViewModel: ShopCategoryViewModel by viewModels()
     private val popularViewModel: PopularViewModel by viewModels()
-    private val productViewModel: ProductViewModel by viewModels()
     private val popularItemViewModel: PopularItemViewModel by viewModels()
+    private val categoryIdsViewModel: AllCategoryIdViewModel by viewModels()
 
 
     private lateinit var featureAdapter: FeatureAdapter
     private lateinit var shopByCategoryAdapter: ShopByCategoryAdapter
-    private lateinit var popularAdapter: PopularCategoryAdapter
+    private lateinit var popularAdapter: CategoryAdapter
     private lateinit var popularItemsAdapter: PopularItemsAdapter
-    var priceclass = ""
-    private var customer: User? = null
-    lateinit var prefs: SharedPref
-    private val defaultPriceViewModel: DefaultPriceViewModel by viewModels()
-    /* private var etStreetInBottomSheet: EditText? = null
-     private var etSearch: EditText? = null
-     private var finalAddress: String? = null
-     private var headingAddress: String? = null
-     var addressUser: String = ""
-     lateinit var prefs: SharedPref
-    private val mapResultLauncher =
-         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-             if (it.resultCode == Activity.RESULT_OK) {
-                 val address = it.data?.getStringExtra("address") ?: ""
-                 headingAddress = it.data?.getStringExtra("headingAddress")
-                 etStreetInBottomSheet?.setText(finalAddress)
-                 etSearch?.setText(finalAddress)
 
-             }
-         }*/
+    private lateinit var middleBannerAdapter: FeatureAdapter
+    private lateinit var bottomBannerAdapter: FeatureAdapter
+
+    private lateinit var prefs: SharedPref
+    private var topBanners = listOf<ProductListItem>()
+    private val autoScrollHandler = Handler(Looper.getMainLooper())
+    private var currentIndex = 0
+    private val autoScrollRunnable = object : Runnable {
+        override fun run() {
+            val count = featureAdapter.itemCount
+            if (count == 0) return
+
+            currentIndex = (currentIndex + 1) % count
+            binding.featureRecycleview.smoothScrollToPosition(currentIndex)
+            updateDotIndicators(currentIndex)
+            autoScrollHandler.postDelayed(this, 3000) // scroll every 3 sec
+        }
+    }
+    private val middleAutoScrollHandler = Handler(Looper.getMainLooper())
+    private var middleCurrentIndex = 0
+    private val middleAutoScrollRunnable = object : Runnable {
+        override fun run() {
+            val count = middleBannerAdapter.itemCount
+            if (count == 0) return
+
+            middleCurrentIndex = (middleCurrentIndex + 1) % count
+            binding.bannerMiddleAdsRecyclerView.smoothScrollToPosition(middleCurrentIndex)
+            middleAutoScrollHandler.postDelayed(this, 4000)
+        }
+    }
+
+    private val bottomAutoScrollHandler = Handler(Looper.getMainLooper())
+    private var bottomCurrentIndex = 0
+    private val bottomAutoScrollRunnable = object : Runnable {
+        override fun run() {
+            val count = bottomBannerAdapter.itemCount
+            if (count == 0) return
+
+            bottomCurrentIndex = (bottomCurrentIndex + 1) % count
+            binding.bannerBottomAdsRecyclerView.smoothScrollToPosition(bottomCurrentIndex)
+            bottomAutoScrollHandler.postDelayed(this, 5000)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         prefs = SharedPref(requireContext())
-        // addressUser = arguments?.getString("addressUser").toString()
+        AnalyticsHelper.logScreenView(requireActivity(), "Home screen")
+
     }
 
     override fun onCreateView(
@@ -105,319 +140,197 @@ class HomeFragment : Fragment(), FeatureAdapter.OnProductClickListener,
         super.onViewCreated(view, savedInstanceState)
         setupUi()
         setupObservers()
-        // setupPickLocation()
+        CartManager.cartLiveData.observe(viewLifecycleOwner) { cartItems ->
+            if (cartItems.isNotEmpty()) {
+                binding.fabViewCart.visibility = View.VISIBLE
+                binding.cartItemCount.text = cartItems.size.toString()
+            } else {
+                binding.fabViewCart.visibility = View.GONE
+            }
+        }
 
     }
 
     private fun setupUi() {
-        featureAdapter = FeatureAdapter(this)
+        if (prefs.isLoggedIn) {
+            binding.llCreateAccount.visibility = View.GONE
+        }
+        binding.imgLogo.load("file:///android_asset/artoftech_logo.svg") {
+            decoderFactory(SvgDecoder.Factory())
+        }
+        binding.arrowRight.load("file:///android_asset/ic_arrowright.svg") {
+            decoderFactory(SvgDecoder.Factory())
+        }
+        binding.cartViewIcon.load("file:///android_asset/shoppingcart.svg") {
+            decoderFactory(SvgDecoder.Factory())
+        }
 
-        val gridLayoutManager = GridLayoutManager(context, 2)
-        binding.featureRecycleview.layoutManager = gridLayoutManager
-        binding.featureRecycleview.adapter = featureAdapter
+        binding.fabViewCart.setOnClickListener {
+            val fragment = ShoppingCartFragment.newInstance()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.main_content, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        binding.headerSignup.setOnClickListener {
+            startActivity(Intent(context, SignUpActivity::class.java))
+        }
+        featureAdapter = FeatureAdapter(this)
+        middleBannerAdapter = FeatureAdapter(this)
+        bottomBannerAdapter = FeatureAdapter(this)
+
+        binding.featureRecycleview.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = featureAdapter
+
+            featureAdapter.itemCount.let { count ->
+                if (count > 1) {
+                    setupDotIndicators(count)
+                    updateDotIndicators(0)
+                }else{
+                    binding.dotIndicatorLayout.visibility = View.GONE
+                }
+            }
+        }
+
+        binding.featureRecycleview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val position = layoutManager.findFirstCompletelyVisibleItemPosition()
+                    if (position != RecyclerView.NO_POSITION) {
+                        currentIndex = position
+                        updateDotIndicators(position)
+                    }
+                }
+            }
+        })
+        autoScrollHandler.postDelayed(autoScrollRunnable, 3000)
+        val snapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(binding.featureRecycleview)
+
+
+        binding.bannerMiddleAdsRecyclerView.apply {
+
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = middleBannerAdapter
+
+            middleBannerAdapter.itemCount.let { count ->
+                if (count > 1) {
+                    setupDotIndicators(count)
+                    updateDotIndicators(0)
+                }else{
+                    binding.dotIndicatorLayout.visibility = View.GONE
+                }
+            }
+            middleAutoScrollHandler.postDelayed(middleAutoScrollRunnable, 4000)
+
+        }
+
+        binding.bannerBottomAdsRecyclerView.apply {
+
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = bottomBannerAdapter
+
+            bottomBannerAdapter.itemCount.let { count ->
+                if (count > 1) {
+                    setupDotIndicators(count)
+                    updateDotIndicators(0)
+                }else{
+                    binding.dotIndicatorLayout.visibility = View.GONE
+                }
+            }
+            bottomAutoScrollHandler.postDelayed(bottomAutoScrollRunnable, 5000)
+        }
 
         shopByCategoryAdapter = ShopByCategoryAdapter(this)
-        binding.categoryRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-        binding.categoryRecyclerView.adapter = shopByCategoryAdapter
-
-        popularAdapter = PopularCategoryAdapter(
-            lifecycleOwner = this,
-            productViewModel = productViewModel,
-            listener = this,
-            productlistener = this,
-            addToCartListener = this
-        )
-        binding.productsRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.productsRecyclerView.adapter = popularAdapter
+        binding.categoryRecyclerView.apply {
+            layoutManager = GridLayoutManager(requireContext(), 3)
+            adapter = shopByCategoryAdapter
+        }
 
         popularItemsAdapter = PopularItemsAdapter(this, this)
-        binding.PastandPopularRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        binding.PastandPopularRecyclerView.adapter = popularItemsAdapter
-
+        binding.PastandPopularRecyclerView.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = popularItemsAdapter
+        }
     }
 
-    private fun setupObservers() {
-        categoryViewModel.categories.observe(viewLifecycleOwner) {
-            featureAdapter.submitList(it.category_list)
+    private fun setupDotIndicators(count: Int) {
+        binding.dotIndicatorLayout.removeAllViews()
+        val dotSize = resources.getDimensionPixelSize(R.dimen.dot_size)
+        val margin = resources.getDimensionPixelSize(R.dimen.dot_margin)
+
+        repeat(count) { i ->
+            val dot = View(requireContext()).apply {
+                layoutParams = LinearLayout.LayoutParams(dotSize, dotSize).apply {
+                    setMargins(margin, 0, margin, 0)
+                }
+                setBackgroundResource(R.drawable.dot_unselected)
+                isClickable = true
+                setOnClickListener {
+                    binding.featureRecycleview.smoothScrollToPosition(i)
+                    currentIndex = i
+                    updateDotIndicators(i)
+                }
+            }
+            binding.dotIndicatorLayout.addView(dot)
         }
+    }
+
+    private fun updateDotIndicators(index: Int) {
+        for (i in 0 until binding.dotIndicatorLayout.childCount) {
+            val dot = binding.dotIndicatorLayout.getChildAt(i)
+
+            val isSelected = i == index
+            dot.setBackgroundResource(
+                if (isSelected) R.drawable.dot_selected else R.drawable.dot_unselected
+            )
+        }
+    }
+
+
+    private fun setupObservers() {
+        shopCategoryViewModel.fetchFeaturedCategories()
 
         shopCategoryViewModel.allcategories.observe(viewLifecycleOwner) {
             shopByCategoryAdapter.submitList(it.category_list)
         }
+        categoryIdsViewModel.fetchAllCategoriesIds()
 
-        popularViewModel.getpopularcategories.observe(viewLifecycleOwner) { response ->
-            popularAdapter.submitList(response.category_list, requireContext())
+        categoryIdsViewModel.allIds.observe(viewLifecycleOwner) {
+            val jsonString = Gson().toJson(it.category_list)
+            prefs.saveString("CATEGORY_LIST", jsonString)
+
         }
 
-        popularItemViewModel.products.observe(viewLifecycleOwner) { response ->
-            popularItemsAdapter.submitData(response.list, response.s3_img_path)
-        }
-
-
-        categoryViewModel.fetchCategories()
-        shopCategoryViewModel.fetchAllCategories()
-        popularViewModel.fetchGetpopularCategories()
-        popularItemViewModel.fetchPopularItems()
-
-
-        // call the default price api with priceclass for login user MLD CBD
-        customer = prefs.getCustomerFromPrefs(requireContext())
-        priceclass = customer?.address?.get(0)?.price_class.toString()
-        Log.d("priceclass", "onCreate: " + priceclass)
-
-        /*
-                if (priceclass.isNotEmpty() && prefs.isLoggedIn) {
-                    Log.d("ResponseWith Price", priceclass.isNotEmpty().toString()+""+prefs.isLoggedIn)
-                    val inventoryIds = prefs.getInventoryIds(requireContext())
-                    Log.d("SIZE IN PREF IDS", inventoryIds.size.toString())
-
-                    defaultPriceViewModel.defaultPrice.observe(viewLifecycleOwner) { response ->
-                        Log.d("ResponseWith Price", "Received: $response")
-
-                        // Group by CustomerPriceClass
-                        val groupedByPrice = response.list.groupBy { it.CustomerPriceClass.value }
-                        Log.d("GroupedByPrice", groupedByPrice.toString())
-
-                        // Get items for this price class
-                        val priceItems = groupedByPrice[priceclass] ?: emptyList()
-                        Log.d("PriceItems", priceItems.toString())
-
-                        // Filter using Inventory IDs
-                        val filteredPriceItems = priceItems.filter { inventoryIds.contains(it.InventoryID.value) }
-                        Log.d("FilteredItems", filteredPriceItems.toString())
-
-                    }
-
-                    defaultPriceViewModel.fetchDefaultPrice(priceclass)
-                }
-        */
-        if (priceclass.isNotEmpty() && prefs.isLoggedIn) {
-            Log.d("Check", "PriceClass: $priceclass, LoggedIn: ${prefs.isLoggedIn}")
-
-            val inventoryIds = prefs.getInventoryIds(requireContext())
-            Log.d("SIZE IN PREF IDS", inventoryIds.size.toString())
-
-            // Call this BEFORE observe
-            defaultPriceViewModel.fetchDefaultPrice(priceclass)
-
-            defaultPriceViewModel.defaultPrice.observe(viewLifecycleOwner) { response ->
-                Log.d("ResponseWith Price", "Received: $response")
-
-                val groupedByPrice = response.list.groupBy { it.CustomerPriceClass.value }
-                Log.d("groupedByPrice", "Received: $groupedByPrice")
-
-                val priceItems = groupedByPrice[priceclass] ?: emptyList()
-                Log.d("priceItems", "Received: $priceItems")
-
-                val filteredPriceItems =
-                    priceItems.filter { inventoryIds.contains(it.InventoryID.value) }
-
-                Log.d("FilteredItems", filteredPriceItems.toString())
-                popularItemsAdapter.setPriceMap(filteredPriceItems)
-
-            }
-        }/* else {
-            defaultPriceViewModel.defaultPrice.observe(viewLifecycleOwner) { response ->
-                Log.d("ResponseWithoutLogin", "Received: $response")
-
-                val groupedByPrice = response.list.groupBy { it.CustomerPriceClass.value }
-                val priceItems = groupedByPrice[priceclass] ?: emptyList()
-                Log.d("PriceItemsNoLogin", priceItems.toString())
-
-            }
-
-            defaultPriceViewModel.fetchDefaultPrice(priceclass)
-        }*/
 
     }
 
-    /*
-        private fun setupPickLocation() {
-            var isTextFromUser = true
-            val bottomSheetView = layoutInflater.inflate(R.layout.layout_location_bottom_sheet, null)
-            etSearch = bottomSheetView.findViewById(R.id.etSearchLocation)
-            val bottomSheetDialog = BottomSheetDialog(requireContext())
-            bottomSheetDialog.setContentView(bottomSheetView)
-            if (addressUser != null) {
-                binding.deliveryLocation.text = prefs.userAdrress
-            } else {
-                binding.deliveryLocation.text = "Select Address"
-
-            }
-            binding.deliveryLocation.setOnClickListener {
-                if (!Places.isInitialized()) {
-                    Places.initialize(requireContext(), getString(R.string.google_maps_key))
-                }
-                val placesClient = Places.createClient(requireContext())
-
-                val rvSearchResults = bottomSheetView.findViewById<RecyclerView>(R.id.rvSearchResults)
-                val searchAdapter = SearchSuggestionsAdapter { prediction ->
-                    val placeId = prediction.placeId
-                    val request = FetchPlaceRequest.builder(
-                        placeId,
-                        listOf(Place.Field.LAT_LNG, Place.Field.ADDRESS)
-                    ).build()
-
-                    placesClient.fetchPlace(request).addOnSuccessListener { response ->
-                        val place = response.place
-                        finalAddress = place.address
-
-                        val latLng = place.latLng
-                        if (latLng != null) {
-                            val geocoder = Geocoder(requireContext(), Locale.getDefault())
-                            val addressList =
-                                geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-                            if (!addressList.isNullOrEmpty()) {
-                                val addr = addressList[0]
-    //                            finalAddress = addr.getAddressLine(0)
-
-                                val featureName = addr.featureName ?: ""
-                                val fullAddress = addr.getAddressLine(0) ?: ""
-
-                                val cleanedAddress = if (fullAddress.startsWith(featureName)) {
-                                    fullAddress.removePrefix(featureName).trimStart(',', ' ')
-                                } else {
-                                    fullAddress
-                                }
-                                val area = addr.subLocality
-                                val city = addr.locality
-                                val state = addr.adminArea
-                                headingAddress = listOfNotNull(area, city, state).joinToString(", ")
-                                finalAddress = cleanedAddress
-                            } else {
-                                headingAddress = place.name ?: place.address
-                            }
-                        }
-
-                        isTextFromUser = false
-                        etStreetInBottomSheet?.setText(finalAddress)
-                        etSearch?.setText(finalAddress)
-                        etSearch?.clearFocus()
-                        isTextFromUser = true
-                        rvSearchResults.visibility = View.GONE
-
-
-                    }.addOnFailureListener {
-                        Log.e("PlacesError", "Failed to fetch place details", it)
-                        Toast.makeText(
-                            requireContext(),
-                            "Failed to fetch place details",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                rvSearchResults.layoutManager = LinearLayoutManager(requireContext())
-                rvSearchResults.adapter = searchAdapter
-
-                val etSearch = bottomSheetView.findViewById<EditText>(R.id.etSearchLocation)
-                etSearch.addTextChangedListener {
-                    if (!isTextFromUser) return@addTextChangedListener
-                    val query = it.toString()
-                    if (query.length > 2) {
-                        val token = AutocompleteSessionToken.newInstance()
-                        val request = FindAutocompletePredictionsRequest.builder()
-                            .setSessionToken(token)
-                            .setQuery(query)
-                            .build()
-
-                        placesClient.findAutocompletePredictions(request)
-                            .addOnSuccessListener { response ->
-                                searchAdapter.submitList(response.autocompletePredictions)
-                                rvSearchResults.visibility = View.VISIBLE
-                            }
-                            .addOnFailureListener { e ->
-                                Log.e("PlacesError", "Prediction failed", e)
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Prediction failed: ${e.message}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                    } else {
-                        rvSearchResults.visibility = View.GONE
-                    }
-                }
-
-                etStreetInBottomSheet = bottomSheetView.findViewById(R.id.etStreetAddress)
-
-                bottomSheetView.findViewById<Button>(R.id.btnUseCurrentLocation).setOnClickListener {
-                    getCurrentLocation()
-                }
-
-                bottomSheetView.findViewById<Button>(R.id.btnOpenMap).setOnClickListener {
-                    val intent = Intent(requireContext(), MapPickerActivity::class.java)
-                    mapResultLauncher.launch(intent)
-                }
-
-                bottomSheetView.findViewById<Button>(R.id.btnSave).setOnClickListener {
-                    binding.deliveryLocation.text =
-                        "Deliver to: ${SpannableStringBuilder(headingAddress)}"
-                    bottomSheetDialog.dismiss()
-                }
-
-                bottomSheetDialog.show()
-            }
-        }
-    */
-
-    /*
-        private fun getCurrentLocation() {
-            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-
-            if (ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    requireActivity(),
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    101
-                )
-                return
-            }
-
-            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                if (location != null) {
-                    val lat = location.latitude
-                    val lng = location.longitude
-
-                    val geocoder = Geocoder(requireContext(), Locale.getDefault())
-                    val address = geocoder.getFromLocation(lat, lng, 1)
-                    if (!address.isNullOrEmpty()) {
-                        val addr = address[0]
-    //                  finalAddress = addr.getAddressLine(0)
-                        val featureName = addr.featureName ?: ""
-                        val fullAddress = addr.getAddressLine(0) ?: ""
-
-                        val cleanedAddress = if (fullAddress.startsWith(featureName)) {
-                            fullAddress.removePrefix(featureName).trimStart(',', ' ')
-                        } else {
-                            fullAddress
-                        }
-
-                        val area = addr.subLocality
-                        val city = addr.locality
-                        val state = addr.adminArea
-                        headingAddress = "$area, $city, $state"
-                        finalAddress = cleanedAddress
-                    }
-
-                    etStreetInBottomSheet?.setText(finalAddress)
-                    etSearch?.setText(finalAddress)
-
-                } else {
-                    Toast.makeText(requireContext(), "Couldn't fetch location", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        }
-    */
-
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onProductClicked(
+        customlist: String,
+        position: Int,
+        categoryId: String,
+        categoryName: String,
+        topBanners: List<ProductListItem>
+    ) {
+        val fragment =
+            ProductByCategoryFragment.newInstance(
+                customlist,
+                position,
+                categoryId,
+                categoryName,
+                topBanners
+            )
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.main_content, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onProductDataClicked(inventoryId: String) {
@@ -428,12 +341,142 @@ class HomeFragment : Fragment(), FeatureAdapter.OnProductClickListener,
             .commit()
     }
 
-    override fun addToCartClicked() {
-        val fragment = ShoppingCartFragment.newInstance()
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.main_content, fragment)
-            .addToBackStack(null)
-            .commit()
+    override fun addToCartClicked(cartItem: CartItem) {
+        if (prefs.isLoggedIn) {
+            CartManager.addItem(cartItem)
+        } else {
+            AuthPromptDialog(
+                activity = requireActivity(),
+                txtString = "Please log in/sign up to add items to your cart",
+                onRegisterClicked = {
+                    startActivity(Intent(requireActivity(), SignUpActivity::class.java))
+                },
+                onSignInClicked = {
+                    startActivity(Intent(requireActivity(), SignInActivity::class.java))
+                }
+            ).show()
+        }
     }
 
+    fun fetchPopularItemsWithNewPriceClass(priceClass: String, warehouseData: String?) {
+        popularViewModel.getpopularcategories.removeObservers(viewLifecycleOwner)
+        prefs.default_price?.let {
+            if (warehouseData != null) {
+                categoryViewModel.fetchCustomList(it,warehouseData)
+            }
+        }
+        Log.d("default_price", priceClass)
+        popularItemViewModel.fetchPopularItems(priceClass)
+        popularItemViewModel.products.observe(viewLifecycleOwner) { response ->
+            val filteredList = response.list.filter {
+                it.item_price.value != 0.0 && it.ItemStatus.value.equals(
+                    "Active",
+                    ignoreCase = true
+                )
+            }
+            filteredList.forEach { item ->
+                Log.d("FilteredList", item.toString())
+
+            }
+            if (filteredList.isNotEmpty()) {
+                binding.quickShopTitle.visibility = View.VISIBLE
+                binding.tabButtons.visibility =View.VISIBLE
+                binding.pastPurchasesBtn.visibility = View.VISIBLE
+                binding.PastandPopularRecyclerView.visibility = View.VISIBLE
+                binding.arrowRight.visibility = View.VISIBLE
+                binding.popularShopAll.visibility = View.VISIBLE
+                popularItemsAdapter.submitData(filteredList, response.s3_img_path)
+            }
+        }
+
+        categoryViewModel.categories.observe(viewLifecycleOwner) { response ->
+            val allItems = response.list
+            prefs.s3_img_path = response.s3_img_path
+            topBanners =
+                allItems.filter { it.slot == SlotType.TBL.code || it.slot == SlotType.TBR.code }
+            val middleBanners = allItems.filter { it.slot == SlotType.MS.code }
+            val bottomBanners = allItems.filter { it.slot == SlotType.BBLS.code || it.slot == SlotType.BBRS.code }
+
+            featureAdapter.submitList(topBanners)
+            setupDotIndicators(topBanners.size)
+            updateDotIndicators(0)
+            currentIndex = 0
+
+            autoScrollHandler.removeCallbacks(autoScrollRunnable)
+            autoScrollHandler.postDelayed(autoScrollRunnable, 3000)
+
+            middleBannerAdapter.submitList(middleBanners)
+            middleAutoScrollHandler.removeCallbacks(middleAutoScrollRunnable)
+            middleAutoScrollHandler.postDelayed(middleAutoScrollRunnable, 4000)
+
+            bottomBannerAdapter.submitList(bottomBanners)
+            bottomAutoScrollHandler.removeCallbacks(bottomAutoScrollRunnable)
+            bottomAutoScrollHandler.postDelayed(bottomAutoScrollRunnable, 5000)
+
+            binding.featureRecycleview.visibility =
+                if (topBanners.isNotEmpty()) View.VISIBLE else View.GONE
+            binding.bannerMiddleAdsRecyclerView.visibility =
+                if (middleBanners.isNotEmpty()) View.VISIBLE else View.GONE
+            binding.bannerBottomAdsRecyclerView.visibility =
+                if (bottomBanners.isNotEmpty()) View.VISIBLE else View.GONE
+        }
+        popularViewModel.fetchGetpopularCategories()
+
+        popularViewModel.getpopularcategories.observe(viewLifecycleOwner) { response ->
+            if (response.category_list.isNotEmpty()) {
+                response.category_list.forEach {
+                    Log.d("PopularCategoryDipti", "Category: ${it.category_name}")
+                }
+                binding.productsCategoryRecyclerView.visibility = View.VISIBLE
+
+                if (binding.productsCategoryRecyclerView.layoutManager == null) {
+                    binding.productsCategoryRecyclerView.layoutManager =
+                        LinearLayoutManager(requireContext())
+                }
+
+                popularAdapter = CategoryAdapter(
+                    lifecycleOwner = viewLifecycleOwner,
+                    productViewModel = popularViewModel,
+                    listener = this,
+                    addToCartListener = this,
+                    listenerShopAll = this,
+                )
+                binding.productsCategoryRecyclerView.adapter = popularAdapter
+
+                popularAdapter.submitList(response.category_list)
+
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (featureAdapter.itemCount > 0) {
+            autoScrollHandler.postDelayed(autoScrollRunnable, 3000)
+        }
+        val customer = prefs.getCustomerFromPrefs(requireActivity())
+        val priceclass = customer?.address?.get(0)?.price_class.toString()
+        val warehouseData = customer?.address?.get(0)?.warehouse.toString()
+
+        if (prefs.isLoggedIn && priceclass != "null") {
+            fetchPopularItemsWithNewPriceClass(priceclass, warehouseData)
+        } else {
+            fetchPopularItemsWithNewPriceClass(prefs.default_price.toString(), prefs.near_warehouse)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        autoScrollHandler.removeCallbacks(autoScrollRunnable)
+        middleAutoScrollHandler.removeCallbacks(middleAutoScrollRunnable)
+        bottomAutoScrollHandler.removeCallbacks(bottomAutoScrollRunnable)
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        autoScrollHandler.removeCallbacks(autoScrollRunnable) // prevent memory leak
+        middleAutoScrollHandler.removeCallbacks(middleAutoScrollRunnable)
+        bottomAutoScrollHandler.removeCallbacks(bottomAutoScrollRunnable)
+    }
 }

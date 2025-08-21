@@ -1,11 +1,16 @@
 package com.app.gdl.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class CartItem(
     val inventoryId: String,
     val name: String,
     val imageUrl: String,
-    val unit: String,         // e.g., "carton", "piece"
+    val unit: String,
+    val BaseUOM: String,
     var quantity: Int,
-    val pricePerUnit: Double,  // price for 1 unit
+    val pricePerUnit: Double,
     val category: String
-)
+) : Parcelable

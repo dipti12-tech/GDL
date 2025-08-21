@@ -10,8 +10,8 @@ import javax.inject.Singleton
     class ProductRepositoryImp @Inject constructor(
         private val apiService: ApiService
     ) : ProductRepository {
-        override suspend fun getproductsdata(id :String): ProductResponse {
-            return apiService.getProducts(id);
+        override suspend fun getproductsdata(id :String,priceclass:String): ProductResponse {
+            return apiService.getProducts(id,priceclass);
         }
 
 

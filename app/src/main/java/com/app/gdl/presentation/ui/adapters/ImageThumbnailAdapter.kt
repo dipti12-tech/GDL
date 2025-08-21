@@ -1,6 +1,5 @@
 package com.app.gdl.presentation.ui.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,6 @@ class ImageThumbnailAdapter(
             Glide.with(imageView.context)
                 .load(url)
                 .centerCrop()
-                //.placeholder(R.drawable.pastpopularitem)
                 .into(imageView)
             imageView.setOnClickListener {
                 onImageClick(url)
@@ -36,7 +34,7 @@ class ImageThumbnailAdapter(
     }
 
     override fun onBindViewHolder(holder: ThumbViewHolder, position: Int) {
-       holder.bind(imageUrls[position])
+        holder.bind(imageUrls[position])
     }
 
     override fun getItemCount(): Int = imageUrls.size

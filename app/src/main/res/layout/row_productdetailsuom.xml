@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
-    <!-- Price Options -->
 
 
         <LinearLayout
@@ -14,7 +13,6 @@
             android:orientation="horizontal"
          >
 
-            <!-- 1–24 pieces -->
             <LinearLayout
                 android:id="@+id/ll_uom"
                 android:layout_width="wrap_content"

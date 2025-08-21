@@ -26,6 +26,7 @@ class SignupViewModel @Inject constructor(
             try {
                 val response = repository.signup(request)
                 _signupResult.value = Result.success(response)
+
             } catch (e: Exception) {
                 _signupResult.value = Result.failure(e)
             }

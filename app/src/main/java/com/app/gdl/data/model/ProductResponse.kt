@@ -6,6 +6,7 @@ data class ProductResponse(
     val s3_img_path: String
 )
 data class ProductItem(
+    val BaseUOM:ValueWrapper<String>,
     val DimensionWeight: ValueWrapper<Double>,
     val ImageUrl: ValueWrapper<String>,
     val InventoryID: ValueWrapper<String>,
@@ -15,9 +16,10 @@ data class ProductItem(
     val CustomDescription: ValueWrapper<String>,
     val CustomName: ValueWrapper<String>,
     val CustomSubCategory: ValueWrapper<String>,
-    val item_price: Double
+    val item_price: ValueWrapper<Double>
 
 )
+
 data class ValueWrapper<T>(
     val value: T
 )

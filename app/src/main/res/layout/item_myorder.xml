@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardOrder"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_2dp">
+
+        <!-- Header: Title and View invoice button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvOrderPlacedTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Order placed 6 Aug 2025"
+                android:textAppearance="@style/header_title"
+                android:textSize="@dimen/textsize_16sp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnViewInvoice"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/white_square_grey"
+                android:gravity="center"
+                android:padding="@dimen/padding_2dp"
+                android:paddingStart="@dimen/padding_6dp"
+                android:paddingEnd="@dimen/padding_6dp"
+                android:text="View invoice"
+                android:textAllCaps="false"
+                android:textAppearance="@style/textview" />
+        </LinearLayout>
+
+        <!-- Order number -->
+        <TextView
+            android:id="@+id/tvOrderNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Order #20250806"
+            android:textColor="#666666"
+            android:textSize="13sp" />
+
+        <!-- Status strip -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="10dp"
+            android:background="#f3ead7"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/tvStatusLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Order Status"
+                android:textColor="#6b5f48"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tvStatusValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Processing"
+                android:textColor="#6b5f48"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <!-- Products RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvOrderProducts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/padding_8dp"
+
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:layout_weight="0.2"
+                android:layout_gravity="center"
+                android:text="Sub-Total"
+                android:textAppearance="@style/header_title"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/subtotal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=""
+                android:padding="8dp"
+                android:layout_weight="0.3"
+                android:gravity="end"
+                android:textAppearance="@style/header_title"
+                android:textSize="18sp">
+
+            </TextView>
+        </LinearLayout>
+        <!-- Divider between product rows -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/padding_8dp"
+            android:background="#E6E6E6" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#FFEB3B"
+            android:layout_marginTop="@dimen/padding_8dp"
+
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:layout_weight="0.2"
+                android:layout_gravity="center"
+                android:text="Grand Total"
+                android:textAppearance="@style/header_title"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/grandTotal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=""
+                android:padding="8dp"
+                android:layout_weight="0.3"
+                android:gravity="end"
+                android:textAppearance="@style/header_title"
+                android:textSize="18sp">
+
+            </TextView>
+        </LinearLayout>
+        <!-- Divider between product rows -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/padding_8dp"
+            android:background="#E6E6E6" />
+
+    </LinearLayout>
+</LinearLayout>

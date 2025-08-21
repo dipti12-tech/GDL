@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_margin="@dimen/padding_2dp"
+    android:elevation="2dp"
     android:gravity="center"
-    android:elevation="2dp">
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/categoryImageView"
@@ -16,12 +16,16 @@
 
     <TextView
         android:id="@+id/categoryNameTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Category"
-        android:textAllCaps="true"
+        android:layout_marginBottom="@dimen/padding_4dp"
+        android:background="@color/cat_bg_color"
+        android:gravity="center|top"
         android:lines="2"
-        android:gravity="center"
-        android:textAppearance="@style/textview"/>
+        android:text="Category"
+        android:padding="@dimen/padding_4dp"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textAppearance="@style/textview" />
 
 </LinearLayout>
