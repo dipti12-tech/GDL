@@ -321,12 +321,14 @@ class MainActivity : AppCompatActivity(), CartAdapter.CartItemCountListener {
     private fun setupClickListeners() {
         binding.deliveryLocation.setOnClickListener {
             if (!prefs.isLoggedIn) {
-                AuthPromptDialog(
+              /*  AuthPromptDialog(
                     activity = this,
                     txtString = "Please log in to save/access your addresses",
                     onRegisterClicked = { startActivity(Intent(this, SignUpActivity::class.java)) },
                     onSignInClicked = { startActivity(Intent(this, SignInActivity::class.java)) }
-                ).show()
+                ).show()*/
+                val rootView = window.decorView.findViewById<View>(android.R.id.content)
+                rootView.post { showCitySpinnerPopup(rootView) }
             }
         }
     }
